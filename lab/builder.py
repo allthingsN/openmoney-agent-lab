@@ -221,8 +221,10 @@ def write_project(d: dict, framework_ids: list[str]) -> Path:
     (p / "servers").mkdir(parents=True, exist_ok=True)
     lab_dir = Path(__file__).parent
     shutil.copy(lab_dir / "mcpkit.py", p / "servers" / "mcpkit.py")
+    server_files = {name: f"{name}.py" for name in (*CATALOG, "skills")}  # file names the lab defines, not input
     for s in d["catalog_tools"] + (["skills"] if d["skills"] else []):
-        shutil.copy(lab_dir / "servers" / f"{s}.py", p / "servers" / f"{s}.py")
+        fname = server_files[s]
+        shutil.copy(lab_dir / "servers" / fname, p / "servers" / fname)
     if "offers" in d["catalog_tools"]:
         (p / "data").mkdir(exist_ok=True)
         shutil.copy(ROOT / "tasks/bill-doctor/data/offers.json", p / "data/offers.json")
@@ -246,7 +248,7 @@ def write_project(d: dict, framework_ids: list[str]) -> Path:
             raise ValueError(f"Unknown framework: {fid}")
         fw = fws[fid]
         src = Path(fw["dir"])
-        dst = p / "frameworks" / fid
+        dst = p / "frameworks" / src.name  # the registry's own folder name, not the request's
         shutil.copytree(src, dst, ignore=shutil.ignore_patterns(".venv", "node_modules", "__pycache__", "*.pyc"))
     spec = {
         "name": d["name"], "model": config.load().model or config.DEFAULT_MODEL, "max_tokens": 16000, "max_turns": 40,
