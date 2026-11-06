@@ -1,0 +1,8 @@
+[project]
+name = "lab-agent-claude-agent-sdk"
+version = "0.1.0"
+requires-python = ">=3.11,<3.14"
+dependencies = ["claude-agent-sdk>=0.2.178"]
+
+[tool.uv]
+package = false

@@ -1,0 +1,9 @@
+[project]
+name = "lab-agent-google-adk"
+version = "0.1.0"
+requires-python = ">=3.11,<3.14"
+# litellm range copied from google-adk's own "extensions" extra (the versions ADK is tested with)
+dependencies = ["google-adk[mcp]>=2.13", "litellm>=1.84,<1.106.3"]
+
+[tool.uv]
+package = false

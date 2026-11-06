@@ -1,0 +1,10 @@
+.git
+.venv
+**/.venv
+**/node_modules
+**/__pycache__
+runs
+.lab
+my-agents
+web/dist
+.env

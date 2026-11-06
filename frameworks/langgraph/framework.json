@@ -1,0 +1,32 @@
+{
+  "id": "langgraph",
+  "name": "LangGraph",
+  "vendor": "LangChain",
+  "language": "python",
+  "color": "#1C3C3C",
+  "glyph": "LG",
+  "homepage": "https://github.com/langchain-ai/langgraph",
+  "packages": "langgraph, langchain, langchain-anthropic, langchain-mcp-adapters",
+  "summary": "LangChain 1.x create_agent (a compiled LangGraph tool-calling graph) with ChatAnthropic, MCP tools from langchain-mcp-adapters' MultiServerMCPClient and a native @tool.",
+  "skills": "mcp",
+  "entry": "agent.py",
+  "setup": [
+    "uv",
+    "sync",
+    "--project",
+    "{dir}",
+    "--quiet"
+  ],
+  "run": [
+    "uv",
+    "run",
+    "--project",
+    "{dir}",
+    "--quiet",
+    "python",
+    "{dir}/agent.py",
+    "{spec}"
+  ],
+  "shims": [],
+  "notes": "Uses langchain.agents.create_agent, the agent API LangChain 1.x documents (langgraph.prebuilt.create_react_agent's state types are deprecated in its favour). create_agent pins recursion_limit to 9,999, so max_turns is enforced with LangChain's ModelCallLimitMiddleware(run_limit=max_turns, exit_behavior='end'), which caps model calls 1:1. The spec's MCP entries pass straight into MultiServerMCPClient ('http' is its alias for streamable_http; stdio works the same way); get_tools() without a session opens a fresh MCP session per tool call. ChatAnthropic reads ANTHROPIC_API_KEY/ANTHROPIC_BASE_URL itself and sends no temperature, tool_choice or cache_control by default (so no prompt caching), and a plain-string system prompt. No shims needed."
+}

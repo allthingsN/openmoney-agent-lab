@@ -1,0 +1,14 @@
+services:
+  lab:
+    build: .
+    image: openmoney-agent-lab
+    ports:
+      - "127.0.0.1:7777:7777"   # local only: the lab hosts tool servers and a model proxy
+    env_file:
+      - path: .env               # optional: ANTHROPIC_API_KEY, or LITELLM_BASE_URL + LITELLM_API_KEY
+        required: false
+    volumes:
+      - lab-data:/data           # runs and saved settings
+      - ./my-agents:/lab/my-agents   # agents you build appear on your machine
+volumes:
+  lab-data: {}

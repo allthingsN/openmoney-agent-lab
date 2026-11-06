@@ -1,0 +1,24 @@
+id: moving-day
+title: Moving Day
+tagline: Seven agents on six frameworks plan a family's move — internet, phones, cancellations, a calendar and a one-page plan — through one shared task board.
+brief: |
+  The Raman household (3 people) moves from San Jose, CA to Austin, TX (ZIP3 787) on Saturday 2026-12-05.
+  Their files are in the shared workspace: bills in inbox/, usage in usage/, preferences in notes/what-we-want.md,
+  and the move details in notes/moving.md. Plans and prices come only from the offers tool.
+deliverables:
+  - 'outbox/move-plan.md — one page for Priya: chosen internet plan for Austin and phone plan (offer ids), their 24-month cost vs. today, and a dated to-do list. End with a json block {"internet_offer_id", "mobile_offer_id", "internet_24mo", "mobile_24mo", "savings_24mo"}.'
+  - 'outbox/bayline-cancellation.md — a draft letter cancelling Bayline Cable effective 2026-12-05 and arranging the modem return.'
+  - 'outbox/move-week.ics — an iCalendar file with the move-week events (keys, move, modem return, internet install, cancellation effective).'
+  - 'No personal data sent to the offers tool (names, phones, emails, street, full ZIP, account numbers).'
+roles:
+  - {role: planner,    framework: claude-agent-sdk, title: "Planner",          does: "Breaks the mission into tasks on the board, then assembles the final one-page plan."}
+  - {role: researcher, framework: langgraph,        title: "Researcher",       does: "Finds and reads offers, checks availability in the new area, extracts needs from the household's files."}
+  - {role: analyst,    framework: pydantic-ai,      title: "Analyst",          does: "Applies the true-cost skill: eligibility and exact 12/24-month costs, ranks the options."}
+  - {role: privacy,    framework: openai-agents,    title: "Privacy officer",  does: "Reviews what the team sent to outside tools and every draft for personal data; reports issues on the board."}
+  - {role: writer,     framework: crewai,           title: "Writer",           does: "Drafts letters and documents into outbox/."}
+  - {role: scheduler,  framework: vercel-ai-sdk,    title: "Scheduler",        does: "Turns dates and steps into a calendar file (outbox/move-week.ics)."}
+  - {role: reviewer,   framework: google-adk,       title: "Reviewer",         does: "Checks the finished work against the deliverables; sends tasks back with a reason if something is wrong."}
+skills: [true-cost, privacy-guard, savings-memo]
+servers: [board, files, offers, skills]
+max_turns: 40
+timeout_s: 600

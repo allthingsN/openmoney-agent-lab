@@ -1,0 +1,17 @@
+{
+  "id": "claude-agent-sdk",
+  "name": "Claude Agent SDK",
+  "vendor": "Anthropic",
+  "language": "python",
+  "color": "#C15F3C",
+  "glyph": "CA",
+  "homepage": "https://github.com/anthropics/claude-agent-sdk-python",
+  "packages": "claude-agent-sdk (bundles the Claude Code CLI)",
+  "summary": "Claude Code's own agent loop driven by the Python SDK's query(): built-in tools cut down to Skill, MCP servers over Streamable HTTP, calculate as an in-process SDK MCP tool, and skills loaded natively from .claude/skills.",
+  "skills": "native",
+  "entry": "agent.py",
+  "setup": ["uv", "sync", "--project", "{dir}", "--quiet"],
+  "run": ["uv", "run", "--project", "{dir}", "--quiet", "python", "{dir}/agent.py", "{spec}"],
+  "shims": [],
+  "notes": "claude-agent-sdk 0.2.178 runs the bundled Claude Code CLI 2.1.318 as a subprocess; the CLI reads ANTHROPIC_BASE_URL, ANTHROPIC_API_KEY and CLAUDE_CONFIG_DIR from the inherited environment, so session files stay in the agent's own config dir. Isolation: tools=['Skill'] (CLI --tools) removes every other built-in tool (Bash, Read, Write, Edit, Glob, Grep, Web*, Agent, TodoWrite, ...). permission_mode='dontAsk' denies anything not pre-approved, and allowed_tools=['mcp__<server>', ...] plus skills=[names] (which adds Skill(<name>) rules) approve only the task's tools. strict_mcp_config ignores any other MCP config, and setting_sources=['project'] loads <workdir>/.claude/skills but no user settings, hooks or plugins. A PostToolUse hook on Skill emits skill.load. calculate is an in-process SDK MCP tool, so the model sees it as mcp__native__calculate (and MCP tools as mcp__<server>__<tool>). System prompt: a plain string replaces Claude Code's default prompt, but the CLI still adds two system blocks before it: an x-anthropic-billing-header line (73 chars) and the line 'You are a Claude agent, built on Anthropic's Claude Agent SDK.' (62 chars). Its first request also carries a role:'system' message (~2 KB) with the environment (cwd, platform, OS, model), the MCP servers' instructions, a second copy of the skill listing and the date, and later turns add '<total_tokens>N tokens left</total_tokens>' reminders. A Skill call returns 'Launching skill: <name>' and the SKILL.md body arrives as the next user text block. Defaults the CLI picks by itself: adaptive thinking, output_config.effort 'medium', context_management clear_thinking, prompt caching on, and tool search on (a defer_loading DeferredToolPlaceholder tool is in every tools list, which the model never sees). max_tokens is set through CLAUDE_CODE_MAX_OUTPUT_TOKENS. No sampling params and no forced tool_choice, so no shims."
+}

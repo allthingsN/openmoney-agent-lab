@@ -1,0 +1,32 @@
+{
+  "id": "strands",
+  "name": "Strands Agents",
+  "vendor": "AWS",
+  "language": "python",
+  "color": "#FF9900",
+  "glyph": "ST",
+  "homepage": "https://github.com/strands-agents/sdk-python",
+  "packages": "strands-agents[anthropic], mcp",
+  "summary": "A Strands Agent on the Anthropic model provider; each MCP server is an MCPClient tool provider the agent starts and stops itself, plus one @tool.",
+  "skills": "mcp",
+  "entry": "agent.py",
+  "setup": [
+    "uv",
+    "sync",
+    "--project",
+    "{dir}",
+    "--quiet"
+  ],
+  "run": [
+    "uv",
+    "run",
+    "--project",
+    "{dir}",
+    "--quiet",
+    "python",
+    "{dir}/agent.py",
+    "{spec}"
+  ],
+  "shims": [],
+  "notes": "Sends the system prompt verbatim and streams. Prompt caching is off by default in AnthropicModel (cache_config unset), so every turn pays full input price; left at the default. max_turns maps to the per-call limits={'turns': n}. No sampling params or forced tool_choice, so no shims. MCPClient takes a transport factory (mcp 2.x streamable_http_client / stdio_client); the Agent starts and stops the clients it is given."
+}

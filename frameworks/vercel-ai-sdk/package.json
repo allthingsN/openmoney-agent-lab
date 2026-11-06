@@ -1,0 +1,12 @@
+{
+  "name": "lab-adapter-vercel-ai-sdk",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@ai-sdk/anthropic": "4.0.97",
+    "@ai-sdk/mcp": "2.0.91",
+    "ai": "7.0.163",
+    "tsx": "4.23.15",
+    "zod": "4.6.7"
+  }
+}

@@ -1,0 +1,10 @@
+.venv/
+node_modules/
+.lab/
+runs/
+web/dist/
+__pycache__/
+*.pyc
+.DS_Store
+frontend-build/
+my-agents/

@@ -1,0 +1,27 @@
+{
+  "id": "mastra",
+  "name": "Mastra",
+  "vendor": "Mastra",
+  "language": "typescript",
+  "color": "#1A1A1A",
+  "glyph": "M",
+  "homepage": "https://mastra.ai",
+  "packages": "@mastra/core, @mastra/mcp, @ai-sdk/anthropic, zod",
+  "summary": "A Mastra Agent on an @ai-sdk/anthropic model, with every MCP server's tools from @mastra/mcp's MCPClient.listTools() and calculate defined with createTool().",
+  "skills": "mcp",
+  "entry": "agent.ts",
+  "setup": [
+    "npm",
+    "ci",
+    "--prefix",
+    "{dir}",
+    "--silent"
+  ],
+  "run": [
+    "{dir}/node_modules/.bin/tsx",
+    "{dir}/agent.ts",
+    "{spec}"
+  ],
+  "shims": [],
+  "notes": "@mastra/core 1.82.0 Agent run standalone (no Mastra instance, so no storage, observability exporters or PostHog feature telemetry, which only the Mastra class sends; the lab also sets MASTRA_TELEMETRY_DISABLED=1). Model: the 'anthropic/<model>' router string reads ANTHROPIC_BASE_URL verbatim and only appends /v1 for api.anthropic.com, and a {id, url} config switches to an OpenAI-compatible client, so the adapter passes an @ai-sdk/anthropic provider instance with ANTHROPIC_BASE_URL + '/v1'. @ai-sdk/anthropic is pinned to 4.0.96 because 4.0.97 ships @ai-sdk/provider 4.0.36, whose LanguageModelV4 (new 'ping' stream part) no longer matches the 4.0.35 types @mastra/core bundles, so tsc rejects it (it still runs). maxSteps = max_turns and modelSettings.maxOutputTokens = max_tokens on generate(). MCP: @mastra/mcp 2.8.0 MCPClient.listTools() namespaces tools as <server>_<tool> (e.g. files_read_file, skills_load_skill) and adds $schema, so the tool list is about 15% longer than other adapters'. result.text joins the text of every step, intermediate narration included, so the adapter reports steps.at(-1).text as the final answer. Sends tool_choice {type:'auto'} and no sampling params, so no shims; no prompt caching by default."
+}

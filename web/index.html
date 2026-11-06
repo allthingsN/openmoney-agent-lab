@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en" data-theme="ink">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark light" />
+    <meta name="description" content="Run the same agent task on every framework and measure it from the outside." />
+    <link rel="icon" type="image/svg+xml" href="/mark.svg" />
+    <title>OpenMoney Agent Lab</title>
+    <script>
+      try {
+        var t = localStorage.getItem("lab.theme");
+        if (t === "ink" || t === "paper") document.documentElement.dataset.theme = t;
+      } catch (e) {}
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

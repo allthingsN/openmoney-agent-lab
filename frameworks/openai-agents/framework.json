@@ -1,0 +1,32 @@
+{
+  "id": "openai-agents",
+  "name": "OpenAI Agents SDK",
+  "vendor": "OpenAI",
+  "language": "python",
+  "color": "#10A37F",
+  "glyph": "OA",
+  "homepage": "https://github.com/openai/openai-agents-python",
+  "packages": "openai-agents[litellm]",
+  "summary": "An Agent run by Runner.run, with Claude through the SDK's LitellmModel, MCP tools from MCPServerStreamableHttp and calculate as a @function_tool.",
+  "skills": "mcp",
+  "entry": "agent.py",
+  "setup": [
+    "uv",
+    "sync",
+    "--project",
+    "{dir}",
+    "--quiet"
+  ],
+  "run": [
+    "uv",
+    "run",
+    "--project",
+    "{dir}",
+    "--quiet",
+    "python",
+    "{dir}/agent.py",
+    "{spec}"
+  ],
+  "shims": [],
+  "notes": "Claude runs through agents.extensions.models.litellm_model.LitellmModel('anthropic/<model>') with base_url/api_key passed explicitly; LiteLLM turns the SDK's chat-completions calls into non-streaming Anthropic Messages requests (no temperature, no tool_choice, so no shims). set_tracing_disabled(True) as well as OPENAI_AGENTS_DISABLE_TRACING, since there is no OpenAI key. The SDK adds nothing to the system prompt and sends MCP tool schemas unchanged. In replayed history each parallel tool call becomes its own assistant/tool_result pair, and thinking blocks are dropped. No prompt caching by default (LiteLLM only adds cache_control when asked to). MCPServerStreamableHttp's default 5 s client-session timeout is kept."
+}

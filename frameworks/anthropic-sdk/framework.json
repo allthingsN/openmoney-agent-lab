@@ -1,0 +1,32 @@
+{
+  "id": "anthropic-sdk",
+  "name": "Anthropic SDK (no framework)",
+  "vendor": "Anthropic",
+  "language": "python",
+  "color": "#D97757",
+  "glyph": "A",
+  "homepage": "https://github.com/anthropics/anthropic-sdk-python",
+  "packages": "anthropic, mcp",
+  "summary": "The baseline: the official Python SDK's tool runner loops over MCP tools converted with anthropic.lib.tools.mcp. No agent framework at all.",
+  "skills": "mcp",
+  "entry": "agent.py",
+  "setup": [
+    "uv",
+    "sync",
+    "--project",
+    "{dir}",
+    "--quiet"
+  ],
+  "run": [
+    "uv",
+    "run",
+    "--project",
+    "{dir}",
+    "--quiet",
+    "python",
+    "{dir}/agent.py",
+    "{spec}"
+  ],
+  "shims": [],
+  "notes": "anthropic 2.6 tool_runner over MCP tools converted with anthropic.lib.tools.mcp.async_mcp_tool (mcp 2.x Client) plus one @beta_async_tool. By default the tool runner uses the Message Threads beta (each request carries thread.previous_message_id and only the new messages); that request is rejected through a LiteLLM gateway (\"unexpected tool_use_id\"), so the adapter passes thread=False and sends the full history like every other framework. Sends the system prompt verbatim, no sampling params, no tool_choice, no prompt caching."
+}

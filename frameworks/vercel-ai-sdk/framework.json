@@ -1,0 +1,27 @@
+{
+  "id": "vercel-ai-sdk",
+  "name": "Vercel AI SDK",
+  "vendor": "Vercel",
+  "language": "typescript",
+  "color": "#000000",
+  "glyph": "▲",
+  "homepage": "https://ai-sdk.dev",
+  "packages": "ai, @ai-sdk/anthropic, @ai-sdk/mcp, zod",
+  "summary": "A ToolLoopAgent on the @ai-sdk/anthropic provider, with MCP tools from @ai-sdk/mcp's Streamable HTTP client and calculate defined with tool() and a zod schema.",
+  "skills": "mcp",
+  "entry": "agent.ts",
+  "setup": [
+    "npm",
+    "ci",
+    "--prefix",
+    "{dir}",
+    "--silent"
+  ],
+  "run": [
+    "{dir}/node_modules/.bin/tsx",
+    "{dir}/agent.ts",
+    "{spec}"
+  ],
+  "shims": [],
+  "notes": "ai 7.0.163 ToolLoopAgent (the v7 agent class; isStepCount(max_turns) as stopWhen, since the default is 20 steps), maxOutputTokens = max_tokens. createAnthropic needs the versioned base URL, so the adapter appends /v1 to ANTHROPIC_BASE_URL. MCP: @ai-sdk/mcp createMCPClient with its built-in Streamable HTTP transport ({type: 'http'}) and its own StdioMCPTransport (@ai-sdk/mcp/mcp-stdio), so @modelcontextprotocol/sdk is not needed; it probes server/discover first and falls back to initialize on the lab servers' -32601. Tools keep their raw MCP names (no server prefix); tool() schemas gain a $schema key. Sends tool_choice {type:'auto'} explicitly and no sampling params, so no shims. No prompt caching: the provider adds cache_control only when asked via providerOptions. result.text is the last step's text. The model runs parallel tool calls (63 tool calls in 10 requests on haiku)."
+}

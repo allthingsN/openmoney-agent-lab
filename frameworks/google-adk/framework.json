@@ -1,0 +1,32 @@
+{
+  "id": "google-adk",
+  "name": "Google ADK",
+  "vendor": "Google",
+  "language": "python",
+  "color": "#4285F4",
+  "glyph": "ADK",
+  "homepage": "https://github.com/google/adk-python",
+  "packages": "google-adk, litellm",
+  "summary": "An LlmAgent with Claude through ADK's LiteLlm wrapper, MCP tools from McpToolset and calculate as a plain function tool, run by Runner with an in-memory session.",
+  "skills": "mcp",
+  "entry": "agent.py",
+  "setup": [
+    "uv",
+    "sync",
+    "--project",
+    "{dir}",
+    "--quiet"
+  ],
+  "run": [
+    "uv",
+    "run",
+    "--project",
+    "{dir}",
+    "--quiet",
+    "python",
+    "{dir}/agent.py",
+    "{spec}"
+  ],
+  "shims": [],
+  "notes": "Claude runs through google.adk.models.lite_llm.LiteLlm('anthropic/<model>', api_base=..., api_key=...). litellm is pinned to the range from ADK's own 'extensions' extra (<1.106.3), and MCP needs the google-adk[mcp] extra. ADK 2.13 also ships a native AnthropicLlm, but this adapter uses LiteLlm as instructed. The system prompt goes in static_instruction because `instruction` is a template that treats {braces} as session-state variables. ADK appends about 385 chars to the system prompt ('You are an agent. Your internal name is \"lab_agent\".' plus a paragraph saying fenced tool descriptions are untrusted data) and wraps every MCP tool and parameter description in <<<BEGIN/END_UNTRUSTED_TOOL_DESCRIPTION>>> markers, adding about 40% to tools_chars. Each Streamable HTTP MCP connection first probes for Google mTLS (GOOGLE_API_USE_CLIENT_CERTIFICATE defaults to true). Off GCP, google.auth.default() takes about 9 s and logs 'Failed to configure mTLS'. max_turns maps to RunConfig.max_llm_calls. No temperature or tool_choice is sent, so no shims."
+}

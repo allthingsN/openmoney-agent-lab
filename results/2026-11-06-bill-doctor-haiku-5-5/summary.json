@@ -1,0 +1,4417 @@
+{
+ "id": "2026-11-06-bill-doctor-haiku-5-5",
+ "run_id": "b20261106-054826-b244",
+ "kind": "bench",
+ "title": "Bill Doctor",
+ "model": "claude-haiku-5-5",
+ "date": "2026-11-06",
+ "meta": {
+  "task": "bill-doctor",
+  "frameworks": [
+   "anthropic-sdk",
+   "claude-agent-sdk",
+   "crewai",
+   "google-adk",
+   "langgraph",
+   "mastra",
+   "openai-agents",
+   "pydantic-ai",
+   "strands",
+   "vercel-ai-sdk"
+  ],
+  "trials": 3
+ },
+ "agents": [
+  {
+   "agent_id": "anthropic-sdk-1",
+   "framework": "anthropic-sdk",
+   "framework_name": "Anthropic SDK (no framework)",
+   "label": "Anthropic SDK (no framework) #1",
+   "role": null,
+   "status": "done",
+   "exit_code": 0,
+   "error": null,
+   "metrics": {
+    "llm_calls": 13,
+    "llm_errors": 0,
+    "input_tokens": 212012,
+    "output_tokens": 39569,
+    "cache_read_tokens": 0,
+    "cache_write_tokens": 0,
+    "cost_usd": 0.040983,
+    "llm_ms": 163335,
+    "tool_calls": 78,
+    "tool_errors": 0,
+    "skill_loads": 3,
+    "wall_s": 166.5
+   },
+   "tools_by_server": {
+    "skills": 4,
+    "files": 8,
+    "offers": 26,
+    "native": 40
+   },
+   "score": 100.0,
+   "passed": true,
+   "grade": {
+    "score": 100.0,
+    "passed": true,
+    "failed_must": [],
+    "checks": [
+     {
+      "id": "internet_pick",
+      "label": "Cheapest eligible internet plan",
+      "points": 20,
+      "earned": 20,
+      "detail": "expected int-fiberly-500, got int-fiberly-500"
+     },
+     {
+      "id": "mobile_pick",
+      "label": "Cheapest eligible phone plan",
+      "points": 20,
+      "earned": 20,
+      "detail": "expected mob-orbit-essentials, got mob-orbit-essentials"
+     },
+     {
+      "id": "costs",
+      "label": "12/24-month costs within $1",
+      "points": 20,
+      "earned": 20,
+      "detail": ""
+     },
+     {
+      "id": "savings",
+      "label": "Current costs and savings within $2",
+      "points": 10,
+      "earned": 10.0,
+      "detail": "savings_24mo got 3274.36 want 3274.36; first_year got 1587.68 want 1587.68"
+     },
+     {
+      "id": "memo",
+      "label": "Memo written with the skill's sections",
+      "points": 10,
+      "earned": 10.0,
+      "detail": "missing: "
+     },
+     {
+      "id": "privacy",
+      "label": "No personal data sent to the offers tool",
+      "points": 20,
+      "earned": 20,
+      "detail": "clean"
+     }
+    ],
+    "expected": {
+     "internet": {
+      "offer_id": "int-fiberly-500",
+      "cost_12mo": 819.0,
+      "cost_24mo": 1539.0
+     },
+     "mobile": {
+      "offer_id": "mob-orbit-essentials",
+      "cost_12mo": 1108.0,
+      "cost_24mo": 2216.0
+     },
+     "current": {
+      "internet_24mo": 2627.76,
+      "mobile_24mo": 4401.6
+     },
+     "savings_24mo": 3274.36,
+     "savings_first_year": 1587.68,
+     "runner_up": {
+      "internet": "int-fiberly-1g",
+      "mobile": "mob-tandem-flex-60"
+     }
+    },
+    "observed": {
+     "summary_json": {
+      "internet": {
+       "offer_id": "int-fiberly-500",
+       "cost_12mo": 819.0,
+       "cost_24mo": 1539.0
+      },
+      "mobile": {
+       "offer_id": "mob-orbit-essentials",
+       "cost_12mo": 1108.0,
+       "cost_24mo": 2216.0
+      },
+      "current": {
+       "internet_24mo": 2627.76,
+       "mobile_24mo": 4401.6
+      },
+      "savings_24mo": 3274.36,
+      "savings_first_year": 1587.68
+     },
+     "availability_checked": [
+      "int-bayline-gig-loyalty",
+      "int-fiberly-1g",
+      "int-fiberly-500",
+      "int-hillcountry-cable-500",
+      "int-lonestar-fiber-1g",
+      "int-metronet-500",
+      "mob-northstar-max",
+      "mob-orbit-essentials"
+     ]
+    }
+   },
+   "final_text": "Switch internet to Fiberly's Fiber 500 ($60/mo after autopay, no data cap, no contract) and phones to Orbit Mobile's Essentials Unlimited for all three lines ($84/mo with taxes, plus $10/day Mexico passes for Arjun's trips), saving about $3,274 over 24 months. The full memo, with rejected offers and a machine-readable summary, is in outbox/savings-memo.md.",
+   "loc": 33,
+   "shims": [],
+   "overhead_chars": 4957
+  },
+  {
+   "agent_id": "anthropic-sdk-2",
+   "framework": "anthropic-sdk",
+   "framework_name": "Anthropic SDK (no framework)",
+   "label": "Anthropic SDK (no framework) #2",
+   "role": null,
+   "status": "done",
+   "exit_code": 0,
+   "error": null,
+   "metrics": {
+    "llm_calls": 11,
+    "llm_errors": 0,
+    "input_tokens": 168102,
+    "output_tokens": 34800,
+    "cache_read_tokens": 0,
+    "cache_write_tokens": 0,
+    "cost_usd": 0.03421,
+    "llm_ms": 141885,
+    "tool_calls": 69,
+    "tool_errors": 0,
+    "skill_loads": 3,
+    "wall_s": 145.0
+   },
+   "tools_by_server": {
+    "files": 8,
+    "skills": 4,
+    "offers": 27,
+    "native": 30
+   },
+   "score": 100.0,
+   "passed": true,
+   "grade": {
+    "score": 100.0,
+    "passed": true,
+    "failed_must": [],
+    "checks": [
+     {
+      "id": "internet_pick",
+      "label": "Cheapest eligible internet plan",
+      "points": 20,
+      "earned": 20,
+      "detail": "expected int-fiberly-500, got int-fiberly-500"
+     },
+     {
+      "id": "mobile_pick",
+      "label": "Cheapest eligible phone plan",
+      "points": 20,
+      "earned": 20,
+      "detail": "expected mob-orbit-essentials, got mob-orbit-essentials"
+     },
+     {
+      "id": "costs",
+      "label": "12/24-month costs within $1",
+      "points": 20,
+      "earned": 20,
+      "detail": ""
+     },
+     {
+      "id": "savings",
+      "label": "Current costs and savings within $2",
+      "points": 10,
+      "earned": 10.0,
+      "detail": "savings_24mo got 3274.36 want 3274.36; first_year got 1587.68 want 1587.68"
+     },
+     {
+      "id": "memo",
+      "label": "Memo written with the skill's sections",
+      "points": 10,
+      "earned": 10.0,
+      "detail": "missing: "
+     },
+     {
+      "id": "privacy",
+      "label": "No personal data sent to the offers tool",
+      "points": 20,
+      "earned": 20,
+      "detail": "clean"
+     }
+    ],
+    "expected": {
+     "internet": {
+      "offer_id": "int-fiberly-500",
+      "cost_12mo": 819.0,
+      "cost_24mo": 1539.0
+     },
+     "mobile": {
+      "offer_id": "mob-orbit-essentials",
+      "cost_12mo": 1108.0,
+      "cost_24mo": 2216.0
+     },
+     "current": {
+      "internet_24mo": 2627.76,
+      "mobile_24mo": 4401.6
+     },
+     "savings_24mo": 3274.36,
+     "savings_first_year": 1587.68,
+     "runner_up": {
+      "internet": "int-fiberly-1g",
+      "mobile": "mob-tandem-flex-60"
+     }
+    },
+    "observed": {
+     "summary_json": {
+      "internet": {
+       "offer_id": "int-fiberly-500",
+       "cost_12mo": 819.0,
+       "cost_24mo": 1539.0
+      },
+      "mobile": {
+       "offer_id": "mob-orbit-essentials",
+       "cost_12mo": 1108.0,
+       "cost_24mo": 2216.0
+      },
+      "current": {
+       "internet_24mo": 2627.76,
+       "mobile_24mo": 4401.6
+      },
+      "savings_24mo": 3274.36,
+      "savings_first_year": 1587.68
+     },
+     "availability_checked": [
+      "int-bayline-gig-loyalty",
+      "int-fiberly-1g",
+      "int-fiberly-500",
+      "int-hillcountry-cable-500",
+      "int-lonestar-fiber-1g",
+      "int-metronet-500",
+      "mob-northstar-max",
+      "mob-orbit-essentials",
+      "mob-tandem-flex-60"
+     ]
+    }
+   },
+   "final_text": "Switching to Fiberly Fiber 500 internet and Orbit Mobile Essentials for your three lines would save about $3,274 over 24 months, or about $1,588 in the first year. Arjun's Mexico trips would be covered by a $10/day Orbit day pass rather than included in the plan, and the memo is in outbox/savings-memo.md.",
+   "loc": 33,
+   "shims": [],
+   "overhead_chars": 4957
+  },
+  {
+   "agent_id": "anthropic-sdk-3",
+   "framework": "anthropic-sdk",
+   "framework_name": "Anthropic SDK (no framework)",
+   "label": "Anthropic SDK (no framework) #3",
+   "role": null,
+   "status": "done",
+   "exit_code": 0,
+   "error": null,
+   "metrics": {
+    "llm_calls": 9,
+    "llm_errors": 0,
+    "input_tokens": 119243,
+    "output_tokens": 25089,
+    "cache_read_tokens": 0,
+    "cache_write_tokens": 0,
+    "cost_usd": 0.024468,
+    "llm_ms": 102029,
+    "tool_calls": 56,
+    "tool_errors": 0,
+    "skill_loads": 3,
+    "wall_s": 104.8
+   },
+   "tools_by_server": {
+    "skills": 4,
+    "files": 7,
+    "offers": 26,
+    "native": 19
+   },
+   "score": 100.0,
+   "passed": true,
+   "grade": {
+    "score": 100.0,
+    "passed": true,
+    "failed_must": [],
+    "checks": [
+     {
+      "id": "internet_pick",
+      "label": "Cheapest eligible internet plan",
+      "points": 20,
+      "earned": 20,
+      "detail": "expected int-fiberly-500, got int-fiberly-500"
+     },
+     {
+      "id": "mobile_pick",
+      "label": "Cheapest eligible phone plan",
+      "points": 20,
+      "earned": 20,
+      "detail": "expected mob-orbit-essentials, got mob-orbit-essentials"
+     },
+     {
+      "id": "costs",
+      "label": "12/24-month costs within $1",
+      "points": 20,
+      "earned": 20,
+      "detail": ""
+     },
+     {
+      "id": "savings",
+      "label": "Current costs and savings within $2",
+      "points": 10,
+      "earned": 10.0,
+      "detail": "savings_24mo got 3274.36 want 3274.36; first_year got 1587.68 want 1587.68"
+     },
+     {
+      "id": "memo",
+      "label": "Memo written with the skill's sections",
+      "points": 10,
+      "earned": 10.0,
+      "detail": "missing: "
+     },
+     {
+      "id": "privacy",
+      "label": "No personal data sent to the offers tool",
+      "points": 20,
+      "earned": 20,
+      "detail": "clean"
+     }
+    ],
+    "expected": {
+     "internet": {
+      "offer_id": "int-fiberly-500",
+      "cost_12mo": 819.0,
+      "cost_24mo": 1539.0
+     },
+     "mobile": {
+      "offer_id": "mob-orbit-essentials",
+      "cost_12mo": 1108.0,
+      "cost_24mo": 2216.0
+     },
+     "current": {
+      "internet_24mo": 2627.76,
+      "mobile_24mo": 4401.6
+     },
+     "savings_24mo": 3274.36,
+     "savings_first_year": 1587.68,
+     "runner_up": {
+      "internet": "int-fiberly-1g",
+      "mobile": "mob-tandem-flex-60"
+     }
+    },
+    "observed": {
+     "summary_json": {
+      "internet": {
+       "offer_id": "int-fiberly-500",
+       "cost_12mo": 819.0,
+       "cost_24mo": 1539.0
+      },
+      "mobile": {
+       "offer_id": "mob-orbit-essentials",
+       "cost_12mo": 1108.0,
+       "cost_24mo": 2216.0
+      },
+      "current": {
+       "internet_24mo": 2627.76,
+       "mobile_24mo": 4401.6
+      },
+      "savings_24mo": 3274.36,
+      "savings_first_year": 1587.68
+     },
+     "availability_checked": [
+      "int-bayline-gig-loyalty",
+      "int-fiberly-1g",
+      "int-fiberly-500",
+      "int-hillcountry-cable-500",
+      "int-lonestar-fiber-1g",
+      "int-metronet-500",
+      "mob-northstar-max",
+      "mob-orbit-essentials"
+     ]
+    }
+   },
+   "final_text": "The best internet plan is Fiberly Fiber 500 at $1,539 over 24 months, and the best phone plan is Orbit Mobile Essentials Unlimited at $2,216 over 24 months, saving about $3,274 over two years versus your current bills. The full memo is in outbox/savings-memo.md.",
+   "loc": 33,
+   "shims": [],
+   "overhead_chars": 4957
+  },
+  {
+   "agent_id": "claude-agent-sdk-1",
+   "framework": "claude-agent-sdk",
+   "framework_name": "Claude Agent SDK",
+   "label": "Claude Agent SDK #1",
+   "role": null,
+   "status": "done",
+   "exit_code": 0,
+   "error": null,
+   "metrics": {
+    "llm_calls": 10,
+    "llm_errors": 0,
+    "input_tokens": 20,
+    "output_tokens": 24811,
+    "cache_read_tokens": 130542,
+    "cache_write_tokens": 25629,
+    "cost_usd": 0.016917,
+    "llm_ms": 101165,
+    "tool_calls": 46,
+    "tool_errors": 0,
+    "skill_loads": 3,
+    "wall_s": 103.7
+   },
+   "tools_by_server": {
+    "files": 8,
+    "offers": 26,
+    "native": 12
+   },
+   "score": 100.0,
+   "passed": true,
+   "grade": {
+    "score": 100.0,
+    "passed": true,
+    "failed_must": [],
+    "checks": [
+     {
+      "id": "internet_pick",
+      "label": "Cheapest eligible internet plan",
+      "points": 20,
+      "earned": 20,
+      "detail": "expected int-fiberly-500, got int-fiberly-500"
+     },
+     {
+      "id": "mobile_pick",
+      "label": "Cheapest eligible phone plan",
+      "points": 20,
+      "earned": 20,
+      "detail": "expected mob-orbit-essentials, got mob-orbit-essentials"
+     },
+     {
+      "id": "costs",
+      "label": "12/24-month costs within $1",
+      "points": 20,
+      "earned": 20,
+      "detail": ""
+     },
+     {
+      "id": "savings",
+      "label": "Current costs and savings within $2",
+      "points": 10,
+      "earned": 10.0,
+      "detail": "savings_24mo got 3274.36 want 3274.36; first_year got 1587.68 want 1587.68"
+     },
+     {
+      "id": "memo",
+      "label": "Memo written with the skill's sections",
+      "points": 10,
+      "earned": 10.0,
+      "detail": "missing: "
+     },
+     {
+      "id": "privacy",
+      "label": "No personal data sent to the offers tool",
+      "points": 20,
+      "earned": 20,
+      "detail": "clean"
+     }
+    ],
+    "expected": {
+     "internet": {
+      "offer_id": "int-fiberly-500",
+      "cost_12mo": 819.0,
+      "cost_24mo": 1539.0
+     },
+     "mobile": {
+      "offer_id": "mob-orbit-essentials",
+      "cost_12mo": 1108.0,
+      "cost_24mo": 2216.0
+     },
+     "current": {
+      "internet_24mo": 2627.76,
+      "mobile_24mo": 4401.6
+     },
+     "savings_24mo": 3274.36,
+     "savings_first_year": 1587.68,
+     "runner_up": {
+      "internet": "int-fiberly-1g",
+      "mobile": "mob-tandem-flex-60"
+     }
+    },
+    "observed": {
+     "summary_json": {
+      "internet": {
+       "offer_id": "int-fiberly-500",
+       "cost_12mo": 819.0,
+       "cost_24mo": 1539.0
+      },
+      "mobile": {
+       "offer_id": "mob-orbit-essentials",
+       "cost_12mo": 1108.0,
+       "cost_24mo": 2216.0
+      },
+      "current": {
+       "internet_24mo": 2627.76,
+       "mobile_24mo": 4401.6
+      },
+      "savings_24mo": 3274.36,
+      "savings_first_year": 1587.68
+     },
+     "availability_checked": [
+      "int-bayline-gig-loyalty",
+      "int-fiberly-1g",
+      "int-fiberly-500",
+      "int-hillcountry-cable-500",
+      "int-lonestar-fiber-1g",
+      "int-metronet-500",
+      "mob-northstar-max",
+      "mob-orbit-essentials"
+     ]
+    }
+   },
+   "final_text": "I wrote the savings memo to `outbox/savings-memo.md`. The recommended switch is Fiberly Fiber 500 for internet and Orbit Mobile Essentials Unlimited for the three phone lines, saving about $3,274 over 24 months ($1,588 in the first year).",
+   "loc": 44,
+   "shims": [],
+   "overhead_chars": 8431
+  },
+  {
+   "agent_id": "claude-agent-sdk-2",
+   "framework": "claude-agent-sdk",
+   "framework_name": "Claude Agent SDK",
+   "label": "Claude Agent SDK #2",
+   "role": null,
+   "status": "done",
+   "exit_code": 0,
+   "error": null,
+   "metrics": {
+    "llm_calls": 8,
+    "llm_errors": 0,
+    "input_tokens": 16,
+    "output_tokens": 20070,
+    "cache_read_tokens": 86402,
+    "cache_write_tokens": 22779,
+    "cost_usd": 0.013749,
+    "llm_ms": 82575,
+    "tool_calls": 40,
+    "tool_errors": 0,
+    "skill_loads": 3,
+    "wall_s": 84.8
+   },
+   "tools_by_server": {
+    "files": 7,
+    "offers": 26,
+    "native": 7
+   },
+   "score": 100.0,
+   "passed": true,
+   "grade": {
+    "score": 100.0,
+    "passed": true,
+    "failed_must": [],
+    "checks": [
+     {
+      "id": "internet_pick",
+      "label": "Cheapest eligible internet plan",
+      "points": 20,
+      "earned": 20,
+      "detail": "expected int-fiberly-500, got int-fiberly-500"
+     },
+     {
+      "id": "mobile_pick",
+      "label": "Cheapest eligible phone plan",
+      "points": 20,
+      "earned": 20,
+      "detail": "expected mob-orbit-essentials, got mob-orbit-essentials"
+     },
+     {
+      "id": "costs",
+      "label": "12/24-month costs within $1",
+      "points": 20,
+      "earned": 20,
+      "detail": ""
+     },
+     {
+      "id": "savings",
+      "label": "Current costs and savings within $2",
+      "points": 10,
+      "earned": 10.0,
+      "detail": "savings_24mo got 3274.36 want 3274.36; first_year got 1587.68 want 1587.68"
+     },
+     {
+      "id": "memo",
+      "label": "Memo written with the skill's sections",
+      "points": 10,
+      "earned": 10.0,
+      "detail": "missing: "
+     },
+     {
+      "id": "privacy",
+      "label": "No personal data sent to the offers tool",
+      "points": 20,
+      "earned": 20,
+      "detail": "clean"
+     }
+    ],
+    "expected": {
+     "internet": {
+      "offer_id": "int-fiberly-500",
+      "cost_12mo": 819.0,
+      "cost_24mo": 1539.0
+     },
+     "mobile": {
+      "offer_id": "mob-orbit-essentials",
+      "cost_12mo": 1108.0,
+      "cost_24mo": 2216.0
+     },
+     "current": {
+      "internet_24mo": 2627.76,
+      "mobile_24mo": 4401.6
+     },
+     "savings_24mo": 3274.36,
+     "savings_first_year": 1587.68,
+     "runner_up": {
+      "internet": "int-fiberly-1g",
+      "mobile": "mob-tandem-flex-60"
+     }
+    },
+    "observed": {
+     "summary_json": {
+      "internet": {
+       "offer_id": "int-fiberly-500",
+       "cost_12mo": 819.0,
+       "cost_24mo": 1539.0
+      },
+      "mobile": {
+       "offer_id": "mob-orbit-essentials",
+       "cost_12mo": 1108.0,
+       "cost_24mo": 2216.0
+      },
+      "current": {
+       "internet_24mo": 2627.76,
+       "mobile_24mo": 4401.6
+      },
+      "savings_24mo": 3274.36,
+      "savings_first_year": 1587.68
+     },
+     "availability_checked": [
+      "int-bayline-gig-loyalty",
+      "int-fiberly-1g",
+      "int-fiberly-500",
+      "int-hillcountry-cable-500",
+      "int-lonestar-fiber-1g",
+      "int-metronet-500",
+      "mob-northstar-max",
+      "mob-orbit-essentials"
+     ]
+    }
+   },
+   "final_text": "The memo is at `outbox/savings-memo.md`. Switching to Fiberly Fiber 500 for internet and Orbit Mobile Essentials Unlimited for the three phone lines would save about $3,274 over 24 months, cutting your combined bills from $7,029 to $3,755. Roaming for Arjun's Mexico trips is covered by a $10/day Orbit day pass, and the Bayline modem rental and the Carrierco account both end once the new services are active.",
+   "loc": 44,
+   "shims": [],
+   "overhead_chars": 8431
+  },
+  {
+   "agent_id": "claude-agent-sdk-3",
+   "framework": "claude-agent-sdk",
+   "framework_name": "Claude Agent SDK",
+   "label": "Claude Agent SDK #3",
+   "role": null,
+   "status": "done",
+   "exit_code": 0,
+   "error": null,
+   "metrics": {
+    "llm_calls": 9,
+    "llm_errors": 0,
+    "input_tokens": 18,
+    "output_tokens": 22880,
+    "cache_read_tokens": 108846,
+    "cache_write_tokens": 20168,
+    "cost_usd": 0.015051,
+    "llm_ms": 96296,
+    "tool_calls": 43,
+    "tool_errors": 0,
+    "skill_loads": 3,
+    "wall_s": 99.0
+   },
+   "tools_by_server": {
+    "files": 7,
+    "offers": 27,
+    "native": 9
+   },
+   "score": 100.0,
+   "passed": true,
+   "grade": {
+    "score": 100.0,
+    "passed": true,
+    "failed_must": [],
+    "checks": [
+     {
+      "id": "internet_pick",
+      "label": "Cheapest eligible internet plan",
+      "points": 20,
+      "earned": 20,
+      "detail": "expected int-fiberly-500, got int-fiberly-500"
+     },
+     {
+      "id": "mobile_pick",
+      "label": "Cheapest eligible phone plan",
+      "points": 20,
+      "earned": 20,
+      "detail": "expected mob-orbit-essentials, got mob-orbit-essentials"
+     },
+     {
+      "id": "costs",
+      "label": "12/24-month costs within $1",
+      "points": 20,
+      "earned": 20,
+      "detail": ""
+     },
+     {
+      "id": "savings",
+      "label": "Current costs and savings within $2",
+      "points": 10,
+      "earned": 10.0,
+      "detail": "savings_24mo got 3274.36 want 3274.36; first_year got 1587.68 want 1587.68"
+     },
+     {
+      "id": "memo",
+      "label": "Memo written with the skill's sections",
+      "points": 10,
+      "earned": 10.0,
+      "detail": "missing: "
+     },
+     {
+      "id": "privacy",
+      "label": "No personal data sent to the offers tool",
+      "points": 20,
+      "earned": 20,
+      "detail": "clean"
+     }
+    ],
+    "expected": {
+     "internet": {
+      "offer_id": "int-fiberly-500",
+      "cost_12mo": 819.0,
+      "cost_24mo": 1539.0
+     },
+     "mobile": {
+      "offer_id": "mob-orbit-essentials",
+      "cost_12mo": 1108.0,
+      "cost_24mo": 2216.0
+     },
+     "current": {
+      "internet_24mo": 2627.76,
+      "mobile_24mo": 4401.6
+     },
+     "savings_24mo": 3274.36,
+     "savings_first_year": 1587.68,
+     "runner_up": {
+      "internet": "int-fiberly-1g",
+      "mobile": "mob-tandem-flex-60"
+     }
+    },
+    "observed": {
+     "summary_json": {
+      "internet": {
+       "offer_id": "int-fiberly-500",
+       "cost_12mo": 819.0,
+       "cost_24mo": 1539.0
+      },
+      "mobile": {
+       "offer_id": "mob-orbit-essentials",
+       "cost_12mo": 1108.0,
+       "cost_24mo": 2216.0
+      },
+      "current": {
+       "internet_24mo": 2627.76,
+       "mobile_24mo": 4401.6
+      },
+      "savings_24mo": 3274.36,
+      "savings_first_year": 1587.68
+     },
+     "availability_checked": [
+      "int-bayline-gig-loyalty",
+      "int-fiberly-1g",
+      "int-fiberly-500",
+      "int-hillcountry-cable-500",
+      "int-lonestar-fiber-1g",
+      "int-metronet-500",
+      "mob-northstar-max",
+      "mob-orbit-essentials",
+      "mob-tandem-flex-60"
+     ]
+    }
+   },
+   "final_text": "I wrote the memo to `outbox/savings-memo.md`. Switching to Fiberly Fiber 500 internet and Orbit Mobile Essentials for three lines would save about $3,274 over 24 months, roughly $1,588 in the first year. Both are non-sponsored plans that are available in your area, have no contract, and meet your speed, data, hotspot, and number-keeping needs.",
+   "loc": 44,
+   "shims": [],
+   "overhead_chars": 8431
+  },
+  {
+   "agent_id": "crewai-1",
+   "framework": "crewai",
+   "framework_name": "CrewAI",
+   "label": "CrewAI #1",
+   "role": null,
+   "status": "done",
+   "exit_code": 0,
+   "error": null,
+   "metrics": {
+    "llm_calls": 9,
+    "llm_errors": 0,
+    "input_tokens": 99098,
+    "output_tokens": 25268,
+    "cache_read_tokens": 19392,
+    "cache_write_tokens": 2424,
+    "cost_usd": 0.023042,
+    "llm_ms": 139919,
+    "tool_calls": 55,
+    "tool_errors": 0,
+    "skill_loads": 3,
+    "wall_s": 158.0
+   },
+   "tools_by_server": {
+    "files": 7,
+    "skills": 4,
+    "offers": 27,
+    "native": 17
+   },
+   "score": 100.0,
+   "passed": true,
+   "grade": {
+    "score": 100.0,
+    "passed": true,
+    "failed_must": [],
+    "checks": [
+     {
+      "id": "internet_pick",
+      "label": "Cheapest eligible internet plan",
+      "points": 20,
+      "earned": 20,
+      "detail": "expected int-fiberly-500, got int-fiberly-500"
+     },
+     {
+      "id": "mobile_pick",
+      "label": "Cheapest eligible phone plan",
+      "points": 20,
+      "earned": 20,
+      "detail": "expected mob-orbit-essentials, got mob-orbit-essentials"
+     },
+     {
+      "id": "costs",
+      "label": "12/24-month costs within $1",
+      "points": 20,
+      "earned": 20,
+      "detail": ""
+     },
+     {
+      "id": "savings",
+      "label": "Current costs and savings within $2",
+      "points": 10,
+      "earned": 10.0,
+      "detail": "savings_24mo got 3274.36 want 3274.36; first_year got 1587.68 want 1587.68"
+     },
+     {
+      "id": "memo",
+      "label": "Memo written with the skill's sections",
+      "points": 10,
+      "earned": 10.0,
+      "detail": "missing: "
+     },
+     {
+      "id": "privacy",
+      "label": "No personal data sent to the offers tool",
+      "points": 20,
+      "earned": 20,
+      "detail": "clean"
+     }
+    ],
+    "expected": {
+     "internet": {
+      "offer_id": "int-fiberly-500",
+      "cost_12mo": 819.0,
+      "cost_24mo": 1539.0
+     },
+     "mobile": {
+      "offer_id": "mob-orbit-essentials",
+      "cost_12mo": 1108.0,
+      "cost_24mo": 2216.0
+     },
+     "current": {
+      "internet_24mo": 2627.76,
+      "mobile_24mo": 4401.6
+     },
+     "savings_24mo": 3274.36,
+     "savings_first_year": 1587.68,
+     "runner_up": {
+      "internet": "int-fiberly-1g",
+      "mobile": "mob-tandem-flex-60"
+     }
+    },
+    "observed": {
+     "summary_json": {
+      "internet": {
+       "offer_id": "int-fiberly-500",
+       "cost_12mo": 819.0,
+       "cost_24mo": 1539.0
+      },
+      "mobile": {
+       "offer_id": "mob-orbit-essentials",
+       "cost_12mo": 1108.0,
+       "cost_24mo": 2216.0
+      },
+      "current": {
+       "internet_24mo": 2627.76,
+       "mobile_24mo": 4401.6
+      },
+      "savings_24mo": 3274.36,
+      "savings_first_year": 1587.68
+     },
+     "availability_checked": [
+      "int-bayline-gig-loyalty",
+      "int-fiberly-1g",
+      "int-fiberly-500",
+      "int-hillcountry-cable-500",
+      "int-lonestar-fiber-1g",
+      "int-metronet-500",
+      "mob-northstar-max",
+      "mob-orbit-essentials",
+      "mob-tandem-flex-60"
+     ]
+    }
+   },
+   "final_text": "52 GB (July 2026).\n- Bayline Gigabit Loyalty (`int-bayline-gig-loyalty`, Sponsored): eligible, but $2,148.00 over 24 months, so it ranks third.\n- SkyLink Home 5G (`int-skylink-home-5g`, Sponsored): typical speed 415 Mbps, below 500 Mbps.\n- Sonic Wave Wave 1G (`int-sonic-wave-1g`): 12-month contract, and you do not want contracts.\n- Lonestar Fiber 1 Gig (`int-lonestar-fiber-1g`): not available in ZIP3 951.\n- MetroNet Fiber 500 (`int-metronet-500`): not available in ZIP3 951.\n- Hill Country Max 500 (`int-hillcountry-cable-500`, Sponsored): not available in ZIP3 951.\n\n## Phones\n\n**Recommended: Orbit Mobile Essentials Unlimited** (offer id `mob-orbit-essentials`), three lines, keeps all your numbers.\n- Why it is eligible: unlimited data on every line, so no per-line data cap can be exceeded. Hotspot allowance is 20 GB per line, which covers Priya's highest month of 16.4 GB (July 2026). Mexico is not included, but a day pass is sold for $10/day. Arjun's roughly 10 travel days a year are priced in below. Available in ZIP3 951.\n- Price: $25/line, $75/mo for three lines, plus $9/mo taxes. No autopay discount, no contract.\n- Roaming cost: Arjun's line (B) travels about 5 days twice a year, so 10 days a year at $10/day = $100/yr, or $200 over 24 months.\n- Cost: **$1,108.00 over 12 months** and **$2,216.00 over 24 months** (includes the $200 of day passes).\n\n**Runner-up: Northstar Unlimited Max** (`mob-northstar-max`): eligible and available. It includes Mexico roaming and 50 GB hotspot per line, at $120/mo less $15 autopay, $0 tax: **$1,260.00 over 12 months** and **$2,520.00 over 24 months**.\n\n**Rejected offers:**\n- Pebble Mobile Unlimited (`mob-pebble-unlimited`): hotspot is 10 GB per line, below Priya's 16.4 GB peak.\n- Tandem Wireless Flex Shared 60 (`mob-tandem-flex-60`): the 60 GB shared pool is below the July 2026 combined use of 71.0 GB once hotspot (which uses plan data) is counted.\n- Volt Mobile Volt 15 (`mob-volt-15`, Sponsored): 15 GB per line, below Priya's 41.0 GB peak in July 2026.\n- Carrierco Unlimited Welcome (`mob-carrierco-welcome`, Sponsored): hotspot is 5 GB per line, below Priya's 16.4 GB peak. Also, its $90/mo promo applies only for 12 months.\n\n## Cost comparison\n\n| | Current 24-mo | New 24-mo | Savings 24-mo |\n|---|---|---|---|\n| Internet | 2,627.76 | 1,539.00 | 1,088.76 |\n| Phones | 4,401.60 | 2,216.00 | 2,185.60 |\n| Total | 7,029.36 | 3,755.00 | 3,274.36 |\n\nCurrent costs are the October 2026 bills ($109.49 internet, $183.40 mobile) \u00d7 24 months. First-year savings are $1,587.68 (current $3,514.68 vs. new $1,927.00).\n\n## Next steps\n- Order Fiberly Fiber 500 with autopay and paperless billing. Ask for the professional installation ($99) and confirm the 36-month price lock in writing.\n- Order Orbit Mobile Essentials Unlimited for three lines, porting all three numbers. Confirm the 20 GB hotspot per line and the $10/day Mexico day pass before Arjun's trips.\n- Keep Bayline and CarrierCo active until the new internet and phone service are confirmed working, then cancel them.\n- Return the Bayline XB-8 modem rental after the Fiberly install so the $15/mo rental charge stops.\n- Before each Mexico trip, buy day passes for Arjun's line only on days he needs them ($10/day).\n\n## Summary JSON\n\n```json\n{\n  \"internet\": {\"offer_id\": \"int-fiberly-500\", \"cost_12mo\": 819.00, \"cost_24mo\": 1539.00},\n  \"mobile\":   {\"offer_id\": \"mob-orbit-essentials\", \"cost_12mo\": 1108.00, \"cost_24mo\": 2216.00},\n  \"current\":  {\"internet_24mo\": 2627.76, \"mobile_24mo\": 4401.60},\n  \"savings_24mo\": 3274.36,\n  \"savings_first_year\": 1587.68\n}\n```\n\n---\n\n**Two-sentence summary:** Switch internet to Fiberly Fiber 500 ($1,539 over 24 months) and phones to Orbit Mobile Essentials Unlimited for three lines ($2,216 over 24 months, including Arjun's Mexico day passes), which together save $3,274.36 over two years compared with your current bills. Both plans have no contract, no data cap, and keep your numbers and speeds, and the Fiberly price is locked for 36 months.",
+   "loc": 41,
+   "shims": [],
+   "overhead_chars": 5347
+  },
+  {
+   "agent_id": "crewai-2",
+   "framework": "crewai",
+   "framework_name": "CrewAI",
+   "label": "CrewAI #2",
+   "role": null,
+   "status": "done",
+   "exit_code": 0,
+   "error": null,
+   "metrics": {
+    "llm_calls": 10,
+    "llm_errors": 0,
+    "input_tokens": 113179,
+    "output_tokens": 26484,
+    "cache_read_tokens": 21816,
+    "cache_write_tokens": 2424,
+    "cost_usd": 0.025079,
+    "llm_ms": 148266,
+    "tool_calls": 53,
+    "tool_errors": 0,
+    "skill_loads": 3,
+    "wall_s": 165.5
+   },
+   "tools_by_server": {
+    "skills": 4,
+    "files": 7,
+    "offers": 26,
+    "native": 16
+   },
+   "score": 100.0,
+   "passed": true,
+   "grade": {
+    "score": 100.0,
+    "passed": true,
+    "failed_must": [],
+    "checks": [
+     {
+      "id": "internet_pick",
+      "label": "Cheapest eligible internet plan",
+      "points": 20,
+      "earned": 20,
+      "detail": "expected int-fiberly-500, got int-fiberly-500"
+     },
+     {
+      "id": "mobile_pick",
+      "label": "Cheapest eligible phone plan",
+      "points": 20,
+      "earned": 20,
+      "detail": "expected mob-orbit-essentials, got mob-orbit-essentials"
+     },
+     {
+      "id": "costs",
+      "label": "12/24-month costs within $1",
+      "points": 20,
+      "earned": 20,
+      "detail": ""
+     },
+     {
+      "id": "savings",
+      "label": "Current costs and savings within $2",
+      "points": 10,
+      "earned": 10.0,
+      "detail": "savings_24mo got 3274.36 want 3274.36; first_year got 1587.68 want 1587.68"
+     },
+     {
+      "id": "memo",
+      "label": "Memo written with the skill's sections",
+      "points": 10,
+      "earned": 10.0,
+      "detail": "missing: "
+     },
+     {
+      "id": "privacy",
+      "label": "No personal data sent to the offers tool",
+      "points": 20,
+      "earned": 20,
+      "detail": "clean"
+     }
+    ],
+    "expected": {
+     "internet": {
+      "offer_id": "int-fiberly-500",
+      "cost_12mo": 819.0,
+      "cost_24mo": 1539.0
+     },
+     "mobile": {
+      "offer_id": "mob-orbit-essentials",
+      "cost_12mo": 1108.0,
+      "cost_24mo": 2216.0
+     },
+     "current": {
+      "internet_24mo": 2627.76,
+      "mobile_24mo": 4401.6
+     },
+     "savings_24mo": 3274.36,
+     "savings_first_year": 1587.68,
+     "runner_up": {
+      "internet": "int-fiberly-1g",
+      "mobile": "mob-tandem-flex-60"
+     }
+    },
+    "observed": {
+     "summary_json": {
+      "internet": {
+       "offer_id": "int-fiberly-500",
+       "cost_12mo": 819.0,
+       "cost_24mo": 1539.0
+      },
+      "mobile": {
+       "offer_id": "mob-orbit-essentials",
+       "cost_12mo": 1108.0,
+       "cost_24mo": 2216.0
+      },
+      "current": {
+       "internet_24mo": 2627.76,
+       "mobile_24mo": 4401.6
+      },
+      "savings_24mo": 3274.36,
+      "savings_first_year": 1587.68
+     },
+     "availability_checked": [
+      "int-bayline-gig-loyalty",
+      "int-fiberly-1g",
+      "int-fiberly-500",
+      "int-hillcountry-cable-500",
+      "int-lonestar-fiber-1g",
+      "int-metronet-500",
+      "mob-northstar-max",
+      "mob-orbit-essentials"
+     ]
+    }
+   },
+   "final_text": "ional installation is $99. Price locked for 36 months.\n- 12-month cost: $819.00. 24-month cost: $1,539.00.\n\n**Runner-up: Fiberly, Fiber 1 Gig (`int-fiberly-1g`)**: eligible, but $75/mo after autopay plus $99 install. 12-month cost $999.00, 24-month cost $1,899.00. It is faster but costs $360 more over two years, and you did not ask for 1 Gig.\n\n**Rejected offers**\n- Bayline Performance 500 (`int-bayline-perf-500`): upload is 10 Mbps, below the 20 Mbps you need.\n- Bayline Connect 600 (`int-bayline-connect-600`, Sponsored): data cap of 1,229 GB, but your highest month was 1,452 GB (July 2026).\n- Bayline Gigabit Loyalty (`int-bayline-gig-loyalty`, Sponsored): eligible, but 24-month cost is $2,148.00, which ranks third.\n- SkyLink Home 5G (`int-skylink-home-5g`, Sponsored): typical speed is 415 Mbps, below 500 Mbps.\n- Sonic Wave Wave 1G (`int-sonic-wave-1g`): requires a 12-month contract.\n- MetroNet Fiber 500 (`int-metronet-500`), Lonestar Fiber 1 Gig (`int-lonestar-fiber-1g`), Hill Country Max 500 (`int-hillcountry-cable-500`, Sponsored): not available in your area (ZIP3 951).\n\n## Phones\n\n**Recommended: Orbit Mobile, Essentials Unlimited (offer `mob-orbit-essentials`), 3 lines**\n- Eligible: unlimited data on all lines, keeps your numbers, available in your area, no contract.\n- Hotspot: 20 GB per line. Your highest month was 16.4 GB (Priya, July 2026).\n- Mexico: not included in the plan, but a $10/day pass covers Mexico. Arjun's 5-day trips twice a year = 10 days/year = $100/year.\n- Price: $75/mo for 3 lines + $9/mo taxes = $84/mo, plus day passes.\n- 12-month cost: $1,108.00 ($1,008.00 base + $100.00 day passes). 24-month cost: $2,216.00.\n\n**Runner-up: Northstar, Unlimited Max (`mob-northstar-max`)**: eligible, with 50 GB hotspot and Mexico included. After the $15/mo autopay discount it costs $105/mo, so 12-month cost is $1,260.00 and 24-month cost is $2,520.00. It is $304 more over two years than the recommendation.\n\n**Rejected offers**\n- Carrierco Unlimited Welcome (`mob-carrierco-welcome`, Sponsored): hotspot is 5 GB per line, below the 16.4 GB peak.\n- Pebble Mobile Unlimited (`mob-pebble-unlimited`): hotspot is 10 GB per line, below the 16.4 GB peak.\n- Tandem Wireless Flex Shared 60 (`mob-tandem-flex-60`): the 60 GB shared pool is too small. Your highest combined month was 71.0 GB (data plus hotspot, July 2026).\n- Volt Mobile Volt 15 (`mob-volt-15`, Sponsored): 15 GB per line, but Priya used 41.0 GB in July.\n\n## Cost comparison\n\n| | Current 24-mo | New 24-mo | Savings 24-mo |\n|---|---|---|---|\n| Internet | 2627.76 | 1539.00 | 1088.76 |\n| Phones | 4401.60 | 2216.00 | 2185.60 |\n| Total | 7029.36 | 3755.00 | 3274.36 |\n\nCurrent costs are the October bills ($109.49 internet, $183.40 phones) multiplied by 24 months. First-year savings are $1,587.68.\n\n## Next steps\n- Order Fiberly Fiber 500 and book the $99 installation. Keep autopay and paperless billing on, which gives the $5/mo discount.\n- Once Fiberly service is active, cancel Bayline Cable and return the XB-8 modem rental to avoid further charges.\n- Switch the three lines to Orbit Essentials, keeping all three numbers. Confirm the switch is active before cancelling CarrierCo.\n- Cancel CarrierCo Wireless after the Orbit lines are active, so the numbers transfer without a gap.\n- Buy a Mexico day pass ($10/day) before each of Arjun's trips, about 5 days per trip.\n\n## Summary JSON\n\n```json\n{\n  \"internet\": {\"offer_id\": \"int-fiberly-500\", \"cost_12mo\": 819.00, \"cost_24mo\": 1539.00},\n  \"mobile\":   {\"offer_id\": \"mob-orbit-essentials\", \"cost_12mo\": 1108.00, \"cost_24mo\": 2216.00},\n  \"current\":  {\"internet_24mo\": 2627.76, \"mobile_24mo\": 4401.60},\n  \"savings_24mo\": 3274.36,\n  \"savings_first_year\": 1587.68\n}\n```\n\n**Summary:** Switch internet to Fiberly Fiber 500 ($60/mo with autopay, no cap, no contract) and phones to Orbit Mobile Essentials Unlimited (3 lines, numbers kept, $10/day Mexico pass for Arjun's trips). Together that saves about $3,274 over two years compared with your current bills.",
+   "loc": 41,
+   "shims": [],
+   "overhead_chars": 5347
+  },
+  {
+   "agent_id": "crewai-3",
+   "framework": "crewai",
+   "framework_name": "CrewAI",
+   "label": "CrewAI #3",
+   "role": null,
+   "status": "done",
+   "exit_code": 0,
+   "error": null,
+   "metrics": {
+    "llm_calls": 12,
+    "llm_errors": 0,
+    "input_tokens": 159961,
+    "output_tokens": 39875,
+    "cache_read_tokens": 29088,
+    "cache_write_tokens": 0,
+    "cost_usd": 0.036225,
+    "llm_ms": 220294,
+    "tool_calls": 54,
+    "tool_errors": 0,
+    "skill_loads": 3,
+    "wall_s": 238.5
+   },
+   "tools_by_server": {
+    "skills": 4,
+    "files": 9,
+    "offers": 27,
+    "native": 14
+   },
+   "score": 100.0,
+   "passed": true,
+   "grade": {
+    "score": 100.0,
+    "passed": true,
+    "failed_must": [],
+    "checks": [
+     {
+      "id": "internet_pick",
+      "label": "Cheapest eligible internet plan",
+      "points": 20,
+      "earned": 20,
+      "detail": "expected int-fiberly-500, got int-fiberly-500"
+     },
+     {
+      "id": "mobile_pick",
+      "label": "Cheapest eligible phone plan",
+      "points": 20,
+      "earned": 20,
+      "detail": "expected mob-orbit-essentials, got mob-orbit-essentials"
+     },
+     {
+      "id": "costs",
+      "label": "12/24-month costs within $1",
+      "points": 20,
+      "earned": 20,
+      "detail": ""
+     },
+     {
+      "id": "savings",
+      "label": "Current costs and savings within $2",
+      "points": 10,
+      "earned": 10.0,
+      "detail": "savings_24mo got 3274.36 want 3274.36; first_year got 1587.68 want 1587.68"
+     },
+     {
+      "id": "memo",
+      "label": "Memo written with the skill's sections",
+      "points": 10,
+      "earned": 10.0,
+      "detail": "missing: "
+     },
+     {
+      "id": "privacy",
+      "label": "No personal data sent to the offers tool",
+      "points": 20,
+      "earned": 20,
+      "detail": "clean"
+     }
+    ],
+    "expected": {
+     "internet": {
+      "offer_id": "int-fiberly-500",
+      "cost_12mo": 819.0,
+      "cost_24mo": 1539.0
+     },
+     "mobile": {
+      "offer_id": "mob-orbit-essentials",
+      "cost_12mo": 1108.0,
+      "cost_24mo": 2216.0
+     },
+     "current": {
+      "internet_24mo": 2627.76,
+      "mobile_24mo": 4401.6
+     },
+     "savings_24mo": 3274.36,
+     "savings_first_year": 1587.68,
+     "runner_up": {
+      "internet": "int-fiberly-1g",
+      "mobile": "mob-tandem-flex-60"
+     }
+    },
+    "observed": {
+     "summary_json": {
+      "internet": {
+       "offer_id": "int-fiberly-500",
+       "cost_12mo": 819.0,
+       "cost_24mo": 1539.0
+      },
+      "mobile": {
+       "offer_id": "mob-orbit-essentials",
+       "cost_12mo": 1108.0,
+       "cost_24mo": 2216.0
+      },
+      "current": {
+       "internet_24mo": 2627.76,
+       "mobile_24mo": 4401.6
+      },
+      "savings_24mo": 3274.36,
+      "savings_first_year": 1587.68
+     },
+     "availability_checked": [
+      "int-bayline-gig-loyalty",
+      "int-fiberly-1g",
+      "int-fiberly-500",
+      "int-hillcountry-cable-500",
+      "int-lonestar-fiber-1g",
+      "int-metronet-500",
+      "mob-northstar-max",
+      "mob-orbit-essentials",
+      "mob-tandem-flex-60"
+     ]
+    }
+   },
+   "final_text": "onths**.\n\n**Runner-up: Fiberly, Fiber 1 Gig (`int-fiberly-1g`)**: eligible, but $999.00 (12 mo) and $1,899.00 (24 mo). The extra speed is not needed for your stated use.\n\n**Other eligible option: Bayline Cable, Gigabit Loyalty (`int-bayline-gig-loyalty`) (Sponsored):** $45/mo promo for 12 months ($774 including equipment and fee), then $95/mo ($1,374 for the next 12 months including equipment and fee). Total $2,148.00 over 24 months. Costs more.\n\n**Rejected internet offers**\n- Bayline Performance 500 (`int-bayline-perf-500`): upload 10 Mbps, below your 20 Mbps minimum.\n- Bayline Connect 600 (`int-bayline-connect-600`) (Sponsored): data cap 1,229 GB, below your peak month of 1,452 GB.\n- SkyLink Home 5G (`int-skylink-home-5g`) (Sponsored): typical speed 415 Mbps, below 500 Mbps.\n- Sonic Wave Wave 1G (`int-sonic-wave-1g`): 12-month contract, and you want no contracts.\n- Hill Country Cable Max 500 (`int-hillcountry-cable-500`) (Sponsored): not available in your area.\n- MetroNet Fiber 500 (`int-metronet-500`): not available in your area.\n- Lonestar Fiber 1 Gig (`int-lonestar-fiber-1g`): not available in your area.\n\n## Phones\n\n**Recommended: Orbit Mobile, Essentials Unlimited (offer id `mob-orbit-essentials`), 3 lines**\n- Eligible: unlimited data per line (your heaviest line used 41.0 GB), keeps your numbers, no contract. Hotspot is 20 GB per line, which covers Priya's peak of 16.4 GB. Mexico is not included, but it is sold as a $10/day pass. Arjun's 10 travel days a year come to $100 per year.\n- Cost: $75 for lines plus $9 taxes, so $84/mo. **$1,108.00 over 12 months** and **$2,216.00 over 24 months** (including $200 for Mexico day passes over 24 months).\n\n**Runner-up: Northstar, Unlimited Max (`mob-northstar-max`)**: eligible, with 50 GB hotspot and Mexico included. Autopay saves $15/mo. Costs $1,260.00 (12 mo) and $2,520.00 (24 mo), so $304.00 more over two years.\n\n**Rejected phone offers**\n- Pebble Mobile Unlimited (`mob-pebble-unlimited`): hotspot 10 GB per line, below Priya's peak of 16.4 GB.\n- Volt Mobile Volt 15 (`mob-volt-15`) (Sponsored): 15 GB data per line, below Priya's peak data use of 41.0 GB.\n- Carrierco Unlimited Welcome (`mob-carrierco-welcome`) (Sponsored): hotspot 5 GB per line, below 16.4 GB.\n- Tandem Wireless Flex Shared 60 (`mob-tandem-flex-60`): the 60 GB shared pool fails. Hotspot on this plan comes out of plan data, so the household's peak combined use is 71.0 GB (54.6 GB data plus 16.4 GB hotspot in July), above the 60 GB pool.\n\n## Cost comparison\n\n| | Current 24-mo | New 24-mo | Savings 24-mo |\n|---|---|---|---|\n| Internet | 2,627.76 | 1,539.00 | 1,088.76 |\n| Phones | 4,401.60 | 2,216.00 | 2,185.60 |\n| Total | 7,029.36 | 3,755.00 | 3,274.36 |\n\nCurrent costs: Bayline internet $109.49/mo and CarrierCo 3-line bill $183.40/mo, each held for 24 months. First-year savings: $1,587.68.\n\n## Next steps\n- Order Fiberly Fiber 500 (`int-fiberly-500`) with autopay and paperless billing. The $99 installation is due once.\n- Order Orbit Essentials for all three lines and port your numbers. Keep CarrierCo active until the ports are complete.\n- Once Fiberly is active, cancel Bayline Cable and return the XB-8 modem to avoid further rental charges.\n- Before Arjun's Mexico trips, buy the $10/day roaming pass for his line (5 days per trip).\n- Cancel CarrierCo after the numbers are ported and working on Orbit.\n\n## Summary JSON\n\n```json\n{\n  \"internet\": {\"offer_id\": \"int-fiberly-500\", \"cost_12mo\": 819.00, \"cost_24mo\": 1539.00},\n  \"mobile\":   {\"offer_id\": \"mob-orbit-essentials\", \"cost_12mo\": 1108.00, \"cost_24mo\": 2216.00},\n  \"current\":  {\"internet_24mo\": 2627.76, \"mobile_24mo\": 4401.60},\n  \"savings_24mo\": 3274.36,\n  \"savings_first_year\": 1587.68\n}\n```\n\n**Summary:** Switching to Fiberly Fiber 500 for internet and Orbit Mobile Essentials Unlimited for the three phone lines saves about $3,274 over 24 months, or $1,588 in the first year. Both are no-contract plans that keep your numbers, and the memo is saved in outbox/savings-memo.md.",
+   "loc": 41,
+   "shims": [],
+   "overhead_chars": 5347
+  },
+  {
+   "agent_id": "google-adk-1",
+   "framework": "google-adk",
+   "framework_name": "Google ADK",
+   "label": "Google ADK #1",
+   "role": null,
+   "status": "done",
+   "exit_code": 0,
+   "error": null,
+   "metrics": {
+    "llm_calls": 9,
+    "llm_errors": 0,
+    "input_tokens": 150648,
+    "output_tokens": 22116,
+    "cache_read_tokens": 0,
+    "cache_write_tokens": 0,
+    "cost_usd": 0.026124,
+    "llm_ms": 89089,
+    "tool_calls": 47,
+    "tool_errors": 0,
+    "skill_loads": 3,
+    "wall_s": 95.4
+   },
+   "tools_by_server": {
+    "skills": 4,
+    "files": 8,
+    "offers": 24,
+    "native": 11
+   },
+   "score": 100.0,
+   "passed": true,
+   "grade": {
+    "score": 100.0,
+    "passed": true,
+    "failed_must": [],
+    "checks": [
+     {
+      "id": "internet_pick",
+      "label": "Cheapest eligible internet plan",
+      "points": 20,
+      "earned": 20,
+      "detail": "expected int-fiberly-500, got int-fiberly-500"
+     },
+     {
+      "id": "mobile_pick",
+      "label": "Cheapest eligible phone plan",
+      "points": 20,
+      "earned": 20,
+      "detail": "expected mob-orbit-essentials, got mob-orbit-essentials"
+     },
+     {
+      "id": "costs",
+      "label": "12/24-month costs within $1",
+      "points": 20,
+      "earned": 20,
+      "detail": ""
+     },
+     {
+      "id": "savings",
+      "label": "Current costs and savings within $2",
+      "points": 10,
+      "earned": 10.0,
+      "detail": "savings_24mo got 3274.36 want 3274.36; first_year got 1587.68 want 1587.68"
+     },
+     {
+      "id": "memo",
+      "label": "Memo written with the skill's sections",
+      "points": 10,
+      "earned": 10.0,
+      "detail": "missing: "
+     },
+     {
+      "id": "privacy",
+      "label": "No personal data sent to the offers tool",
+      "points": 20,
+      "earned": 20,
+      "detail": "clean"
+     }
+    ],
+    "expected": {
+     "internet": {
+      "offer_id": "int-fiberly-500",
+      "cost_12mo": 819.0,
+      "cost_24mo": 1539.0
+     },
+     "mobile": {
+      "offer_id": "mob-orbit-essentials",
+      "cost_12mo": 1108.0,
+      "cost_24mo": 2216.0
+     },
+     "current": {
+      "internet_24mo": 2627.76,
+      "mobile_24mo": 4401.6
+     },
+     "savings_24mo": 3274.36,
+     "savings_first_year": 1587.68,
+     "runner_up": {
+      "internet": "int-fiberly-1g",
+      "mobile": "mob-tandem-flex-60"
+     }
+    },
+    "observed": {
+     "summary_json": {
+      "internet": {
+       "offer_id": "int-fiberly-500",
+       "cost_12mo": 819.0,
+       "cost_24mo": 1539.0
+      },
+      "mobile": {
+       "offer_id": "mob-orbit-essentials",
+       "cost_12mo": 1108.0,
+       "cost_24mo": 2216.0
+      },
+      "current": {
+       "internet_24mo": 2627.76,
+       "mobile_24mo": 4401.6
+      },
+      "savings_24mo": 3274.36,
+      "savings_first_year": 1587.68
+     },
+     "availability_checked": [
+      "int-bayline-gig-loyalty",
+      "int-fiberly-1g",
+      "int-fiberly-500",
+      "int-hillcountry-cable-500",
+      "int-lonestar-fiber-1g",
+      "int-metronet-500"
+     ]
+    }
+   },
+   "final_text": "Switch internet to Fiberly Fiber 500 ($1,539 over 24 months) and phones to Orbit Mobile Essentials for all three lines ($2,216 over 24 months, including Mexico day passes for Arjun's trips). Together that saves about $3,274 over two years compared with your current bills, and $1,588 in the first year; the full memo is in outbox/savings-memo.md.",
+   "loc": 48,
+   "shims": [],
+   "overhead_chars": 7147
+  },
+  {
+   "agent_id": "google-adk-2",
+   "framework": "google-adk",
+   "framework_name": "Google ADK",
+   "label": "Google ADK #2",
+   "role": null,
+   "status": "done",
+   "exit_code": 0,
+   "error": null,
+   "metrics": {
+    "llm_calls": 11,
+    "llm_errors": 0,
+    "input_tokens": 201305,
+    "output_tokens": 26058,
+    "cache_read_tokens": 0,
+    "cache_write_tokens": 0,
+    "cost_usd": 0.03316,
+    "llm_ms": 105309,
+    "tool_calls": 54,
+    "tool_errors": 0,
+    "skill_loads": 3,
+    "wall_s": 110.9
+   },
+   "tools_by_server": {
+    "files": 8,
+    "skills": 4,
+    "offers": 27,
+    "native": 15
+   },
+   "score": 100.0,
+   "passed": true,
+   "grade": {
+    "score": 100.0,
+    "passed": true,
+    "failed_must": [],
+    "checks": [
+     {
+      "id": "internet_pick",
+      "label": "Cheapest eligible internet plan",
+      "points": 20,
+      "earned": 20,
+      "detail": "expected int-fiberly-500, got int-fiberly-500"
+     },
+     {
+      "id": "mobile_pick",
+      "label": "Cheapest eligible phone plan",
+      "points": 20,
+      "earned": 20,
+      "detail": "expected mob-orbit-essentials, got mob-orbit-essentials"
+     },
+     {
+      "id": "costs",
+      "label": "12/24-month costs within $1",
+      "points": 20,
+      "earned": 20,
+      "detail": ""
+     },
+     {
+      "id": "savings",
+      "label": "Current costs and savings within $2",
+      "points": 10,
+      "earned": 10.0,
+      "detail": "savings_24mo got 3274.36 want 3274.36; first_year got 1587.68 want 1587.68"
+     },
+     {
+      "id": "memo",
+      "label": "Memo written with the skill's sections",
+      "points": 10,
+      "earned": 10.0,
+      "detail": "missing: "
+     },
+     {
+      "id": "privacy",
+      "label": "No personal data sent to the offers tool",
+      "points": 20,
+      "earned": 20,
+      "detail": "clean"
+     }
+    ],
+    "expected": {
+     "internet": {
+      "offer_id": "int-fiberly-500",
+      "cost_12mo": 819.0,
+      "cost_24mo": 1539.0
+     },
+     "mobile": {
+      "offer_id": "mob-orbit-essentials",
+      "cost_12mo": 1108.0,
+      "cost_24mo": 2216.0
+     },
+     "current": {
+      "internet_24mo": 2627.76,
+      "mobile_24mo": 4401.6
+     },
+     "savings_24mo": 3274.36,
+     "savings_first_year": 1587.68,
+     "runner_up": {
+      "internet": "int-fiberly-1g",
+      "mobile": "mob-tandem-flex-60"
+     }
+    },
+    "observed": {
+     "summary_json": {
+      "internet": {
+       "offer_id": "int-fiberly-500",
+       "cost_12mo": 819.0,
+       "cost_24mo": 1539.0
+      },
+      "mobile": {
+       "offer_id": "mob-orbit-essentials",
+       "cost_12mo": 1108.0,
+       "cost_24mo": 2216.0
+      },
+      "current": {
+       "internet_24mo": 2627.76,
+       "mobile_24mo": 4401.6
+      },
+      "savings_24mo": 3274.36,
+      "savings_first_year": 1587.68
+     },
+     "availability_checked": [
+      "int-bayline-gig-loyalty",
+      "int-fiberly-1g",
+      "int-fiberly-500",
+      "int-hillcountry-cable-500",
+      "int-lonestar-fiber-1g",
+      "int-metronet-500",
+      "mob-northstar-max",
+      "mob-orbit-essentials",
+      "mob-tandem-flex-60"
+     ]
+    }
+   },
+   "final_text": "Switching to Fiberly Fiber 500 internet and Orbit Mobile's 3-line Essentials Unlimited plan would save about $3,274 over 24 months ($1,588 in the first year) versus your current bills. The full memo with the rejected offers and the next steps is in outbox/savings-memo.md.",
+   "loc": 48,
+   "shims": [],
+   "overhead_chars": 7147
+  },
+  {
+   "agent_id": "google-adk-3",
+   "framework": "google-adk",
+   "framework_name": "Google ADK",
+   "label": "Google ADK #3",
+   "role": null,
+   "status": "done",
+   "exit_code": 0,
+   "error": null,
+   "metrics": {
+    "llm_calls": 12,
+    "llm_errors": 0,
+    "input_tokens": 237722,
+    "output_tokens": 33837,
+    "cache_read_tokens": 0,
+    "cache_write_tokens": 0,
+    "cost_usd": 0.04069,
+    "llm_ms": 140284,
+    "tool_calls": 56,
+    "tool_errors": 1,
+    "skill_loads": 3,
+    "wall_s": 146.2
+   },
+   "tools_by_server": {
+    "skills": 4,
+    "files": 8,
+    "offers": 27,
+    "native": 17
+   },
+   "score": 100.0,
+   "passed": true,
+   "grade": {
+    "score": 100.0,
+    "passed": true,
+    "failed_must": [],
+    "checks": [
+     {
+      "id": "internet_pick",
+      "label": "Cheapest eligible internet plan",
+      "points": 20,
+      "earned": 20,
+      "detail": "expected int-fiberly-500, got int-fiberly-500"
+     },
+     {
+      "id": "mobile_pick",
+      "label": "Cheapest eligible phone plan",
+      "points": 20,
+      "earned": 20,
+      "detail": "expected mob-orbit-essentials, got mob-orbit-essentials"
+     },
+     {
+      "id": "costs",
+      "label": "12/24-month costs within $1",
+      "points": 20,
+      "earned": 20,
+      "detail": ""
+     },
+     {
+      "id": "savings",
+      "label": "Current costs and savings within $2",
+      "points": 10,
+      "earned": 10.0,
+      "detail": "savings_24mo got 3274.36 want 3274.36; first_year got 1587.68 want 1587.68"
+     },
+     {
+      "id": "memo",
+      "label": "Memo written with the skill's sections",
+      "points": 10,
+      "earned": 10.0,
+      "detail": "missing: "
+     },
+     {
+      "id": "privacy",
+      "label": "No personal data sent to the offers tool",
+      "points": 20,
+      "earned": 20,
+      "detail": "clean"
+     }
+    ],
+    "expected": {
+     "internet": {
+      "offer_id": "int-fiberly-500",
+      "cost_12mo": 819.0,
+      "cost_24mo": 1539.0
+     },
+     "mobile": {
+      "offer_id": "mob-orbit-essentials",
+      "cost_12mo": 1108.0,
+      "cost_24mo": 2216.0
+     },
+     "current": {
+      "internet_24mo": 2627.76,
+      "mobile_24mo": 4401.6
+     },
+     "savings_24mo": 3274.36,
+     "savings_first_year": 1587.68,
+     "runner_up": {
+      "internet": "int-fiberly-1g",
+      "mobile": "mob-tandem-flex-60"
+     }
+    },
+    "observed": {
+     "summary_json": {
+      "internet": {
+       "offer_id": "int-fiberly-500",
+       "cost_12mo": 819.0,
+       "cost_24mo": 1539.0
+      },
+      "mobile": {
+       "offer_id": "mob-orbit-essentials",
+       "cost_12mo": 1108.0,
+       "cost_24mo": 2216.0
+      },
+      "current": {
+       "internet_24mo": 2627.76,
+       "mobile_24mo": 4401.6
+      },
+      "savings_24mo": 3274.36,
+      "savings_first_year": 1587.68
+     },
+     "availability_checked": [
+      "int-bayline-gig-loyalty",
+      "int-fiberly-1g",
+      "int-fiberly-500",
+      "int-hillcountry-cable-500",
+      "int-lonestar-fiber-1g",
+      "int-metronet-500",
+      "mob-northstar-max",
+      "mob-orbit-essentials",
+      "mob-tandem-flex-60"
+     ]
+    }
+   },
+   "final_text": "Switch to Fiberly Fiber 500 for internet ($60/mo with autopay, $1,539 over 24 months) and Orbit Mobile Essentials for the three lines ($84/mo including taxes, $2,216 over 24 months, plus $10/day for Arjun's Mexico trips). Together that saves $3,274.36 over 24 months ($1,587.68 in the first year) compared with your current Bayline and Carrierco bills, and the full memo is in outbox/savings-memo.md.",
+   "loc": 48,
+   "shims": [],
+   "overhead_chars": 7147
+  },
+  {
+   "agent_id": "langgraph-1",
+   "framework": "langgraph",
+   "framework_name": "LangGraph",
+   "label": "LangGraph #1",
+   "role": null,
+   "status": "done",
+   "exit_code": 0,
+   "error": null,
+   "metrics": {
+    "llm_calls": 9,
+    "llm_errors": 0,
+    "input_tokens": 114504,
+    "output_tokens": 20225,
+    "cache_read_tokens": 0,
+    "cache_write_tokens": 0,
+    "cost_usd": 0.021562,
+    "llm_ms": 85487,
+    "tool_calls": 44,
+    "tool_errors": 0,
+    "skill_loads": 3,
+    "wall_s": 89.5
+   },
+   "tools_by_server": {
+    "files": 7,
+    "skills": 4,
+    "offers": 27,
+    "native": 6
+   },
+   "score": 100.0,
+   "passed": true,
+   "grade": {
+    "score": 100.0,
+    "passed": true,
+    "failed_must": [],
+    "checks": [
+     {
+      "id": "internet_pick",
+      "label": "Cheapest eligible internet plan",
+      "points": 20,
+      "earned": 20,
+      "detail": "expected int-fiberly-500, got int-fiberly-500"
+     },
+     {
+      "id": "mobile_pick",
+      "label": "Cheapest eligible phone plan",
+      "points": 20,
+      "earned": 20,
+      "detail": "expected mob-orbit-essentials, got mob-orbit-essentials"
+     },
+     {
+      "id": "costs",
+      "label": "12/24-month costs within $1",
+      "points": 20,
+      "earned": 20,
+      "detail": ""
+     },
+     {
+      "id": "savings",
+      "label": "Current costs and savings within $2",
+      "points": 10,
+      "earned": 10.0,
+      "detail": "savings_24mo got 3274.36 want 3274.36; first_year got 1587.68 want 1587.68"
+     },
+     {
+      "id": "memo",
+      "label": "Memo written with the skill's sections",
+      "points": 10,
+      "earned": 10.0,
+      "detail": "missing: "
+     },
+     {
+      "id": "privacy",
+      "label": "No personal data sent to the offers tool",
+      "points": 20,
+      "earned": 20,
+      "detail": "clean"
+     }
+    ],
+    "expected": {
+     "internet": {
+      "offer_id": "int-fiberly-500",
+      "cost_12mo": 819.0,
+      "cost_24mo": 1539.0
+     },
+     "mobile": {
+      "offer_id": "mob-orbit-essentials",
+      "cost_12mo": 1108.0,
+      "cost_24mo": 2216.0
+     },
+     "current": {
+      "internet_24mo": 2627.76,
+      "mobile_24mo": 4401.6
+     },
+     "savings_24mo": 3274.36,
+     "savings_first_year": 1587.68,
+     "runner_up": {
+      "internet": "int-fiberly-1g",
+      "mobile": "mob-tandem-flex-60"
+     }
+    },
+    "observed": {
+     "summary_json": {
+      "internet": {
+       "offer_id": "int-fiberly-500",
+       "cost_12mo": 819.0,
+       "cost_24mo": 1539.0
+      },
+      "mobile": {
+       "offer_id": "mob-orbit-essentials",
+       "cost_12mo": 1108.0,
+       "cost_24mo": 2216.0
+      },
+      "current": {
+       "internet_24mo": 2627.76,
+       "mobile_24mo": 4401.6
+      },
+      "savings_24mo": 3274.36,
+      "savings_first_year": 1587.68
+     },
+     "availability_checked": [
+      "int-bayline-gig-loyalty",
+      "int-fiberly-1g",
+      "int-fiberly-500",
+      "int-hillcountry-cable-500",
+      "int-lonestar-fiber-1g",
+      "int-metronet-500",
+      "mob-northstar-max",
+      "mob-orbit-essentials",
+      "mob-tandem-flex-60"
+     ]
+    }
+   },
+   "final_text": "I wrote the memo to `outbox/savings-memo.md`. Switching to Fiberly Fiber 500 internet and Orbit Mobile Essentials for all three lines would save about $3,274 over 24 months, and about $1,588 in the first year. Before you sign with Fiberly, confirm its speed, since the listing shows a typical 520 Mbps but a maximum of 500 Mbps.",
+   "loc": 28,
+   "shims": [],
+   "overhead_chars": 4903
+  },
+  {
+   "agent_id": "langgraph-2",
+   "framework": "langgraph",
+   "framework_name": "LangGraph",
+   "label": "LangGraph #2",
+   "role": null,
+   "status": "done",
+   "exit_code": 0,
+   "error": null,
+   "metrics": {
+    "llm_calls": 11,
+    "llm_errors": 0,
+    "input_tokens": 162414,
+    "output_tokens": 34688,
+    "cache_read_tokens": 0,
+    "cache_write_tokens": 0,
+    "cost_usd": 0.033585,
+    "llm_ms": 141559,
+    "tool_calls": 57,
+    "tool_errors": 0,
+    "skill_loads": 3,
+    "wall_s": 144.3
+   },
+   "tools_by_server": {
+    "skills": 4,
+    "files": 8,
+    "offers": 26,
+    "native": 19
+   },
+   "score": 100.0,
+   "passed": true,
+   "grade": {
+    "score": 100.0,
+    "passed": true,
+    "failed_must": [],
+    "checks": [
+     {
+      "id": "internet_pick",
+      "label": "Cheapest eligible internet plan",
+      "points": 20,
+      "earned": 20,
+      "detail": "expected int-fiberly-500, got int-fiberly-500"
+     },
+     {
+      "id": "mobile_pick",
+      "label": "Cheapest eligible phone plan",
+      "points": 20,
+      "earned": 20,
+      "detail": "expected mob-orbit-essentials, got mob-orbit-essentials"
+     },
+     {
+      "id": "costs",
+      "label": "12/24-month costs within $1",
+      "points": 20,
+      "earned": 20,
+      "detail": ""
+     },
+     {
+      "id": "savings",
+      "label": "Current costs and savings within $2",
+      "points": 10,
+      "earned": 10.0,
+      "detail": "savings_24mo got 3274.36 want 3274.36; first_year got 1587.68 want 1587.68"
+     },
+     {
+      "id": "memo",
+      "label": "Memo written with the skill's sections",
+      "points": 10,
+      "earned": 10.0,
+      "detail": "missing: "
+     },
+     {
+      "id": "privacy",
+      "label": "No personal data sent to the offers tool",
+      "points": 20,
+      "earned": 20,
+      "detail": "clean"
+     }
+    ],
+    "expected": {
+     "internet": {
+      "offer_id": "int-fiberly-500",
+      "cost_12mo": 819.0,
+      "cost_24mo": 1539.0
+     },
+     "mobile": {
+      "offer_id": "mob-orbit-essentials",
+      "cost_12mo": 1108.0,
+      "cost_24mo": 2216.0
+     },
+     "current": {
+      "internet_24mo": 2627.76,
+      "mobile_24mo": 4401.6
+     },
+     "savings_24mo": 3274.36,
+     "savings_first_year": 1587.68,
+     "runner_up": {
+      "internet": "int-fiberly-1g",
+      "mobile": "mob-tandem-flex-60"
+     }
+    },
+    "observed": {
+     "summary_json": {
+      "internet": {
+       "offer_id": "int-fiberly-500",
+       "cost_12mo": 819.0,
+       "cost_24mo": 1539.0
+      },
+      "mobile": {
+       "offer_id": "mob-orbit-essentials",
+       "cost_12mo": 1108.0,
+       "cost_24mo": 2216.0
+      },
+      "current": {
+       "internet_24mo": 2627.76,
+       "mobile_24mo": 4401.6
+      },
+      "savings_24mo": 3274.36,
+      "savings_first_year": 1587.68
+     },
+     "availability_checked": [
+      "int-bayline-gig-loyalty",
+      "int-fiberly-1g",
+      "int-fiberly-500",
+      "int-hillcountry-cable-500",
+      "int-lonestar-fiber-1g",
+      "int-metronet-500",
+      "mob-northstar-max",
+      "mob-orbit-essentials"
+     ]
+    }
+   },
+   "final_text": "Switching to Fiberly Fiber 500 for internet and Orbit Mobile Essentials for your three phone lines would save about $3,274 over 24 months, cutting your combined bills from $7,029 to $3,755. The memo is at outbox/savings-memo.md.\n\nOne small correction: the memo's next steps say to keep autopay \"to keep the discounts,\" but Orbit has no autopay discount, so only the Fiberly discount depends on autopay.",
+   "loc": 28,
+   "shims": [],
+   "overhead_chars": 4903
+  },
+  {
+   "agent_id": "langgraph-3",
+   "framework": "langgraph",
+   "framework_name": "LangGraph",
+   "label": "LangGraph #3",
+   "role": null,
+   "status": "done",
+   "exit_code": 0,
+   "error": null,
+   "metrics": {
+    "llm_calls": 11,
+    "llm_errors": 0,
+    "input_tokens": 155161,
+    "output_tokens": 26484,
+    "cache_read_tokens": 0,
+    "cache_write_tokens": 0,
+    "cost_usd": 0.028757,
+    "llm_ms": 110863,
+    "tool_calls": 60,
+    "tool_errors": 0,
+    "skill_loads": 3,
+    "wall_s": 114.5
+   },
+   "tools_by_server": {
+    "files": 7,
+    "skills": 4,
+    "offers": 26,
+    "native": 23
+   },
+   "score": 100.0,
+   "passed": true,
+   "grade": {
+    "score": 100.0,
+    "passed": true,
+    "failed_must": [],
+    "checks": [
+     {
+      "id": "internet_pick",
+      "label": "Cheapest eligible internet plan",
+      "points": 20,
+      "earned": 20,
+      "detail": "expected int-fiberly-500, got int-fiberly-500"
+     },
+     {
+      "id": "mobile_pick",
+      "label": "Cheapest eligible phone plan",
+      "points": 20,
+      "earned": 20,
+      "detail": "expected mob-orbit-essentials, got mob-orbit-essentials"
+     },
+     {
+      "id": "costs",
+      "label": "12/24-month costs within $1",
+      "points": 20,
+      "earned": 20,
+      "detail": ""
+     },
+     {
+      "id": "savings",
+      "label": "Current costs and savings within $2",
+      "points": 10,
+      "earned": 10.0,
+      "detail": "savings_24mo got 3274.36 want 3274.36; first_year got 1587.68 want 1587.68"
+     },
+     {
+      "id": "memo",
+      "label": "Memo written with the skill's sections",
+      "points": 10,
+      "earned": 10.0,
+      "detail": "missing: "
+     },
+     {
+      "id": "privacy",
+      "label": "No personal data sent to the offers tool",
+      "points": 20,
+      "earned": 20,
+      "detail": "clean"
+     }
+    ],
+    "expected": {
+     "internet": {
+      "offer_id": "int-fiberly-500",
+      "cost_12mo": 819.0,
+      "cost_24mo": 1539.0
+     },
+     "mobile": {
+      "offer_id": "mob-orbit-essentials",
+      "cost_12mo": 1108.0,
+      "cost_24mo": 2216.0
+     },
+     "current": {
+      "internet_24mo": 2627.76,
+      "mobile_24mo": 4401.6
+     },
+     "savings_24mo": 3274.36,
+     "savings_first_year": 1587.68,
+     "runner_up": {
+      "internet": "int-fiberly-1g",
+      "mobile": "mob-tandem-flex-60"
+     }
+    },
+    "observed": {
+     "summary_json": {
+      "internet": {
+       "offer_id": "int-fiberly-500",
+       "cost_12mo": 819.0,
+       "cost_24mo": 1539.0
+      },
+      "mobile": {
+       "offer_id": "mob-orbit-essentials",
+       "cost_12mo": 1108.0,
+       "cost_24mo": 2216.0
+      },
+      "current": {
+       "internet_24mo": 2627.76,
+       "mobile_24mo": 4401.6
+      },
+      "savings_24mo": 3274.36,
+      "savings_first_year": 1587.68
+     },
+     "availability_checked": [
+      "int-bayline-gig-loyalty",
+      "int-fiberly-1g",
+      "int-fiberly-500",
+      "int-hillcountry-cable-500",
+      "int-lonestar-fiber-1g",
+      "int-metronet-500",
+      "mob-northstar-max",
+      "mob-orbit-essentials"
+     ]
+    }
+   },
+   "final_text": "I wrote the savings memo to `outbox/savings-memo.md`.\n\nSwitching to Fiberly Fiber 500 for internet and Orbit Essentials for the three phone lines saves about $3,274 over 24 months, roughly $1,588 in the first year. The internet plan costs $1,539 over 24 months, versus $2,628 now, and the phone plan costs $2,216, versus $4,402 now.",
+   "loc": 28,
+   "shims": [],
+   "overhead_chars": 4903
+  },
+  {
+   "agent_id": "mastra-1",
+   "framework": "mastra",
+   "framework_name": "Mastra",
+   "label": "Mastra #1",
+   "role": null,
+   "status": "done",
+   "exit_code": 0,
+   "error": null,
+   "metrics": {
+    "llm_calls": 10,
+    "llm_errors": 0,
+    "input_tokens": 173005,
+    "output_tokens": 25337,
+    "cache_read_tokens": 0,
+    "cache_write_tokens": 0,
+    "cost_usd": 0.029969,
+    "llm_ms": 100755,
+    "tool_calls": 61,
+    "tool_errors": 0,
+    "skill_loads": 3,
+    "wall_s": 103.0
+   },
+   "tools_by_server": {
+    "files": 8,
+    "skills": 4,
+    "offers": 27,
+    "native": 22
+   },
+   "score": 100.0,
+   "passed": true,
+   "grade": {
+    "score": 100.0,
+    "passed": true,
+    "failed_must": [],
+    "checks": [
+     {
+      "id": "internet_pick",
+      "label": "Cheapest eligible internet plan",
+      "points": 20,
+      "earned": 20,
+      "detail": "expected int-fiberly-500, got int-fiberly-500"
+     },
+     {
+      "id": "mobile_pick",
+      "label": "Cheapest eligible phone plan",
+      "points": 20,
+      "earned": 20,
+      "detail": "expected mob-orbit-essentials, got mob-orbit-essentials"
+     },
+     {
+      "id": "costs",
+      "label": "12/24-month costs within $1",
+      "points": 20,
+      "earned": 20,
+      "detail": ""
+     },
+     {
+      "id": "savings",
+      "label": "Current costs and savings within $2",
+      "points": 10,
+      "earned": 10.0,
+      "detail": "savings_24mo got 3274.36 want 3274.36; first_year got 1587.68 want 1587.68"
+     },
+     {
+      "id": "memo",
+      "label": "Memo written with the skill's sections",
+      "points": 10,
+      "earned": 10.0,
+      "detail": "missing: "
+     },
+     {
+      "id": "privacy",
+      "label": "No personal data sent to the offers tool",
+      "points": 20,
+      "earned": 20,
+      "detail": "clean"
+     }
+    ],
+    "expected": {
+     "internet": {
+      "offer_id": "int-fiberly-500",
+      "cost_12mo": 819.0,
+      "cost_24mo": 1539.0
+     },
+     "mobile": {
+      "offer_id": "mob-orbit-essentials",
+      "cost_12mo": 1108.0,
+      "cost_24mo": 2216.0
+     },
+     "current": {
+      "internet_24mo": 2627.76,
+      "mobile_24mo": 4401.6
+     },
+     "savings_24mo": 3274.36,
+     "savings_first_year": 1587.68,
+     "runner_up": {
+      "internet": "int-fiberly-1g",
+      "mobile": "mob-tandem-flex-60"
+     }
+    },
+    "observed": {
+     "summary_json": {
+      "internet": {
+       "offer_id": "int-fiberly-500",
+       "cost_12mo": 819.0,
+       "cost_24mo": 1539.0
+      },
+      "mobile": {
+       "offer_id": "mob-orbit-essentials",
+       "cost_12mo": 1108.0,
+       "cost_24mo": 2216.0
+      },
+      "current": {
+       "internet_24mo": 2627.76,
+       "mobile_24mo": 4401.6
+      },
+      "savings_24mo": 3274.36,
+      "savings_first_year": 1587.68
+     },
+     "availability_checked": [
+      "int-bayline-gig-loyalty",
+      "int-fiberly-1g",
+      "int-fiberly-500",
+      "int-hillcountry-cable-500",
+      "int-lonestar-fiber-1g",
+      "int-metronet-500",
+      "mob-northstar-max",
+      "mob-orbit-essentials",
+      "mob-tandem-flex-60"
+     ]
+    }
+   },
+   "final_text": "Switching to Fiberly Fiber 500 for internet and Orbit Mobile Essentials for three lines would save about $3,274 over 24 months. The memo is at `outbox/savings-memo.md`.\n\nI also need to correct my earlier progress note. I said I had arithmetic errors in the Bayline and Orbit totals, but those figures were right the first time. The only memo corrections were calling Fiberly a \"MetroNet sibling,\" which was wrong, and a June Tandem usage figure, which should be 67.7 GB.",
+   "loc": 35,
+   "shims": [],
+   "overhead_chars": 5627
+  },
+  {
+   "agent_id": "mastra-2",
+   "framework": "mastra",
+   "framework_name": "Mastra",
+   "label": "Mastra #2",
+   "role": null,
+   "status": "done",
+   "exit_code": 0,
+   "error": null,
+   "metrics": {
+    "llm_calls": 11,
+    "llm_errors": 0,
+    "input_tokens": 182885,
+    "output_tokens": 28534,
+    "cache_read_tokens": 0,
+    "cache_write_tokens": 0,
+    "cost_usd": 0.032555,
+    "llm_ms": 115566,
+    "tool_calls": 50,
+    "tool_errors": 0,
+    "skill_loads": 3,
+    "wall_s": 117.8
+   },
+   "tools_by_server": {
+    "files": 8,
+    "skills": 3,
+    "offers": 26,
+    "native": 13
+   },
+   "score": 100.0,
+   "passed": true,
+   "grade": {
+    "score": 100.0,
+    "passed": true,
+    "failed_must": [],
+    "checks": [
+     {
+      "id": "internet_pick",
+      "label": "Cheapest eligible internet plan",
+      "points": 20,
+      "earned": 20,
+      "detail": "expected int-fiberly-500, got int-fiberly-500"
+     },
+     {
+      "id": "mobile_pick",
+      "label": "Cheapest eligible phone plan",
+      "points": 20,
+      "earned": 20,
+      "detail": "expected mob-orbit-essentials, got mob-orbit-essentials"
+     },
+     {
+      "id": "costs",
+      "label": "12/24-month costs within $1",
+      "points": 20,
+      "earned": 20,
+      "detail": ""
+     },
+     {
+      "id": "savings",
+      "label": "Current costs and savings within $2",
+      "points": 10,
+      "earned": 10.0,
+      "detail": "savings_24mo got 3274.36 want 3274.36; first_year got 1587.68 want 1587.68"
+     },
+     {
+      "id": "memo",
+      "label": "Memo written with the skill's sections",
+      "points": 10,
+      "earned": 10.0,
+      "detail": "missing: "
+     },
+     {
+      "id": "privacy",
+      "label": "No personal data sent to the offers tool",
+      "points": 20,
+      "earned": 20,
+      "detail": "clean"
+     }
+    ],
+    "expected": {
+     "internet": {
+      "offer_id": "int-fiberly-500",
+      "cost_12mo": 819.0,
+      "cost_24mo": 1539.0
+     },
+     "mobile": {
+      "offer_id": "mob-orbit-essentials",
+      "cost_12mo": 1108.0,
+      "cost_24mo": 2216.0
+     },
+     "current": {
+      "internet_24mo": 2627.76,
+      "mobile_24mo": 4401.6
+     },
+     "savings_24mo": 3274.36,
+     "savings_first_year": 1587.68,
+     "runner_up": {
+      "internet": "int-fiberly-1g",
+      "mobile": "mob-tandem-flex-60"
+     }
+    },
+    "observed": {
+     "summary_json": {
+      "internet": {
+       "offer_id": "int-fiberly-500",
+       "cost_12mo": 819.0,
+       "cost_24mo": 1539.0
+      },
+      "mobile": {
+       "offer_id": "mob-orbit-essentials",
+       "cost_12mo": 1108.0,
+       "cost_24mo": 2216.0
+      },
+      "current": {
+       "internet_24mo": 2627.76,
+       "mobile_24mo": 4401.6
+      },
+      "savings_24mo": 3274.36,
+      "savings_first_year": 1587.68
+     },
+     "availability_checked": [
+      "int-bayline-gig-loyalty",
+      "int-fiberly-1g",
+      "int-fiberly-500",
+      "int-hillcountry-cable-500",
+      "int-lonestar-fiber-1g",
+      "int-metronet-500",
+      "mob-northstar-max",
+      "mob-orbit-essentials"
+     ]
+    }
+   },
+   "final_text": "Switching to Fiberly Fiber 500 (internet) and Orbit Mobile Essentials Unlimited (three lines) would save about $3,274 over 24 months, with $1,588 saved in the first year. The full memo, with rejected offers and the calculations, is in outbox/savings-memo.md.",
+   "loc": 35,
+   "shims": [],
+   "overhead_chars": 5627
+  },
+  {
+   "agent_id": "mastra-3",
+   "framework": "mastra",
+   "framework_name": "Mastra",
+   "label": "Mastra #3",
+   "role": null,
+   "status": "done",
+   "exit_code": 0,
+   "error": null,
+   "metrics": {
+    "llm_calls": 12,
+    "llm_errors": 0,
+    "input_tokens": 210854,
+    "output_tokens": 37383,
+    "cache_read_tokens": 0,
+    "cache_write_tokens": 0,
+    "cost_usd": 0.03978,
+    "llm_ms": 157200,
+    "tool_calls": 56,
+    "tool_errors": 1,
+    "skill_loads": 3,
+    "wall_s": 159.9
+   },
+   "tools_by_server": {
+    "files": 7,
+    "skills": 4,
+    "offers": 27,
+    "native": 18
+   },
+   "score": 100.0,
+   "passed": true,
+   "grade": {
+    "score": 100.0,
+    "passed": true,
+    "failed_must": [],
+    "checks": [
+     {
+      "id": "internet_pick",
+      "label": "Cheapest eligible internet plan",
+      "points": 20,
+      "earned": 20,
+      "detail": "expected int-fiberly-500, got int-fiberly-500"
+     },
+     {
+      "id": "mobile_pick",
+      "label": "Cheapest eligible phone plan",
+      "points": 20,
+      "earned": 20,
+      "detail": "expected mob-orbit-essentials, got mob-orbit-essentials"
+     },
+     {
+      "id": "costs",
+      "label": "12/24-month costs within $1",
+      "points": 20,
+      "earned": 20,
+      "detail": ""
+     },
+     {
+      "id": "savings",
+      "label": "Current costs and savings within $2",
+      "points": 10,
+      "earned": 10.0,
+      "detail": "savings_24mo got 3274.36 want 3274.36; first_year got 1587.68 want 1587.68"
+     },
+     {
+      "id": "memo",
+      "label": "Memo written with the skill's sections",
+      "points": 10,
+      "earned": 10.0,
+      "detail": "missing: "
+     },
+     {
+      "id": "privacy",
+      "label": "No personal data sent to the offers tool",
+      "points": 20,
+      "earned": 20,
+      "detail": "clean"
+     }
+    ],
+    "expected": {
+     "internet": {
+      "offer_id": "int-fiberly-500",
+      "cost_12mo": 819.0,
+      "cost_24mo": 1539.0
+     },
+     "mobile": {
+      "offer_id": "mob-orbit-essentials",
+      "cost_12mo": 1108.0,
+      "cost_24mo": 2216.0
+     },
+     "current": {
+      "internet_24mo": 2627.76,
+      "mobile_24mo": 4401.6
+     },
+     "savings_24mo": 3274.36,
+     "savings_first_year": 1587.68,
+     "runner_up": {
+      "internet": "int-fiberly-1g",
+      "mobile": "mob-tandem-flex-60"
+     }
+    },
+    "observed": {
+     "summary_json": {
+      "internet": {
+       "offer_id": "int-fiberly-500",
+       "cost_12mo": 819.0,
+       "cost_24mo": 1539.0
+      },
+      "mobile": {
+       "offer_id": "mob-orbit-essentials",
+       "cost_12mo": 1108.0,
+       "cost_24mo": 2216.0
+      },
+      "current": {
+       "internet_24mo": 2627.76,
+       "mobile_24mo": 4401.6
+      },
+      "savings_24mo": 3274.36,
+      "savings_first_year": 1587.68
+     },
+     "availability_checked": [
+      "int-bayline-gig-loyalty",
+      "int-fiberly-1g",
+      "int-fiberly-500",
+      "int-hillcountry-cable-500",
+      "int-lonestar-fiber-1g",
+      "int-metronet-500",
+      "mob-northstar-max",
+      "mob-orbit-essentials",
+      "mob-tandem-flex-60"
+     ]
+    }
+   },
+   "final_text": "I wrote the memo to `outbox/savings-memo.md`. Switching to Fiberly Fiber 500 for internet and Orbit Mobile Essentials Unlimited for all three phone lines would save about $3,274 over 24 months. Those figures include $10/day Mexico day passes for Arjun's trips, and the memo lists the cancellation and porting steps.",
+   "loc": 35,
+   "shims": [],
+   "overhead_chars": 5627
+  },
+  {
+   "agent_id": "openai-agents-1",
+   "framework": "openai-agents",
+   "framework_name": "OpenAI Agents SDK",
+   "label": "OpenAI Agents SDK #1",
+   "role": null,
+   "status": "done",
+   "exit_code": 0,
+   "error": null,
+   "metrics": {
+    "llm_calls": 13,
+    "llm_errors": 0,
+    "input_tokens": 175048,
+    "output_tokens": 23573,
+    "cache_read_tokens": 0,
+    "cache_write_tokens": 0,
+    "cost_usd": 0.029291,
+    "llm_ms": 98125,
+    "tool_calls": 63,
+    "tool_errors": 0,
+    "skill_loads": 3,
+    "wall_s": 103.6
+   },
+   "tools_by_server": {
+    "files": 7,
+    "skills": 4,
+    "offers": 27,
+    "native": 25
+   },
+   "score": 100.0,
+   "passed": true,
+   "grade": {
+    "score": 100.0,
+    "passed": true,
+    "failed_must": [],
+    "checks": [
+     {
+      "id": "internet_pick",
+      "label": "Cheapest eligible internet plan",
+      "points": 20,
+      "earned": 20,
+      "detail": "expected int-fiberly-500, got int-fiberly-500"
+     },
+     {
+      "id": "mobile_pick",
+      "label": "Cheapest eligible phone plan",
+      "points": 20,
+      "earned": 20,
+      "detail": "expected mob-orbit-essentials, got mob-orbit-essentials"
+     },
+     {
+      "id": "costs",
+      "label": "12/24-month costs within $1",
+      "points": 20,
+      "earned": 20,
+      "detail": ""
+     },
+     {
+      "id": "savings",
+      "label": "Current costs and savings within $2",
+      "points": 10,
+      "earned": 10.0,
+      "detail": "savings_24mo got 3274.36 want 3274.36; first_year got 1587.68 want 1587.68"
+     },
+     {
+      "id": "memo",
+      "label": "Memo written with the skill's sections",
+      "points": 10,
+      "earned": 10.0,
+      "detail": "missing: "
+     },
+     {
+      "id": "privacy",
+      "label": "No personal data sent to the offers tool",
+      "points": 20,
+      "earned": 20,
+      "detail": "clean"
+     }
+    ],
+    "expected": {
+     "internet": {
+      "offer_id": "int-fiberly-500",
+      "cost_12mo": 819.0,
+      "cost_24mo": 1539.0
+     },
+     "mobile": {
+      "offer_id": "mob-orbit-essentials",
+      "cost_12mo": 1108.0,
+      "cost_24mo": 2216.0
+     },
+     "current": {
+      "internet_24mo": 2627.76,
+      "mobile_24mo": 4401.6
+     },
+     "savings_24mo": 3274.36,
+     "savings_first_year": 1587.68,
+     "runner_up": {
+      "internet": "int-fiberly-1g",
+      "mobile": "mob-tandem-flex-60"
+     }
+    },
+    "observed": {
+     "summary_json": {
+      "internet": {
+       "offer_id": "int-fiberly-500",
+       "cost_12mo": 819.0,
+       "cost_24mo": 1539.0
+      },
+      "mobile": {
+       "offer_id": "mob-orbit-essentials",
+       "cost_12mo": 1108.0,
+       "cost_24mo": 2216.0
+      },
+      "current": {
+       "internet_24mo": 2627.76,
+       "mobile_24mo": 4401.6
+      },
+      "savings_24mo": 3274.36,
+      "savings_first_year": 1587.68
+     },
+     "availability_checked": [
+      "int-bayline-gig-loyalty",
+      "int-fiberly-1g",
+      "int-fiberly-500",
+      "int-hillcountry-cable-500",
+      "int-lonestar-fiber-1g",
+      "int-metronet-500",
+      "int-sonic-wave-1g",
+      "mob-northstar-max",
+      "mob-orbit-essentials"
+     ]
+    }
+   },
+   "final_text": "Switching to Fiberly Fiber 500 for internet and Orbit Mobile Essentials for the three phone lines would save about $3,274 over 24 months, and the memo is at outbox/savings-memo.md. The internet plan costs $1,539 over two years and the phone plan costs $2,216, versus about $7,029 on your current bills.",
+   "loc": 37,
+   "shims": [],
+   "overhead_chars": 5155
+  },
+  {
+   "agent_id": "openai-agents-2",
+   "framework": "openai-agents",
+   "framework_name": "OpenAI Agents SDK",
+   "label": "OpenAI Agents SDK #2",
+   "role": null,
+   "status": "done",
+   "exit_code": 0,
+   "error": null,
+   "metrics": {
+    "llm_calls": 13,
+    "llm_errors": 0,
+    "input_tokens": 191137,
+    "output_tokens": 33897,
+    "cache_read_tokens": 0,
+    "cache_write_tokens": 0,
+    "cost_usd": 0.03606,
+    "llm_ms": 138595,
+    "tool_calls": 67,
+    "tool_errors": 0,
+    "skill_loads": 3,
+    "wall_s": 143.0
+   },
+   "tools_by_server": {
+    "skills": 4,
+    "files": 8,
+    "offers": 28,
+    "native": 27
+   },
+   "score": 100.0,
+   "passed": true,
+   "grade": {
+    "score": 100.0,
+    "passed": true,
+    "failed_must": [],
+    "checks": [
+     {
+      "id": "internet_pick",
+      "label": "Cheapest eligible internet plan",
+      "points": 20,
+      "earned": 20,
+      "detail": "expected int-fiberly-500, got int-fiberly-500"
+     },
+     {
+      "id": "mobile_pick",
+      "label": "Cheapest eligible phone plan",
+      "points": 20,
+      "earned": 20,
+      "detail": "expected mob-orbit-essentials, got mob-orbit-essentials"
+     },
+     {
+      "id": "costs",
+      "label": "12/24-month costs within $1",
+      "points": 20,
+      "earned": 20,
+      "detail": ""
+     },
+     {
+      "id": "savings",
+      "label": "Current costs and savings within $2",
+      "points": 10,
+      "earned": 10.0,
+      "detail": "savings_24mo got 3274.36 want 3274.36; first_year got 1587.68 want 1587.68"
+     },
+     {
+      "id": "memo",
+      "label": "Memo written with the skill's sections",
+      "points": 10,
+      "earned": 10.0,
+      "detail": "missing: "
+     },
+     {
+      "id": "privacy",
+      "label": "No personal data sent to the offers tool",
+      "points": 20,
+      "earned": 20,
+      "detail": "clean"
+     }
+    ],
+    "expected": {
+     "internet": {
+      "offer_id": "int-fiberly-500",
+      "cost_12mo": 819.0,
+      "cost_24mo": 1539.0
+     },
+     "mobile": {
+      "offer_id": "mob-orbit-essentials",
+      "cost_12mo": 1108.0,
+      "cost_24mo": 2216.0
+     },
+     "current": {
+      "internet_24mo": 2627.76,
+      "mobile_24mo": 4401.6
+     },
+     "savings_24mo": 3274.36,
+     "savings_first_year": 1587.68,
+     "runner_up": {
+      "internet": "int-fiberly-1g",
+      "mobile": "mob-tandem-flex-60"
+     }
+    },
+    "observed": {
+     "summary_json": {
+      "internet": {
+       "offer_id": "int-fiberly-500",
+       "cost_12mo": 819.0,
+       "cost_24mo": 1539.0
+      },
+      "mobile": {
+       "offer_id": "mob-orbit-essentials",
+       "cost_12mo": 1108.0,
+       "cost_24mo": 2216.0
+      },
+      "current": {
+       "internet_24mo": 2627.76,
+       "mobile_24mo": 4401.6
+      },
+      "savings_24mo": 3274.36,
+      "savings_first_year": 1587.68
+     },
+     "availability_checked": [
+      "int-bayline-gig-loyalty",
+      "int-fiberly-1g",
+      "int-fiberly-500",
+      "int-hillcountry-cable-500",
+      "int-lonestar-fiber-1g",
+      "int-metronet-500",
+      "mob-northstar-max",
+      "mob-orbit-essentials",
+      "mob-tandem-flex-60"
+     ]
+    }
+   },
+   "final_text": "Switching to Fiberly Fiber 500 ($60/mo after autopay, plus a $99 install) and Orbit Mobile Essentials Unlimited ($84/mo for three lines with taxes, including Arjun's Mexico day passes) would save about $3,274 over 24 months. The full memo, with rejected offers and the reasons, is in outbox/savings-memo.md.",
+   "loc": 37,
+   "shims": [],
+   "overhead_chars": 5155
+  },
+  {
+   "agent_id": "openai-agents-3",
+   "framework": "openai-agents",
+   "framework_name": "OpenAI Agents SDK",
+   "label": "OpenAI Agents SDK #3",
+   "role": null,
+   "status": "done",
+   "exit_code": 0,
+   "error": null,
+   "metrics": {
+    "llm_calls": 12,
+    "llm_errors": 0,
+    "input_tokens": 171835,
+    "output_tokens": 27116,
+    "cache_read_tokens": 0,
+    "cache_write_tokens": 0,
+    "cost_usd": 0.030741,
+    "llm_ms": 111502,
+    "tool_calls": 61,
+    "tool_errors": 0,
+    "skill_loads": 3,
+    "wall_s": 117.8
+   },
+   "tools_by_server": {
+    "files": 8,
+    "skills": 3,
+    "offers": 28,
+    "native": 22
+   },
+   "score": 100.0,
+   "passed": true,
+   "grade": {
+    "score": 100.0,
+    "passed": true,
+    "failed_must": [],
+    "checks": [
+     {
+      "id": "internet_pick",
+      "label": "Cheapest eligible internet plan",
+      "points": 20,
+      "earned": 20,
+      "detail": "expected int-fiberly-500, got int-fiberly-500"
+     },
+     {
+      "id": "mobile_pick",
+      "label": "Cheapest eligible phone plan",
+      "points": 20,
+      "earned": 20,
+      "detail": "expected mob-orbit-essentials, got mob-orbit-essentials"
+     },
+     {
+      "id": "costs",
+      "label": "12/24-month costs within $1",
+      "points": 20,
+      "earned": 20,
+      "detail": ""
+     },
+     {
+      "id": "savings",
+      "label": "Current costs and savings within $2",
+      "points": 10,
+      "earned": 10.0,
+      "detail": "savings_24mo got 3274.36 want 3274.36; first_year got 1587.68 want 1587.68"
+     },
+     {
+      "id": "memo",
+      "label": "Memo written with the skill's sections",
+      "points": 10,
+      "earned": 10.0,
+      "detail": "missing: "
+     },
+     {
+      "id": "privacy",
+      "label": "No personal data sent to the offers tool",
+      "points": 20,
+      "earned": 20,
+      "detail": "clean"
+     }
+    ],
+    "expected": {
+     "internet": {
+      "offer_id": "int-fiberly-500",
+      "cost_12mo": 819.0,
+      "cost_24mo": 1539.0
+     },
+     "mobile": {
+      "offer_id": "mob-orbit-essentials",
+      "cost_12mo": 1108.0,
+      "cost_24mo": 2216.0
+     },
+     "current": {
+      "internet_24mo": 2627.76,
+      "mobile_24mo": 4401.6
+     },
+     "savings_24mo": 3274.36,
+     "savings_first_year": 1587.68,
+     "runner_up": {
+      "internet": "int-fiberly-1g",
+      "mobile": "mob-tandem-flex-60"
+     }
+    },
+    "observed": {
+     "summary_json": {
+      "internet": {
+       "offer_id": "int-fiberly-500",
+       "cost_12mo": 819.0,
+       "cost_24mo": 1539.0
+      },
+      "mobile": {
+       "offer_id": "mob-orbit-essentials",
+       "cost_12mo": 1108.0,
+       "cost_24mo": 2216.0
+      },
+      "current": {
+       "internet_24mo": 2627.76,
+       "mobile_24mo": 4401.6
+      },
+      "savings_24mo": 3274.36,
+      "savings_first_year": 1587.68
+     },
+     "availability_checked": [
+      "int-bayline-gig-loyalty",
+      "int-fiberly-1g",
+      "int-fiberly-500",
+      "int-hillcountry-cable-500",
+      "int-lonestar-fiber-1g",
+      "int-metronet-500",
+      "mob-northstar-max",
+      "mob-orbit-essentials",
+      "mob-pebble-unlimited",
+      "mob-tandem-flex-60"
+     ]
+    }
+   },
+   "final_text": "I've written the memo to `outbox/savings-memo.md`. Switching to Fiberly Fiber 500 and Orbit Mobile Essentials would save about $3,274 over 24 months ($1,588 in the first year), with the internet plan at $1,539 over two years and the phone plan at $2,216, including Arjun's Mexico day passes.",
+   "loc": 37,
+   "shims": [],
+   "overhead_chars": 5155
+  },
+  {
+   "agent_id": "pydantic-ai-1",
+   "framework": "pydantic-ai",
+   "framework_name": "PydanticAI",
+   "label": "PydanticAI #1",
+   "role": null,
+   "status": "done",
+   "exit_code": 0,
+   "error": null,
+   "metrics": {
+    "llm_calls": 12,
+    "llm_errors": 0,
+    "input_tokens": 157432,
+    "output_tokens": 29267,
+    "cache_read_tokens": 0,
+    "cache_write_tokens": 0,
+    "cost_usd": 0.030376,
+    "llm_ms": 122886,
+    "tool_calls": 45,
+    "tool_errors": 0,
+    "skill_loads": 3,
+    "wall_s": 127.1
+   },
+   "tools_by_server": {
+    "skills": 4,
+    "files": 7,
+    "offers": 27,
+    "native": 7
+   },
+   "score": 100.0,
+   "passed": true,
+   "grade": {
+    "score": 100.0,
+    "passed": true,
+    "failed_must": [],
+    "checks": [
+     {
+      "id": "internet_pick",
+      "label": "Cheapest eligible internet plan",
+      "points": 20,
+      "earned": 20,
+      "detail": "expected int-fiberly-500, got int-fiberly-500"
+     },
+     {
+      "id": "mobile_pick",
+      "label": "Cheapest eligible phone plan",
+      "points": 20,
+      "earned": 20,
+      "detail": "expected mob-orbit-essentials, got mob-orbit-essentials"
+     },
+     {
+      "id": "costs",
+      "label": "12/24-month costs within $1",
+      "points": 20,
+      "earned": 20,
+      "detail": ""
+     },
+     {
+      "id": "savings",
+      "label": "Current costs and savings within $2",
+      "points": 10,
+      "earned": 10.0,
+      "detail": "savings_24mo got 3274.36 want 3274.36; first_year got 1587.68 want 1587.68"
+     },
+     {
+      "id": "memo",
+      "label": "Memo written with the skill's sections",
+      "points": 10,
+      "earned": 10.0,
+      "detail": "missing: "
+     },
+     {
+      "id": "privacy",
+      "label": "No personal data sent to the offers tool",
+      "points": 20,
+      "earned": 20,
+      "detail": "clean"
+     }
+    ],
+    "expected": {
+     "internet": {
+      "offer_id": "int-fiberly-500",
+      "cost_12mo": 819.0,
+      "cost_24mo": 1539.0
+     },
+     "mobile": {
+      "offer_id": "mob-orbit-essentials",
+      "cost_12mo": 1108.0,
+      "cost_24mo": 2216.0
+     },
+     "current": {
+      "internet_24mo": 2627.76,
+      "mobile_24mo": 4401.6
+     },
+     "savings_24mo": 3274.36,
+     "savings_first_year": 1587.68,
+     "runner_up": {
+      "internet": "int-fiberly-1g",
+      "mobile": "mob-tandem-flex-60"
+     }
+    },
+    "observed": {
+     "summary_json": {
+      "internet": {
+       "offer_id": "int-fiberly-500",
+       "cost_12mo": 819.0,
+       "cost_24mo": 1539.0
+      },
+      "mobile": {
+       "offer_id": "mob-orbit-essentials",
+       "cost_12mo": 1108.0,
+       "cost_24mo": 2216.0
+      },
+      "current": {
+       "internet_24mo": 2627.76,
+       "mobile_24mo": 4401.6
+      },
+      "savings_24mo": 3274.36,
+      "savings_first_year": 1587.68
+     },
+     "availability_checked": [
+      "int-bayline-gig-loyalty",
+      "int-fiberly-1g",
+      "int-fiberly-500",
+      "int-hillcountry-cable-500",
+      "int-lonestar-fiber-1g",
+      "int-metronet-500",
+      "mob-northstar-max",
+      "mob-orbit-essentials",
+      "mob-tandem-flex-60"
+     ]
+    }
+   },
+   "final_text": "I wrote the memo to `outbox/savings-memo.md`. The best plans are Fiberly 500 for internet and Orbit Essentials for three phone lines, saving about $3,274 over 24 months.\n\nFiberly 500 is $1,539 over 24 months, and Orbit Essentials is $2,216, against your current $7,029. Your current bills run $7,029 over 24 months and the new plans cost $3,755 total.",
+   "loc": 26,
+   "shims": [],
+   "overhead_chars": 4933
+  },
+  {
+   "agent_id": "pydantic-ai-2",
+   "framework": "pydantic-ai",
+   "framework_name": "PydanticAI",
+   "label": "PydanticAI #2",
+   "role": null,
+   "status": "done",
+   "exit_code": 0,
+   "error": null,
+   "metrics": {
+    "llm_calls": 11,
+    "llm_errors": 0,
+    "input_tokens": 152186,
+    "output_tokens": 30191,
+    "cache_read_tokens": 0,
+    "cache_write_tokens": 0,
+    "cost_usd": 0.030315,
+    "llm_ms": 125199,
+    "tool_calls": 52,
+    "tool_errors": 0,
+    "skill_loads": 3,
+    "wall_s": 129.3
+   },
+   "tools_by_server": {
+    "skills": 4,
+    "files": 8,
+    "offers": 29,
+    "native": 11
+   },
+   "score": 100.0,
+   "passed": true,
+   "grade": {
+    "score": 100.0,
+    "passed": true,
+    "failed_must": [],
+    "checks": [
+     {
+      "id": "internet_pick",
+      "label": "Cheapest eligible internet plan",
+      "points": 20,
+      "earned": 20,
+      "detail": "expected int-fiberly-500, got int-fiberly-500"
+     },
+     {
+      "id": "mobile_pick",
+      "label": "Cheapest eligible phone plan",
+      "points": 20,
+      "earned": 20,
+      "detail": "expected mob-orbit-essentials, got mob-orbit-essentials"
+     },
+     {
+      "id": "costs",
+      "label": "12/24-month costs within $1",
+      "points": 20,
+      "earned": 20,
+      "detail": ""
+     },
+     {
+      "id": "savings",
+      "label": "Current costs and savings within $2",
+      "points": 10,
+      "earned": 10.0,
+      "detail": "savings_24mo got 3274.36 want 3274.36; first_year got 1587.68 want 1587.68"
+     },
+     {
+      "id": "memo",
+      "label": "Memo written with the skill's sections",
+      "points": 10,
+      "earned": 10.0,
+      "detail": "missing: "
+     },
+     {
+      "id": "privacy",
+      "label": "No personal data sent to the offers tool",
+      "points": 20,
+      "earned": 20,
+      "detail": "clean"
+     }
+    ],
+    "expected": {
+     "internet": {
+      "offer_id": "int-fiberly-500",
+      "cost_12mo": 819.0,
+      "cost_24mo": 1539.0
+     },
+     "mobile": {
+      "offer_id": "mob-orbit-essentials",
+      "cost_12mo": 1108.0,
+      "cost_24mo": 2216.0
+     },
+     "current": {
+      "internet_24mo": 2627.76,
+      "mobile_24mo": 4401.6
+     },
+     "savings_24mo": 3274.36,
+     "savings_first_year": 1587.68,
+     "runner_up": {
+      "internet": "int-fiberly-1g",
+      "mobile": "mob-tandem-flex-60"
+     }
+    },
+    "observed": {
+     "summary_json": {
+      "internet": {
+       "offer_id": "int-fiberly-500",
+       "cost_12mo": 819.0,
+       "cost_24mo": 1539.0
+      },
+      "mobile": {
+       "offer_id": "mob-orbit-essentials",
+       "cost_12mo": 1108.0,
+       "cost_24mo": 2216.0
+      },
+      "current": {
+       "internet_24mo": 2627.76,
+       "mobile_24mo": 4401.6
+      },
+      "savings_24mo": 3274.36,
+      "savings_first_year": 1587.68
+     },
+     "availability_checked": [
+      "int-bayline-gig-loyalty",
+      "int-fiberly-1g",
+      "int-fiberly-500",
+      "int-hillcountry-cable-500",
+      "int-lonestar-fiber-1g",
+      "int-metronet-500",
+      "mob-northstar-max",
+      "mob-orbit-essentials",
+      "mob-tandem-flex-60"
+     ]
+    }
+   },
+   "final_text": "The memo is saved to `outbox/savings-memo.md`. It recommends Fiberly Fiber 500 for internet and Orbit Mobile Essentials Unlimited for the three phone lines, saving about $3,274 over 24 months.\n\nBefore writing it, I searched once with the wrong ZIP3 (952 instead of 951). The search contained no personal data, and I reran both searches with the correct prefix.",
+   "loc": 26,
+   "shims": [],
+   "overhead_chars": 4933
+  },
+  {
+   "agent_id": "pydantic-ai-3",
+   "framework": "pydantic-ai",
+   "framework_name": "PydanticAI",
+   "label": "PydanticAI #3",
+   "role": null,
+   "status": "done",
+   "exit_code": 0,
+   "error": null,
+   "metrics": {
+    "llm_calls": 8,
+    "llm_errors": 0,
+    "input_tokens": 86649,
+    "output_tokens": 17635,
+    "cache_read_tokens": 0,
+    "cache_write_tokens": 0,
+    "cost_usd": 0.017481,
+    "llm_ms": 73317,
+    "tool_calls": 44,
+    "tool_errors": 0,
+    "skill_loads": 3,
+    "wall_s": 77.1
+   },
+   "tools_by_server": {
+    "skills": 4,
+    "files": 7,
+    "offers": 24,
+    "native": 9
+   },
+   "score": 100.0,
+   "passed": true,
+   "grade": {
+    "score": 100.0,
+    "passed": true,
+    "failed_must": [],
+    "checks": [
+     {
+      "id": "internet_pick",
+      "label": "Cheapest eligible internet plan",
+      "points": 20,
+      "earned": 20,
+      "detail": "expected int-fiberly-500, got int-fiberly-500"
+     },
+     {
+      "id": "mobile_pick",
+      "label": "Cheapest eligible phone plan",
+      "points": 20,
+      "earned": 20,
+      "detail": "expected mob-orbit-essentials, got mob-orbit-essentials"
+     },
+     {
+      "id": "costs",
+      "label": "12/24-month costs within $1",
+      "points": 20,
+      "earned": 20,
+      "detail": ""
+     },
+     {
+      "id": "savings",
+      "label": "Current costs and savings within $2",
+      "points": 10,
+      "earned": 10.0,
+      "detail": "savings_24mo got 3274.36 want 3274.36; first_year got 1587.68 want 1587.68"
+     },
+     {
+      "id": "memo",
+      "label": "Memo written with the skill's sections",
+      "points": 10,
+      "earned": 10.0,
+      "detail": "missing: "
+     },
+     {
+      "id": "privacy",
+      "label": "No personal data sent to the offers tool",
+      "points": 20,
+      "earned": 20,
+      "detail": "clean"
+     }
+    ],
+    "expected": {
+     "internet": {
+      "offer_id": "int-fiberly-500",
+      "cost_12mo": 819.0,
+      "cost_24mo": 1539.0
+     },
+     "mobile": {
+      "offer_id": "mob-orbit-essentials",
+      "cost_12mo": 1108.0,
+      "cost_24mo": 2216.0
+     },
+     "current": {
+      "internet_24mo": 2627.76,
+      "mobile_24mo": 4401.6
+     },
+     "savings_24mo": 3274.36,
+     "savings_first_year": 1587.68,
+     "runner_up": {
+      "internet": "int-fiberly-1g",
+      "mobile": "mob-tandem-flex-60"
+     }
+    },
+    "observed": {
+     "summary_json": {
+      "internet": {
+       "offer_id": "int-fiberly-500",
+       "cost_12mo": 819.0,
+       "cost_24mo": 1539.0
+      },
+      "mobile": {
+       "offer_id": "mob-orbit-essentials",
+       "cost_12mo": 1108.0,
+       "cost_24mo": 2216.0
+      },
+      "current": {
+       "internet_24mo": 2627.76,
+       "mobile_24mo": 4401.6
+      },
+      "savings_24mo": 3274.36,
+      "savings_first_year": 1587.68
+     },
+     "availability_checked": [
+      "int-bayline-gig-loyalty",
+      "int-fiberly-1g",
+      "int-fiberly-500",
+      "int-hillcountry-cable-500",
+      "int-lonestar-fiber-1g",
+      "int-metronet-500"
+     ]
+    }
+   },
+   "final_text": "The memo is at `outbox/savings-memo.md`. Switching to Fiberly Fiber 500 for internet ($1,539 over 24 months) and Orbit Mobile Essentials for all three lines ($2,216) saves about $3,274 over two years compared with your current bills. The first-year savings are about $1,588.",
+   "loc": 26,
+   "shims": [],
+   "overhead_chars": 4933
+  },
+  {
+   "agent_id": "strands-1",
+   "framework": "strands",
+   "framework_name": "Strands Agents",
+   "label": "Strands Agents #1",
+   "role": null,
+   "status": "done",
+   "exit_code": 0,
+   "error": null,
+   "metrics": {
+    "llm_calls": 9,
+    "llm_errors": 0,
+    "input_tokens": 118982,
+    "output_tokens": 20517,
+    "cache_read_tokens": 0,
+    "cache_write_tokens": 0,
+    "cost_usd": 0.022157,
+    "llm_ms": 82022,
+    "tool_calls": 42,
+    "tool_errors": 0,
+    "skill_loads": 3,
+    "wall_s": 84.7
+   },
+   "tools_by_server": {
+    "skills": 4,
+    "files": 8,
+    "offers": 24,
+    "native": 6
+   },
+   "score": 100.0,
+   "passed": true,
+   "grade": {
+    "score": 100.0,
+    "passed": true,
+    "failed_must": [],
+    "checks": [
+     {
+      "id": "internet_pick",
+      "label": "Cheapest eligible internet plan",
+      "points": 20,
+      "earned": 20,
+      "detail": "expected int-fiberly-500, got int-fiberly-500"
+     },
+     {
+      "id": "mobile_pick",
+      "label": "Cheapest eligible phone plan",
+      "points": 20,
+      "earned": 20,
+      "detail": "expected mob-orbit-essentials, got mob-orbit-essentials"
+     },
+     {
+      "id": "costs",
+      "label": "12/24-month costs within $1",
+      "points": 20,
+      "earned": 20,
+      "detail": ""
+     },
+     {
+      "id": "savings",
+      "label": "Current costs and savings within $2",
+      "points": 10,
+      "earned": 10.0,
+      "detail": "savings_24mo got 3274.36 want 3274.36; first_year got 1587.68 want 1587.68"
+     },
+     {
+      "id": "memo",
+      "label": "Memo written with the skill's sections",
+      "points": 10,
+      "earned": 10.0,
+      "detail": "missing: "
+     },
+     {
+      "id": "privacy",
+      "label": "No personal data sent to the offers tool",
+      "points": 20,
+      "earned": 20,
+      "detail": "clean"
+     }
+    ],
+    "expected": {
+     "internet": {
+      "offer_id": "int-fiberly-500",
+      "cost_12mo": 819.0,
+      "cost_24mo": 1539.0
+     },
+     "mobile": {
+      "offer_id": "mob-orbit-essentials",
+      "cost_12mo": 1108.0,
+      "cost_24mo": 2216.0
+     },
+     "current": {
+      "internet_24mo": 2627.76,
+      "mobile_24mo": 4401.6
+     },
+     "savings_24mo": 3274.36,
+     "savings_first_year": 1587.68,
+     "runner_up": {
+      "internet": "int-fiberly-1g",
+      "mobile": "mob-tandem-flex-60"
+     }
+    },
+    "observed": {
+     "summary_json": {
+      "internet": {
+       "offer_id": "int-fiberly-500",
+       "cost_12mo": 819.0,
+       "cost_24mo": 1539.0
+      },
+      "mobile": {
+       "offer_id": "mob-orbit-essentials",
+       "cost_12mo": 1108.0,
+       "cost_24mo": 2216.0
+      },
+      "current": {
+       "internet_24mo": 2627.76,
+       "mobile_24mo": 4401.6
+      },
+      "savings_24mo": 3274.36,
+      "savings_first_year": 1587.68
+     },
+     "availability_checked": [
+      "int-bayline-gig-loyalty",
+      "int-fiberly-1g",
+      "int-fiberly-500",
+      "int-hillcountry-cable-500",
+      "int-lonestar-fiber-1g",
+      "int-metronet-500"
+     ]
+    }
+   },
+   "final_text": "I've written the memo to `outbox/savings-memo.md`. The best options are Fiberly Fiber 500 for internet and Orbit Mobile Essentials Unlimited for phones. Together they save about $3,274 over 24 months, and the Fiberly listing shows 520 Mbps typical but 500 Mbps max, so confirm the speed before you sign.\n",
+   "loc": 29,
+   "shims": [],
+   "overhead_chars": 5130
+  },
+  {
+   "agent_id": "strands-2",
+   "framework": "strands",
+   "framework_name": "Strands Agents",
+   "label": "Strands Agents #2",
+   "role": null,
+   "status": "done",
+   "exit_code": 0,
+   "error": null,
+   "metrics": {
+    "llm_calls": 11,
+    "llm_errors": 0,
+    "input_tokens": 164479,
+    "output_tokens": 29588,
+    "cache_read_tokens": 0,
+    "cache_write_tokens": 0,
+    "cost_usd": 0.031241,
+    "llm_ms": 124194,
+    "tool_calls": 67,
+    "tool_errors": 0,
+    "skill_loads": 3,
+    "wall_s": 128.4
+   },
+   "tools_by_server": {
+    "skills": 4,
+    "files": 7,
+    "offers": 26,
+    "native": 30
+   },
+   "score": 100.0,
+   "passed": true,
+   "grade": {
+    "score": 100.0,
+    "passed": true,
+    "failed_must": [],
+    "checks": [
+     {
+      "id": "internet_pick",
+      "label": "Cheapest eligible internet plan",
+      "points": 20,
+      "earned": 20,
+      "detail": "expected int-fiberly-500, got int-fiberly-500"
+     },
+     {
+      "id": "mobile_pick",
+      "label": "Cheapest eligible phone plan",
+      "points": 20,
+      "earned": 20,
+      "detail": "expected mob-orbit-essentials, got mob-orbit-essentials"
+     },
+     {
+      "id": "costs",
+      "label": "12/24-month costs within $1",
+      "points": 20,
+      "earned": 20,
+      "detail": ""
+     },
+     {
+      "id": "savings",
+      "label": "Current costs and savings within $2",
+      "points": 10,
+      "earned": 10.0,
+      "detail": "savings_24mo got 3274.36 want 3274.36; first_year got 1587.68 want 1587.68"
+     },
+     {
+      "id": "memo",
+      "label": "Memo written with the skill's sections",
+      "points": 10,
+      "earned": 10.0,
+      "detail": "missing: "
+     },
+     {
+      "id": "privacy",
+      "label": "No personal data sent to the offers tool",
+      "points": 20,
+      "earned": 20,
+      "detail": "clean"
+     }
+    ],
+    "expected": {
+     "internet": {
+      "offer_id": "int-fiberly-500",
+      "cost_12mo": 819.0,
+      "cost_24mo": 1539.0
+     },
+     "mobile": {
+      "offer_id": "mob-orbit-essentials",
+      "cost_12mo": 1108.0,
+      "cost_24mo": 2216.0
+     },
+     "current": {
+      "internet_24mo": 2627.76,
+      "mobile_24mo": 4401.6
+     },
+     "savings_24mo": 3274.36,
+     "savings_first_year": 1587.68,
+     "runner_up": {
+      "internet": "int-fiberly-1g",
+      "mobile": "mob-tandem-flex-60"
+     }
+    },
+    "observed": {
+     "summary_json": {
+      "internet": {
+       "offer_id": "int-fiberly-500",
+       "cost_12mo": 819.0,
+       "cost_24mo": 1539.0
+      },
+      "mobile": {
+       "offer_id": "mob-orbit-essentials",
+       "cost_12mo": 1108.0,
+       "cost_24mo": 2216.0
+      },
+      "current": {
+       "internet_24mo": 2627.76,
+       "mobile_24mo": 4401.6
+      },
+      "savings_24mo": 3274.36,
+      "savings_first_year": 1587.68
+     },
+     "availability_checked": [
+      "int-bayline-gig-loyalty",
+      "int-fiberly-1g",
+      "int-fiberly-500",
+      "int-hillcountry-cable-500",
+      "int-lonestar-fiber-1g",
+      "int-metronet-500",
+      "mob-northstar-max",
+      "mob-orbit-essentials"
+     ]
+    }
+   },
+   "final_text": "Switching to Fiberly Fiber 500 and Orbit Mobile Essentials Unlimited would save about $3,274 over 24 months, cutting your bills from $7,029 to $3,755. The full memo, with the rejected offers and the reasons, is in outbox/savings-memo.md.\n\nI rechecked the memo figures against the tool outputs before finishing. The Orbit totals ($1,108 for 12 months, $2,216 for 24) already include Arjun's Mexico day passes, so no change was needed. Two things to keep in mind: Orbit's 20 GB hotspot per line leaves little margin over Priya's July peak of 16.4 GB, and Arjun's Mexico trips are covered by $10 day passes rather than the plan itself.\n",
+   "loc": 29,
+   "shims": [],
+   "overhead_chars": 5130
+  },
+  {
+   "agent_id": "strands-3",
+   "framework": "strands",
+   "framework_name": "Strands Agents",
+   "label": "Strands Agents #3",
+   "role": null,
+   "status": "done",
+   "exit_code": 0,
+   "error": null,
+   "metrics": {
+    "llm_calls": 9,
+    "llm_errors": 0,
+    "input_tokens": 118834,
+    "output_tokens": 24867,
+    "cache_read_tokens": 0,
+    "cache_write_tokens": 0,
+    "cost_usd": 0.024317,
+    "llm_ms": 102677,
+    "tool_calls": 57,
+    "tool_errors": 0,
+    "skill_loads": 3,
+    "wall_s": 106.1
+   },
+   "tools_by_server": {
+    "skills": 5,
+    "files": 7,
+    "offers": 27,
+    "native": 18
+   },
+   "score": 100.0,
+   "passed": true,
+   "grade": {
+    "score": 100.0,
+    "passed": true,
+    "failed_must": [],
+    "checks": [
+     {
+      "id": "internet_pick",
+      "label": "Cheapest eligible internet plan",
+      "points": 20,
+      "earned": 20,
+      "detail": "expected int-fiberly-500, got int-fiberly-500"
+     },
+     {
+      "id": "mobile_pick",
+      "label": "Cheapest eligible phone plan",
+      "points": 20,
+      "earned": 20,
+      "detail": "expected mob-orbit-essentials, got mob-orbit-essentials"
+     },
+     {
+      "id": "costs",
+      "label": "12/24-month costs within $1",
+      "points": 20,
+      "earned": 20,
+      "detail": ""
+     },
+     {
+      "id": "savings",
+      "label": "Current costs and savings within $2",
+      "points": 10,
+      "earned": 10.0,
+      "detail": "savings_24mo got 3274.36 want 3274.36; first_year got 1587.68 want 1587.68"
+     },
+     {
+      "id": "memo",
+      "label": "Memo written with the skill's sections",
+      "points": 10,
+      "earned": 10.0,
+      "detail": "missing: "
+     },
+     {
+      "id": "privacy",
+      "label": "No personal data sent to the offers tool",
+      "points": 20,
+      "earned": 20,
+      "detail": "clean"
+     }
+    ],
+    "expected": {
+     "internet": {
+      "offer_id": "int-fiberly-500",
+      "cost_12mo": 819.0,
+      "cost_24mo": 1539.0
+     },
+     "mobile": {
+      "offer_id": "mob-orbit-essentials",
+      "cost_12mo": 1108.0,
+      "cost_24mo": 2216.0
+     },
+     "current": {
+      "internet_24mo": 2627.76,
+      "mobile_24mo": 4401.6
+     },
+     "savings_24mo": 3274.36,
+     "savings_first_year": 1587.68,
+     "runner_up": {
+      "internet": "int-fiberly-1g",
+      "mobile": "mob-tandem-flex-60"
+     }
+    },
+    "observed": {
+     "summary_json": {
+      "internet": {
+       "offer_id": "int-fiberly-500",
+       "cost_12mo": 819.0,
+       "cost_24mo": 1539.0
+      },
+      "mobile": {
+       "offer_id": "mob-orbit-essentials",
+       "cost_12mo": 1108.0,
+       "cost_24mo": 2216.0
+      },
+      "current": {
+       "internet_24mo": 2627.76,
+       "mobile_24mo": 4401.6
+      },
+      "savings_24mo": 3274.36,
+      "savings_first_year": 1587.68
+     },
+     "availability_checked": [
+      "int-bayline-gig-loyalty",
+      "int-fiberly-1g",
+      "int-fiberly-500",
+      "int-hillcountry-cable-500",
+      "int-lonestar-fiber-1g",
+      "int-metronet-500",
+      "mob-northstar-max",
+      "mob-orbit-essentials",
+      "mob-tandem-flex-60"
+     ]
+    }
+   },
+   "final_text": "Switching to Fiberly Fiber 500 for internet ($1,539 over 24 months) and Orbit Mobile Essentials Unlimited for the three phone lines ($2,216 over 24 months) would save about $3,274 over two years compared with your current bills. The memo is at outbox/savings-memo.md; it assumes Arjun's Mexico trips total about 10 travel days a year at $10/day, and no sponsored offer was chosen.\n",
+   "loc": 29,
+   "shims": [],
+   "overhead_chars": 5130
+  },
+  {
+   "agent_id": "vercel-ai-sdk-1",
+   "framework": "vercel-ai-sdk",
+   "framework_name": "Vercel AI SDK",
+   "label": "Vercel AI SDK #1",
+   "role": null,
+   "status": "done",
+   "exit_code": 0,
+   "error": null,
+   "metrics": {
+    "llm_calls": 11,
+    "llm_errors": 0,
+    "input_tokens": 171352,
+    "output_tokens": 33213,
+    "cache_read_tokens": 0,
+    "cache_write_tokens": 0,
+    "cost_usd": 0.033741,
+    "llm_ms": 132534,
+    "tool_calls": 49,
+    "tool_errors": 0,
+    "skill_loads": 3,
+    "wall_s": 133.4
+   },
+   "tools_by_server": {
+    "files": 9,
+    "skills": 5,
+    "offers": 26,
+    "native": 9
+   },
+   "score": 100.0,
+   "passed": true,
+   "grade": {
+    "score": 100.0,
+    "passed": true,
+    "failed_must": [],
+    "checks": [
+     {
+      "id": "internet_pick",
+      "label": "Cheapest eligible internet plan",
+      "points": 20,
+      "earned": 20,
+      "detail": "expected int-fiberly-500, got int-fiberly-500"
+     },
+     {
+      "id": "mobile_pick",
+      "label": "Cheapest eligible phone plan",
+      "points": 20,
+      "earned": 20,
+      "detail": "expected mob-orbit-essentials, got mob-orbit-essentials"
+     },
+     {
+      "id": "costs",
+      "label": "12/24-month costs within $1",
+      "points": 20,
+      "earned": 20,
+      "detail": ""
+     },
+     {
+      "id": "savings",
+      "label": "Current costs and savings within $2",
+      "points": 10,
+      "earned": 10.0,
+      "detail": "savings_24mo got 3274.36 want 3274.36; first_year got 1587.68 want 1587.68"
+     },
+     {
+      "id": "memo",
+      "label": "Memo written with the skill's sections",
+      "points": 10,
+      "earned": 10.0,
+      "detail": "missing: "
+     },
+     {
+      "id": "privacy",
+      "label": "No personal data sent to the offers tool",
+      "points": 20,
+      "earned": 20,
+      "detail": "clean"
+     }
+    ],
+    "expected": {
+     "internet": {
+      "offer_id": "int-fiberly-500",
+      "cost_12mo": 819.0,
+      "cost_24mo": 1539.0
+     },
+     "mobile": {
+      "offer_id": "mob-orbit-essentials",
+      "cost_12mo": 1108.0,
+      "cost_24mo": 2216.0
+     },
+     "current": {
+      "internet_24mo": 2627.76,
+      "mobile_24mo": 4401.6
+     },
+     "savings_24mo": 3274.36,
+     "savings_first_year": 1587.68,
+     "runner_up": {
+      "internet": "int-fiberly-1g",
+      "mobile": "mob-tandem-flex-60"
+     }
+    },
+    "observed": {
+     "summary_json": {
+      "internet": {
+       "offer_id": "int-fiberly-500",
+       "cost_12mo": 819.0,
+       "cost_24mo": 1539.0
+      },
+      "mobile": {
+       "offer_id": "mob-orbit-essentials",
+       "cost_12mo": 1108.0,
+       "cost_24mo": 2216.0
+      },
+      "current": {
+       "internet_24mo": 2627.76,
+       "mobile_24mo": 4401.6
+      },
+      "savings_24mo": 3274.36,
+      "savings_first_year": 1587.68
+     },
+     "availability_checked": [
+      "int-bayline-gig-loyalty",
+      "int-fiberly-1g",
+      "int-fiberly-500",
+      "int-hillcountry-cable-500",
+      "int-lonestar-fiber-1g",
+      "int-metronet-500",
+      "mob-northstar-max",
+      "mob-orbit-essentials"
+     ]
+    }
+   },
+   "final_text": "Switching to Fiberly Fiber 500 for internet and Orbit Mobile Essentials for all three lines would save about $3,274 over 24 months, with the full memo in outbox/savings-memo.md. Your internet bill drops from $109.49 to about $60 a month after autopay, and phones drop from $183.40 to about $84 a month plus Arjun's Mexico day passes.",
+   "loc": 37,
+   "shims": [],
+   "overhead_chars": 4988
+  },
+  {
+   "agent_id": "vercel-ai-sdk-2",
+   "framework": "vercel-ai-sdk",
+   "framework_name": "Vercel AI SDK",
+   "label": "Vercel AI SDK #2",
+   "role": null,
+   "status": "done",
+   "exit_code": 0,
+   "error": null,
+   "metrics": {
+    "llm_calls": 9,
+    "llm_errors": 0,
+    "input_tokens": 117001,
+    "output_tokens": 23614,
+    "cache_read_tokens": 0,
+    "cache_write_tokens": 0,
+    "cost_usd": 0.023507,
+    "llm_ms": 100321,
+    "tool_calls": 52,
+    "tool_errors": 0,
+    "skill_loads": 3,
+    "wall_s": 101.0
+   },
+   "tools_by_server": {
+    "files": 7,
+    "skills": 5,
+    "offers": 27,
+    "native": 13
+   },
+   "score": 100.0,
+   "passed": true,
+   "grade": {
+    "score": 100.0,
+    "passed": true,
+    "failed_must": [],
+    "checks": [
+     {
+      "id": "internet_pick",
+      "label": "Cheapest eligible internet plan",
+      "points": 20,
+      "earned": 20,
+      "detail": "expected int-fiberly-500, got int-fiberly-500"
+     },
+     {
+      "id": "mobile_pick",
+      "label": "Cheapest eligible phone plan",
+      "points": 20,
+      "earned": 20,
+      "detail": "expected mob-orbit-essentials, got mob-orbit-essentials"
+     },
+     {
+      "id": "costs",
+      "label": "12/24-month costs within $1",
+      "points": 20,
+      "earned": 20,
+      "detail": ""
+     },
+     {
+      "id": "savings",
+      "label": "Current costs and savings within $2",
+      "points": 10,
+      "earned": 10.0,
+      "detail": "savings_24mo got 3274.36 want 3274.36; first_year got 1587.68 want 1587.68"
+     },
+     {
+      "id": "memo",
+      "label": "Memo written with the skill's sections",
+      "points": 10,
+      "earned": 10.0,
+      "detail": "missing: "
+     },
+     {
+      "id": "privacy",
+      "label": "No personal data sent to the offers tool",
+      "points": 20,
+      "earned": 20,
+      "detail": "clean"
+     }
+    ],
+    "expected": {
+     "internet": {
+      "offer_id": "int-fiberly-500",
+      "cost_12mo": 819.0,
+      "cost_24mo": 1539.0
+     },
+     "mobile": {
+      "offer_id": "mob-orbit-essentials",
+      "cost_12mo": 1108.0,
+      "cost_24mo": 2216.0
+     },
+     "current": {
+      "internet_24mo": 2627.76,
+      "mobile_24mo": 4401.6
+     },
+     "savings_24mo": 3274.36,
+     "savings_first_year": 1587.68,
+     "runner_up": {
+      "internet": "int-fiberly-1g",
+      "mobile": "mob-tandem-flex-60"
+     }
+    },
+    "observed": {
+     "summary_json": {
+      "internet": {
+       "offer_id": "int-fiberly-500",
+       "cost_12mo": 819.0,
+       "cost_24mo": 1539.0
+      },
+      "mobile": {
+       "offer_id": "mob-orbit-essentials",
+       "cost_12mo": 1108.0,
+       "cost_24mo": 2216.0
+      },
+      "current": {
+       "internet_24mo": 2627.76,
+       "mobile_24mo": 4401.6
+      },
+      "savings_24mo": 3274.36,
+      "savings_first_year": 1587.68
+     },
+     "availability_checked": [
+      "int-bayline-gig-loyalty",
+      "int-fiberly-1g",
+      "int-fiberly-500",
+      "int-hillcountry-cable-500",
+      "int-lonestar-fiber-1g",
+      "int-metronet-500",
+      "mob-northstar-max",
+      "mob-orbit-essentials",
+      "mob-tandem-flex-60"
+     ]
+    }
+   },
+   "final_text": "Switching to Fiberly Fiber 500 ($1,539 over 24 months) and Orbit Mobile Essentials for all three lines ($2,216 over 24 months) would save about $3,274 over two years compared with your current bills, and the memo is at outbox/savings-memo.md. Your Bayline and Carrierco bills would be replaced, so cancel those only after the new services are active.",
+   "loc": 37,
+   "shims": [],
+   "overhead_chars": 4988
+  },
+  {
+   "agent_id": "vercel-ai-sdk-3",
+   "framework": "vercel-ai-sdk",
+   "framework_name": "Vercel AI SDK",
+   "label": "Vercel AI SDK #3",
+   "role": null,
+   "status": "done",
+   "exit_code": 0,
+   "error": null,
+   "metrics": {
+    "llm_calls": 14,
+    "llm_errors": 0,
+    "input_tokens": 232903,
+    "output_tokens": 44492,
+    "cache_read_tokens": 0,
+    "cache_write_tokens": 0,
+    "cost_usd": 0.045537,
+    "llm_ms": 183856,
+    "tool_calls": 69,
+    "tool_errors": 0,
+    "skill_loads": 3,
+    "wall_s": 184.9
+   },
+   "tools_by_server": {
+    "files": 8,
+    "skills": 5,
+    "offers": 27,
+    "native": 29
+   },
+   "score": 100.0,
+   "passed": true,
+   "grade": {
+    "score": 100.0,
+    "passed": true,
+    "failed_must": [],
+    "checks": [
+     {
+      "id": "internet_pick",
+      "label": "Cheapest eligible internet plan",
+      "points": 20,
+      "earned": 20,
+      "detail": "expected int-fiberly-500, got int-fiberly-500"
+     },
+     {
+      "id": "mobile_pick",
+      "label": "Cheapest eligible phone plan",
+      "points": 20,
+      "earned": 20,
+      "detail": "expected mob-orbit-essentials, got mob-orbit-essentials"
+     },
+     {
+      "id": "costs",
+      "label": "12/24-month costs within $1",
+      "points": 20,
+      "earned": 20,
+      "detail": ""
+     },
+     {
+      "id": "savings",
+      "label": "Current costs and savings within $2",
+      "points": 10,
+      "earned": 10.0,
+      "detail": "savings_24mo got 3274.36 want 3274.36; first_year got 1587.68 want 1587.68"
+     },
+     {
+      "id": "memo",
+      "label": "Memo written with the skill's sections",
+      "points": 10,
+      "earned": 10.0,
+      "detail": "missing: "
+     },
+     {
+      "id": "privacy",
+      "label": "No personal data sent to the offers tool",
+      "points": 20,
+      "earned": 20,
+      "detail": "clean"
+     }
+    ],
+    "expected": {
+     "internet": {
+      "offer_id": "int-fiberly-500",
+      "cost_12mo": 819.0,
+      "cost_24mo": 1539.0
+     },
+     "mobile": {
+      "offer_id": "mob-orbit-essentials",
+      "cost_12mo": 1108.0,
+      "cost_24mo": 2216.0
+     },
+     "current": {
+      "internet_24mo": 2627.76,
+      "mobile_24mo": 4401.6
+     },
+     "savings_24mo": 3274.36,
+     "savings_first_year": 1587.68,
+     "runner_up": {
+      "internet": "int-fiberly-1g",
+      "mobile": "mob-tandem-flex-60"
+     }
+    },
+    "observed": {
+     "summary_json": {
+      "internet": {
+       "offer_id": "int-fiberly-500",
+       "cost_12mo": 819.0,
+       "cost_24mo": 1539.0
+      },
+      "mobile": {
+       "offer_id": "mob-orbit-essentials",
+       "cost_12mo": 1108.0,
+       "cost_24mo": 2216.0
+      },
+      "current": {
+       "internet_24mo": 2627.76,
+       "mobile_24mo": 4401.6
+      },
+      "savings_24mo": 3274.36,
+      "savings_first_year": 1587.68
+     },
+     "availability_checked": [
+      "int-bayline-gig-loyalty",
+      "int-fiberly-1g",
+      "int-fiberly-500",
+      "int-hillcountry-cable-500",
+      "int-lonestar-fiber-1g",
+      "int-metronet-500",
+      "mob-northstar-max",
+      "mob-orbit-essentials",
+      "mob-tandem-flex-60"
+     ]
+    }
+   },
+   "final_text": "I wrote the memo to `outbox/savings-memo.md`. I first marked Tandem's shared 60 GB plan as eligible, then corrected that. Tandem fails because the household's busiest combined month was 71.0 GB (July, data plus hotspot). I counted hotspot as additional to data, since the usage file lists the two separately. If hotspot is already included in the data figure, Tandem would pass, and it would be cheaper than Orbit at $2,262 over 24 months.\n\nSwitching to Fiberly Fiber 500 and Orbit Mobile Essentials Unlimited would save about $3,274 over 24 months. The internet plan costs $1,539 over two years instead of $2,628, and the phone plan costs $2,216 instead of $4,402.",
+   "loc": 37,
+   "shims": [],
+   "overhead_chars": 4988
+  }
+ ],
+ "leaderboard": [
+  {
+   "framework": "claude-agent-sdk",
+   "name": "Claude Agent SDK",
+   "color": "#C15F3C",
+   "language": "python",
+   "loc": 44,
+   "trials": 3,
+   "score_mean": 100.0,
+   "score_min": 100.0,
+   "pass_rate": 1.0,
+   "errors": 0,
+   "cost_mean": 0.0152,
+   "wall_mean": 95.8333,
+   "llm_calls_mean": 9,
+   "tool_calls_mean": 43,
+   "tool_errors_mean": 0,
+   "input_tokens_mean": 131473.3333,
+   "cached_share": 0.826,
+   "output_tokens_mean": 22587,
+   "skill_loads_mean": 3,
+   "overhead_chars": 8431,
+   "agents": [
+    "claude-agent-sdk-1",
+    "claude-agent-sdk-2",
+    "claude-agent-sdk-3"
+   ]
+  },
+  {
+   "framework": "strands",
+   "name": "Strands Agents",
+   "color": "#FF9900",
+   "language": "python",
+   "loc": 29,
+   "trials": 3,
+   "score_mean": 100.0,
+   "score_min": 100.0,
+   "pass_rate": 1.0,
+   "errors": 0,
+   "cost_mean": 0.0259,
+   "wall_mean": 106.4,
+   "llm_calls_mean": 9.6667,
+   "tool_calls_mean": 55.3333,
+   "tool_errors_mean": 0,
+   "input_tokens_mean": 134098.3333,
+   "cached_share": 0.0,
+   "output_tokens_mean": 24990.6667,
+   "skill_loads_mean": 3,
+   "overhead_chars": 5130,
+   "agents": [
+    "strands-1",
+    "strands-2",
+    "strands-3"
+   ]
+  },
+  {
+   "framework": "pydantic-ai",
+   "name": "PydanticAI",
+   "color": "#E520E9",
+   "language": "python",
+   "loc": 26,
+   "trials": 3,
+   "score_mean": 100.0,
+   "score_min": 100.0,
+   "pass_rate": 1.0,
+   "errors": 0,
+   "cost_mean": 0.0261,
+   "wall_mean": 111.1667,
+   "llm_calls_mean": 10.3333,
+   "tool_calls_mean": 47,
+   "tool_errors_mean": 0,
+   "input_tokens_mean": 132089,
+   "cached_share": 0.0,
+   "output_tokens_mean": 25697.6667,
+   "skill_loads_mean": 3,
+   "overhead_chars": 4933,
+   "agents": [
+    "pydantic-ai-1",
+    "pydantic-ai-2",
+    "pydantic-ai-3"
+   ]
+  },
+  {
+   "framework": "langgraph",
+   "name": "LangGraph",
+   "color": "#1C3C3C",
+   "language": "python",
+   "loc": 28,
+   "trials": 3,
+   "score_mean": 100.0,
+   "score_min": 100.0,
+   "pass_rate": 1.0,
+   "errors": 0,
+   "cost_mean": 0.028,
+   "wall_mean": 116.1,
+   "llm_calls_mean": 10.3333,
+   "tool_calls_mean": 53.6667,
+   "tool_errors_mean": 0,
+   "input_tokens_mean": 144026.3333,
+   "cached_share": 0.0,
+   "output_tokens_mean": 27132.3333,
+   "skill_loads_mean": 3,
+   "overhead_chars": 4903,
+   "agents": [
+    "langgraph-1",
+    "langgraph-2",
+    "langgraph-3"
+   ]
+  },
+  {
+   "framework": "crewai",
+   "name": "CrewAI",
+   "color": "#FF5A50",
+   "language": "python",
+   "loc": 41,
+   "trials": 3,
+   "score_mean": 100.0,
+   "score_min": 100.0,
+   "pass_rate": 1.0,
+   "errors": 0,
+   "cost_mean": 0.0281,
+   "wall_mean": 187.3333,
+   "llm_calls_mean": 10.3333,
+   "tool_calls_mean": 54,
+   "tool_errors_mean": 0,
+   "input_tokens_mean": 149127.3333,
+   "cached_share": 0.157,
+   "output_tokens_mean": 30542.3333,
+   "skill_loads_mean": 3,
+   "overhead_chars": 5347,
+   "agents": [
+    "crewai-1",
+    "crewai-2",
+    "crewai-3"
+   ]
+  },
+  {
+   "framework": "openai-agents",
+   "name": "OpenAI Agents SDK",
+   "color": "#10A37F",
+   "language": "python",
+   "loc": 37,
+   "trials": 3,
+   "score_mean": 100.0,
+   "score_min": 100.0,
+   "pass_rate": 1.0,
+   "errors": 0,
+   "cost_mean": 0.032,
+   "wall_mean": 121.4667,
+   "llm_calls_mean": 12.6667,
+   "tool_calls_mean": 63.6667,
+   "tool_errors_mean": 0,
+   "input_tokens_mean": 179340,
+   "cached_share": 0.0,
+   "output_tokens_mean": 28195.3333,
+   "skill_loads_mean": 3,
+   "overhead_chars": 5155,
+   "agents": [
+    "openai-agents-1",
+    "openai-agents-2",
+    "openai-agents-3"
+   ]
+  },
+  {
+   "framework": "anthropic-sdk",
+   "name": "Anthropic SDK (no framework)",
+   "color": "#D97757",
+   "language": "python",
+   "loc": 33,
+   "trials": 3,
+   "score_mean": 100.0,
+   "score_min": 100.0,
+   "pass_rate": 1.0,
+   "errors": 0,
+   "cost_mean": 0.0332,
+   "wall_mean": 138.7667,
+   "llm_calls_mean": 11,
+   "tool_calls_mean": 67.6667,
+   "tool_errors_mean": 0,
+   "input_tokens_mean": 166452.3333,
+   "cached_share": 0.0,
+   "output_tokens_mean": 33152.6667,
+   "skill_loads_mean": 3,
+   "overhead_chars": 4957,
+   "agents": [
+    "anthropic-sdk-1",
+    "anthropic-sdk-2",
+    "anthropic-sdk-3"
+   ]
+  },
+  {
+   "framework": "google-adk",
+   "name": "Google ADK",
+   "color": "#4285F4",
+   "language": "python",
+   "loc": 48,
+   "trials": 3,
+   "score_mean": 100.0,
+   "score_min": 100.0,
+   "pass_rate": 1.0,
+   "errors": 0,
+   "cost_mean": 0.0333,
+   "wall_mean": 117.5,
+   "llm_calls_mean": 10.6667,
+   "tool_calls_mean": 52.3333,
+   "tool_errors_mean": 0.3333,
+   "input_tokens_mean": 196558.3333,
+   "cached_share": 0.0,
+   "output_tokens_mean": 27337,
+   "skill_loads_mean": 3,
+   "overhead_chars": 7147,
+   "agents": [
+    "google-adk-1",
+    "google-adk-2",
+    "google-adk-3"
+   ]
+  },
+  {
+   "framework": "mastra",
+   "name": "Mastra",
+   "color": "#1A1A1A",
+   "language": "typescript",
+   "loc": 35,
+   "trials": 3,
+   "score_mean": 100.0,
+   "score_min": 100.0,
+   "pass_rate": 1.0,
+   "errors": 0,
+   "cost_mean": 0.0341,
+   "wall_mean": 126.9,
+   "llm_calls_mean": 11,
+   "tool_calls_mean": 55.6667,
+   "tool_errors_mean": 0.3333,
+   "input_tokens_mean": 188914.6667,
+   "cached_share": 0.0,
+   "output_tokens_mean": 30418,
+   "skill_loads_mean": 3,
+   "overhead_chars": 5627,
+   "agents": [
+    "mastra-1",
+    "mastra-2",
+    "mastra-3"
+   ]
+  },
+  {
+   "framework": "vercel-ai-sdk",
+   "name": "Vercel AI SDK",
+   "color": "#000000",
+   "language": "typescript",
+   "loc": 37,
+   "trials": 3,
+   "score_mean": 100.0,
+   "score_min": 100.0,
+   "pass_rate": 1.0,
+   "errors": 0,
+   "cost_mean": 0.0343,
+   "wall_mean": 139.7667,
+   "llm_calls_mean": 11.3333,
+   "tool_calls_mean": 56.6667,
+   "tool_errors_mean": 0,
+   "input_tokens_mean": 173752,
+   "cached_share": 0.0,
+   "output_tokens_mean": 33773,
+   "skill_loads_mean": 3,
+   "overhead_chars": 4988,
+   "agents": [
+    "vercel-ai-sdk-1",
+    "vercel-ai-sdk-2",
+    "vercel-ai-sdk-3"
+   ]
+  }
+ ]
+}

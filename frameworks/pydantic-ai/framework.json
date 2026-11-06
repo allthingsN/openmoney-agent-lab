@@ -1,0 +1,32 @@
+{
+  "id": "pydantic-ai",
+  "name": "PydanticAI",
+  "vendor": "Pydantic",
+  "language": "python",
+  "color": "#E520E9",
+  "glyph": "PA",
+  "homepage": "https://github.com/pydantic/pydantic-ai",
+  "packages": "pydantic-ai-slim[anthropic,mcp]",
+  "summary": "A pydantic_ai.Agent with plain-text output on the Anthropic provider, one MCPToolset (FastMCP client) per MCP server and a native @agent.tool_plain.",
+  "skills": "mcp",
+  "entry": "agent.py",
+  "setup": [
+    "uv",
+    "sync",
+    "--project",
+    "{dir}",
+    "--quiet"
+  ],
+  "run": [
+    "uv",
+    "run",
+    "--project",
+    "{dir}",
+    "--quiet",
+    "python",
+    "{dir}/agent.py",
+    "{spec}"
+  ],
+  "shims": [],
+  "notes": "pydantic-ai 2.x removed MCPServerStdio/MCPServerStreamableHTTP; MCPToolset (built on a FastMCP client) is the documented replacement and picks the transport from its argument: a URL means Streamable HTTP, a fastmcp StdioTransport means stdio. The model string 'anthropic:<model>' builds AnthropicProvider, which reads ANTHROPIC_API_KEY and lets the Anthropic SDK read ANTHROPIC_BASE_URL. Output type is plain str, so no output tool is added; the framework always sends an explicit tool_choice {type: auto} (accepted, no shim). The system prompt goes in as instructions (sent as a system text block, trailing whitespace stripped). No cache_control by default, so no prompt caching. max_turns maps to UsageLimits(request_limit=...); exceeding it raises UsageLimitExceeded (the default limit would be 50 requests). MCP tool errors default to tool_error_behavior='retry' (ModelRetry), which counts against the agent's retry budget and can end the run if a tool keeps failing."
+}
