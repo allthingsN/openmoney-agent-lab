@@ -17,6 +17,8 @@ Then a team of agents on six frameworks working one job together, and a builder 
   <a href="https://openmoney.ai/lab">openmoney.ai/lab</a>
 </p>
 
+<p align="center"><img src="docs/img/home.png" alt="The lab's home page: published leaderboard and how it's measured" width="900"></p>
+
 ---
 
 Every framework in this repo gets **the same model, the same prompt, the same MCP tools, the same skills and the
@@ -40,8 +42,6 @@ servers see every tool call, and a deterministic grader scores the result. No fr
 | [Vercel AI SDK](https://ai-sdk.dev) | TypeScript | A ToolLoopAgent on the @ai-sdk/anthropic provider, with MCP tools from @ai-sdk/mcp's Streamable HTTP client and calculate defined with tool() and a zod schema. [Code](frameworks/vercel-ai-sdk/agent.ts) (37 lines) |
 
 <!-- frameworks:end -->
-
-<p align="center"><img src="docs/img/live-2.png" alt="Two frameworks on Incident Commander, live: model calls along each lane, tool calls by server, pause/step controls, score stamp" width="900"></p>
 
 ## Run it in two minutes
 
@@ -75,6 +75,9 @@ result, or the system prompt and tool list the framework really sent. Pause any 
 step it one call at a time, or stop it. In interactive mode, destructive actions (rolling back a deploy, changing a
 flag, posting to the status page) wait for you to approve them.
 
+<p align="center"><img src="docs/img/arena-replay.png" alt="Bill Doctor replayed: 10 frameworks × 3 trials on one time axis, model calls and tool calls per lane, score stamps" width="900"></p>
+<p align="center"><img src="docs/img/live-2.png" alt="A live interactive run: pause, step, resume, stop; tool calls colored by server" width="440"> <img src="docs/img/inspector-llm-1440.png" alt="Inspector: the exact request a framework sent and what came back" width="440"></p>
+
 The two tasks are built to separate careful agents from fast ones:
 
 - **Bill Doctor** — a household's bills, usage history and wishes are in its files. The agent shops a fictional
@@ -90,8 +93,6 @@ The two tasks are built to separate careful agents from fast ones:
   fix), page the right teams, and write status updates. A live API token sits in a debug log line: page security,
   never copy it.
 
-<p align="center"><img src="docs/img/inspector-llm-1440.png" alt="Inspector: the exact request a framework sent" width="440"> <img src="docs/img/results-replay-1440-ink.png" alt="Replaying a published run" width="440"></p>
-
 ### 2. Mission Control: a team across frameworks
 **Moving Day**: the same household moves from San Jose to Austin. A planner (Claude Agent SDK) puts tasks on a shared
 task board; the lab starts each task on the framework assigned to its role once its dependencies are done —
@@ -102,7 +103,7 @@ cancellation letter, and an `.ics` calendar for the move week — all graded. Wa
 live, approve the plan before work starts, comment on tasks or send them back yourself, and reassign any role to
 any framework.
 
-<p align="center"><img src="docs/img/mission-live-4.png" alt="Mission Control: the team graph and the shared task board" width="900"></p>
+<p align="center"><img src="docs/img/mission-board.png" alt="Mission Control: the shared task board" width="440"> <img src="docs/img/mission-activity.png" alt="Mission Control: every agent run on its own lane, colored by framework" width="440"></p>
 
 ### 3. Agent Builder: plain English → an agent on every framework
 Describe the job ("I run a bakery; every Friday I export sales as CSV…"). Claude designs the agent: instructions,
