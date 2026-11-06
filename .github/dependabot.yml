@@ -1,0 +1,15 @@
+version: 2
+updates:
+  - package-ecosystem: uv
+    directories: ["/", "/frameworks/*"]
+    schedule: {interval: weekly}
+    groups:
+      python: {patterns: ["*"]}
+  - package-ecosystem: npm
+    directories: ["/web", "/frameworks/vercel-ai-sdk", "/frameworks/mastra"]
+    schedule: {interval: weekly}
+    groups:
+      npm: {patterns: ["*"]}
+  - package-ecosystem: github-actions
+    directory: /
+    schedule: {interval: monthly}

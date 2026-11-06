@@ -3,7 +3,7 @@ import { api } from "../api";
 import { CodeView, FileTree } from "../components/content";
 import { FrameworkGrid } from "../components/FrameworkPicker";
 import { I, ServerIcon } from "../components/icons";
-import { Button, CopyButton, Glyph, Kicker, Modal, SectionHead, Spinner, Toggle } from "../components/ui";
+import { Button, CopyButton, Glyph, Kicker, SectionHead, Spinner, Toggle } from "../components/ui";
 import { useApp } from "../lib/app";
 import { serverColor } from "../lib/colors";
 import { ago } from "../lib/format";
@@ -530,34 +530,21 @@ function TestStep({ slug, design, built, runId, onRun, onNext }: { slug: string;
 function PublishStep({ tree }: { tree: BuildTree }) {
   const [repo, setRepo] = useState(tree.slug);
   const [priv, setPriv] = useState(true);
-  const [confirm, setConfirm] = useState(false);
-  const [busy, setBusy] = useState(false);
-  const [res, setRes] = useState<{ ok: boolean; message: string } | null>(null);
-  const push = async () => {
-    setBusy(true);
-    setRes(null);
-    try {
-      const r = await api.github(tree.slug, repo, priv);
-      setRes({ ok: true, message: r.output || "Created and pushed." });
-    } catch (e) {
-      setRes({ ok: false, message: String((e as Error).message) });
-    } finally {
-      setBusy(false);
-      setConfirm(false);
-    }
-  };
+  const safeRepo = /^[A-Za-z0-9_.-]+(\/[A-Za-z0-9_.-]+)?$/.test(repo.trim()) ? repo.trim() : tree.slug;
+  const commands = [
+    `cd "${tree.path}"`,
+    `git init -b main && git add -A && git commit -m "${tree.slug}: built with the OpenMoney Agent Lab"`,
+    `gh repo create ${safeRepo} ${priv ? "--private" : "--public"} --source . --push`,
+  ].join("\n");
   return (
     <section>
       <SectionHead n={6} kicker="Publish" title="Take it with you">The project runs anywhere with Python 3.11+ and uv: <span className="mono">cp .env.example .env</span>, add a key, <span className="mono">python3 run.py &lt;framework&gt;</span>.</SectionHead>
-      {Object.keys(tree.files).some((p) => SECRET.test(p)) && (
-        <div className="callout callout-ochre"><I.warn size={14} /> <span>This folder has a <span className="mono">.env</span> file with a key in it. The zip includes every file — remove <span className="mono">.env</span> from <span className="mono">{tree.path}</span> before sharing the zip. (GitHub is safe: <span className="mono">.gitignore</span> leaves it out.)</span></div>
-      )}
       <ol className="publish">
         <li>
           <span className="mono pub-n">01</span>
           <div className="pub-main">
             <div className="pub-title">Download a zip</div>
-            <div className="faint small">Everything except virtualenvs and node_modules.</div>
+            <div className="faint small">Everything except virtualenvs, node_modules and any <span className="mono">.env</span> file.</div>
           </div>
           <a className="btn btn-signal btn-md" href={`/api/builder/${tree.slug}/zip`} download><I.download size={13} /><span>{tree.slug}.zip</span></a>
         </li>
@@ -572,22 +559,18 @@ function PublishStep({ tree }: { tree: BuildTree }) {
         <li>
           <span className="mono pub-n">03</span>
           <div className="pub-main">
-            <div className="pub-title">Create a GitHub repository</div>
-            <div className="faint small">Uses the <span className="mono">gh</span> CLI on this machine, logged in as you.</div>
+            <div className="pub-title">Put it on GitHub</div>
+            <div className="faint small">Run these in your own terminal (needs <span className="mono">git</span> and the <span className="mono">gh</span> CLI). The lab never runs commands for a web request. <span className="mono">.gitignore</span> already leaves out <span className="mono">.env</span>.</div>
             <div className="gh-form">
               <label className="field"><span className="field-label">Repository</span><input className="input mono" value={repo} onChange={(e) => setRepo(e.target.value)} placeholder="owner/name or name" /></label>
               <Toggle checked={priv} onChange={setPriv} label="Private" />
             </div>
+            <pre className="mono small pub-cmds">{commands}</pre>
+            {!priv && <div className="callout callout-ochre small"><I.warn size={13} /> Public: anyone can see the code, the sample files and the agent's instructions.</div>}
           </div>
-          <Button icon={<I.github size={13} />} onClick={() => setConfirm(true)} disabled={!repo.trim()}>Create repo</Button>
+          <CopyButton text={commands} label="Copy commands" />
         </li>
       </ol>
-      {res && <div className={`callout ${res.ok ? "callout-green" : "callout-red"}`}>{res.ok ? <I.check size={14} /> : <I.warn size={14} />} <pre className="mono small">{res.message}</pre></div>}
-      <Modal open={confirm} onClose={() => setConfirm(false)} kicker="Confirm" title={`Create ${priv ? "private" : "public"} repo “${repo}”?`}
-        footer={<><Button onClick={() => setConfirm(false)}>Cancel</Button><Button variant="signal" busy={busy} onClick={push} icon={<I.github size={13} />}>Create and push</Button></>}>
-        <p>The lab will run <span className="mono">git init</span>, commit the project and <span className="mono">gh repo create {repo} {priv ? "--private" : "--public"} --source . --push</span> from <span className="mono">{tree.path}</span>.</p>
-        {!priv && <div className="callout callout-ochre small"><I.warn size={13} /> Public: anyone can see the code, the sample files and the agent's instructions.</div>}
-      </Modal>
       <div className="builder-cta">
         <a className="btn btn-ghost btn-md" href={href("/builder")} onClick={() => go("/builder")}><I.plus size={13} /><span>Build another agent</span></a>
         <span className="faint small">This build stays in the lab: open <a className="mono" href={href(`/builder/${tree.slug}`)}>#/builder/{tree.slug}</a> to test it again on other frameworks.</span>

@@ -7,3 +7,11 @@ dependencies = ["google-adk[mcp]>=2.13", "litellm>=1.84,<1.106.3"]
 
 [tool.uv]
 package = false
+# Security overrides (verified with full benchmark runs): litellm caps filelock below 4 and google-adk caps
+# opentelemetry below 1.45, but the fixes for GHSA-v4x8-3wr5-3wq8 et al. (filelock 4.2.1) and GHSA-xcq7-p3pf-p88h
+# (opentelemetry-api 1.45.1) are only in the newer releases.
+override-dependencies = [
+  "filelock>=4.2.1",
+  "opentelemetry-api>=1.45.1",
+  "opentelemetry-sdk>=1.45.1",
+]

@@ -59,8 +59,6 @@ export const api = {
   check: (design: Design) => post<{ design: Design }>("/api/builder/check", { design }),
   build: (design: Design, frameworks: string[]) => post<BuildTree>("/api/builder/build", { design, frameworks }),
   getBuild: (slug: string) => get<BuildTree & { design: Design }>(`/api/builder/${slug}`),
-  github: (slug: string, repo: string, isPrivate: boolean) =>
-    post<{ ok: boolean; output: string }>(`/api/builder/${slug}/github`, { repo, private: isPrivate }),
 
   results: () => get<{ benchmarks: PublishedIndexRow[] }>("/api/results"),
   result: (id: string) => get<RunInfo>(`/api/results/${id}`),

@@ -6,3 +6,6 @@ dependencies = ["openai-agents[litellm]>=0.24"]
 
 [tool.uv]
 package = false
+# Security override (verified with full benchmark runs): litellm caps filelock below 4, but the fixes for
+# GHSA-v4x8-3wr5-3wq8 and related advisories are only in filelock 4.2.1+.
+override-dependencies = ["filelock>=4.2.1"]

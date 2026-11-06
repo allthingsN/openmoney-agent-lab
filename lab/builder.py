@@ -12,7 +12,6 @@ import io
 import json
 import re
 import shutil
-import subprocess
 import textwrap
 import zipfile
 from pathlib import Path
@@ -21,6 +20,7 @@ import httpx
 
 from . import config
 from .runs import AgentSlot, Run, RunManager, SKILLS_DIR, frameworks
+from .safepath import UnsafePath, safe_id, within
 
 ROOT = config.ROOT
 BUILDS_DIR = ROOT / "my-agents"
@@ -100,7 +100,7 @@ async def design(description: str, model: str | None = None) -> dict:
                 last_err = e
                 body["messages"] += [{"role": "assistant", "content": text},
                                      {"role": "user", "content": f"That was not valid JSON for the design ({e}). Return only the JSON object."}]
-    raise ValueError(f"Could not parse a design: {last_err}")
+    raise ValueError("The model's reply wasn't a valid design two times in a row. Try again, or rephrase the job.")
 
 
 def normalize(d: dict, description: str = "") -> dict:
@@ -195,7 +195,8 @@ if __name__ == "__main__":
 
 # ---------------------------------------------------------------------------------------------------------- project
 def project_dir(slug: str) -> Path:
-    return BUILDS_DIR / _slugify(slug)
+    """The folder of a build, always inside my-agents/."""
+    return within(BUILDS_DIR, safe_id(_slugify(slug)))
 
 
 def servers_for(d: dict) -> list[str]:
@@ -228,16 +229,21 @@ def write_project(d: dict, framework_ids: list[str]) -> Path:
     if d["custom_tools"]:
         (p / "servers" / "custom.py").write_text(custom_server_source(d))
     for sk in d["skills"]:
-        sd = p / "skills" / sk["name"]
+        sd = within(p, "skills", safe_id(sk["name"]))
         sd.mkdir(parents=True, exist_ok=True)
         (sd / "SKILL.md").write_text(f"---\nname: {sk['name']}\ndescription: {sk.get('description', '')}\n---\n\n{sk.get('body', '')}\n")
     ws = p / "workspace"
     (ws / "outbox").mkdir(parents=True, exist_ok=True)
     for f in d["workspace_files"]:
-        fp = ws / f["path"]
+        try:
+            fp = within(ws, f["path"])
+        except UnsafePath:
+            continue  # a model-written path that would land outside the workspace
         fp.parent.mkdir(parents=True, exist_ok=True)
         fp.write_text(f.get("content", ""))
     for fid in framework_ids:
+        if fid not in fws:
+            raise ValueError(f"Unknown framework: {fid}")
         fw = fws[fid]
         src = Path(fw["dir"])
         dst = p / "frameworks" / fid
@@ -345,28 +351,11 @@ def tree(slug: str) -> dict:
     return {"slug": p.name, "path": str(p), "files": files}
 
 
-def publish_github(slug: str, repo: str, private: bool = True) -> dict:
-    p = project_dir(slug)
-    if not shutil.which("gh"):
-        raise ValueError("The GitHub CLI (gh) isn't installed here. Download the zip and push it yourself.")
-    def run(*cmd):
-        r = subprocess.run(cmd, cwd=p, capture_output=True, text=True)
-        if r.returncode:
-            raise ValueError(f"{' '.join(cmd)} failed: {r.stderr.strip()[:400]}")
-        return r.stdout.strip()
-    if not (p / ".git").exists():
-        run("git", "init", "-q", "-b", "main")
-    run("git", "add", "-A")
-    if run("git", "status", "--porcelain"):
-        run("git", "commit", "-q", "-m", f"{p.name}: agent built with the OpenMoney Agent Lab")
-    out = run("gh", "repo", "create", repo, "--private" if private else "--public", "--source", ".", "--push")
-    return {"ok": True, "output": out}
-
 
 # ---------------------------------------------------------------------------------------------------------- test run
 def create_build_run(manager: RunManager, body: dict) -> Run:
-    slug = _slugify(body["slug"])
-    p = project_dir(slug)
+    p = project_dir(body["slug"])
+    slug = p.name
     d = json.loads((p / "design.json").read_text())
     spec = json.loads((p / "agent.json").read_text())
     fws = frameworks()

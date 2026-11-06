@@ -5,6 +5,7 @@ from __future__ import annotations
 import asyncio
 import importlib.util
 import json
+import logging
 import os
 import secrets
 import shutil
@@ -21,6 +22,7 @@ from . import config
 from .events import RunLog, preview
 from .mcpkit import CallContext, Env, ToolServer
 
+_log = logging.getLogger("agent-lab")
 ROOT = config.ROOT
 FRAMEWORKS_DIR = ROOT / "frameworks"
 TASKS_DIR = ROOT / "tasks"
@@ -485,8 +487,9 @@ class RunManager:
         fw = slot.framework
         try:
             await self.ensure_framework(fw, log)
-        except Exception as e:
-            slot.status, slot.error = "error", str(e)[-2000:]
+        except Exception:
+            _log.exception("framework setup failed: %s", fw["id"])
+            slot.status, slot.error = "error", f"Installing {fw['name']} failed; see the setup log above."
             log.emit(slot.agent_id, "agent.error", {"error": slot.error})
             return
         spec = slot.prepare()
@@ -521,8 +524,9 @@ class RunManager:
                 errs = [e["data"]["line"] for e in log.events if e["agent"] == slot.agent_id and e["type"] == "agent.log"
                         and e["data"]["level"] == "err"][-12:]
                 slot.error = f"exit code {slot.exit_code}: " + "\n".join(errs)[-1500:]
-        except Exception as e:  # pragma: no cover
-            slot.status, slot.error = "error", f"{type(e).__name__}: {e}"
+        except Exception:  # pragma: no cover
+            _log.exception("agent %s failed to run", slot.agent_id)
+            slot.status, slot.error = "error", "The agent process could not be started; see the lab's log."
         slot.metrics["wall_s"] = round(time.time() - slot.started_at, 1)
         if slot.grader:
             try:
@@ -532,9 +536,10 @@ class RunManager:
                 slot.grade = slot.grader(Artifacts(slot.workspace, slot.data_dir, slot.tool_calls, slot.final_text, serializable_state))
                 log.emit(slot.agent_id, "agent.graded", {"score": slot.grade["score"], "passed": slot.grade["passed"],
                                                          "checks": slot.grade["checks"]})
-            except Exception as e:
-                slot.grade = {"score": 0, "passed": False, "checks": [], "error": f"grader failed: {e}"}
-                log.emit(slot.agent_id, "agent.graded", {"score": 0, "passed": False, "error": str(e)})
+            except Exception:
+                _log.exception("grader failed for %s", slot.agent_id)
+                slot.grade = {"score": 0, "passed": False, "checks": [], "error": "grader failed; see the lab's log"}
+                log.emit(slot.agent_id, "agent.graded", {"score": 0, "passed": False, "error": "grader failed"})
         (slot.dir / "tool_calls.json").write_text(json.dumps(slot.tool_calls, indent=1, default=str))
         (slot.dir / "state.json").write_text(json.dumps(slot.state, indent=1, default=str))
         log.emit(slot.agent_id, "agent.end", slot.summary())

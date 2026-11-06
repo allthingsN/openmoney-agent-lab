@@ -741,3 +741,4 @@
 .lane.is-compact .track-end::before { top: 2px; height: 52px; }
 .lane.is-compact .track-end > * { top: 13px; }
 :root[data-theme="paper"] .llm-bar-n { color: rgba(255, 255, 255, 0.82); }
+.pub-cmds { margin: 10px 0 0; padding: 10px 12px; border: 1px solid var(--rule); border-radius: var(--radius); background: var(--code-bg); color: var(--ink); white-space: pre-wrap; overflow-wrap: anywhere; }

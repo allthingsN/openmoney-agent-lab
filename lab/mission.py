@@ -8,6 +8,7 @@ the deliverable → the lab grades it.
 from __future__ import annotations
 
 import asyncio
+import logging
 import shutil
 from pathlib import Path
 
@@ -17,6 +18,13 @@ from . import config
 from .runs import AgentSlot, Run, RunManager, frameworks
 
 MISSIONS_DIR = config.ROOT / "missions"
+_log = logging.getLogger("agent-lab")
+
+
+class MissionStopped(Exception):
+    def __init__(self, reason: str):
+        super().__init__(reason)
+        self.reason = reason
 MAX_TASK_RUNS = 24
 
 
@@ -176,9 +184,9 @@ async def _orchestrate(manager: RunManager, run: Run) -> None:
                         "team is done, and the reviewer checks the work. Reply with a short summary of the plan.")
         await manager.run_agent(planner)
         if not _board(run)["tasks"]:
-            raise RuntimeError("The planner created no tasks.")
+            raise MissionStopped("The planner created no tasks.")
         if not await _gate(run, "plan", {"tasks": [dict(t) for t in _board(run)["tasks"].values()]}):
-            raise RuntimeError("A person rejected the plan.")
+            raise MissionStopped("A person rejected the plan.")
         budget = [MAX_TASK_RUNS]
         for round_ in (1, 2):
             run.log.emit(None, "mission.phase", {"phase": "execute", "round": round_})
@@ -200,16 +208,20 @@ async def _orchestrate(manager: RunManager, run: Run) -> None:
                       "numbers. Reply with a two-sentence summary for Priya.")
         await manager.run_agent(final)
         run.final_text = final.final_text
-    except Exception as e:
-        run.log.emit(None, "mission.error", {"error": str(e)})
+    except MissionStopped as e:
+        run.log.emit(None, "mission.error", {"error": e.reason})
+    except Exception:
+        _log.exception("mission %s failed", run.id)
+        run.log.emit(None, "mission.error", {"error": "The mission stopped on an internal error; see the lab's log."})
     from .tasks.moving_day import grade
     from .tasks.common import Artifacts
 
     calls = [c for s in run.agents.values() for c in s.tool_calls]
     try:
         g = grade(Artifacts(run.dir / "workspace", Path(m["dir"]) / "data", calls, getattr(run, "final_text", "")))
-    except Exception as e:
-        g = {"score": 0, "passed": False, "checks": [], "error": str(e)}
+    except Exception:
+        _log.exception("mission grader failed")
+        g = {"score": 0, "passed": False, "checks": [], "error": "grader failed; see the lab's log"}
     run.meta["grade"] = g
     run.meta["board"] = _board(run)["tasks"]
     run.log.emit(None, "mission.graded", g)

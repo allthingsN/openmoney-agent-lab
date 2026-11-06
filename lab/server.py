@@ -8,12 +8,18 @@ import json
 import os
 from pathlib import Path
 
+import logging
+from urllib.parse import urlsplit
+
 import httpx
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import FileResponse, JSONResponse, Response, StreamingResponse
 
 from . import config, proxy
 from .runs import RunManager, frameworks, tasks
+from .safepath import UnsafePath, safe_id, within
+
+log = logging.getLogger("agent-lab")
 
 ROOT = config.ROOT
 WEB_DIST = ROOT / "web" / "dist"
@@ -21,6 +27,37 @@ RESULTS_DIR = ROOT / "results"
 
 app = FastAPI(title="OpenMoney Agent Lab", docs_url="/api/docs", openapi_url="/api/openapi.json")
 manager = RunManager(port=int(os.environ.get("LAB_PORT", "7777")), concurrency=int(os.environ.get("LAB_CONCURRENCY", "4")))
+
+# Hosts the lab answers to. Anything else is refused, so a web page can't reach the lab through DNS rebinding.
+# Add your own (e.g. a LAN name) with LAB_ALLOWED_HOSTS=host1,host2.
+ALLOWED_HOSTS = {"localhost", "127.0.0.1", "::1", "[::1]", "host.docker.internal"} | {
+    h.strip() for h in os.environ.get("LAB_ALLOWED_HOSTS", "").split(",") if h.strip()}
+
+
+@app.middleware("http")
+async def same_origin_only(request: Request, call_next):
+    """Refuse requests a browser sends on behalf of another site (CSRF) or to a rebound hostname.
+
+    Agents (no Origin header) and the lab's own UI (same origin) pass. A page on any other origin cannot start runs,
+    change settings, or read results through this server."""
+    host = (request.headers.get("host") or "").rsplit(":", 1)[0].lower()
+    if host and host not in ALLOWED_HOSTS:
+        return JSONResponse({"error": "host not allowed"}, status_code=403)
+    origin = request.headers.get("origin")
+    if origin and origin != "null":
+        o = urlsplit(origin)
+        if (o.hostname or "").lower() not in ALLOWED_HOSTS:
+            return JSONResponse({"error": "cross-origin request refused"}, status_code=403)
+    elif origin == "null":
+        return JSONResponse({"error": "cross-origin request refused"}, status_code=403)
+    if request.method not in ("GET", "HEAD", "OPTIONS") and request.headers.get("sec-fetch-site") == "cross-site":
+        return JSONResponse({"error": "cross-site request refused"}, status_code=403)
+    return await call_next(request)
+
+
+@app.exception_handler(UnsafePath)
+async def unsafe_path(_request: Request, _exc: UnsafePath):
+    return JSONResponse({"error": "not found"}, status_code=404)
 
 
 # --------------------------------------------------------------------------------------------- settings
@@ -63,8 +100,10 @@ async def test_config():
             text = "".join(b.get("text", "") for b in j.get("content", []) if b.get("type") == "text")
             return {"ok": True, "message": f"{j.get('model')} says: {text.strip()[:60]}"}
         return {"ok": False, "message": f"HTTP {r.status_code}: {r.text[:300]}"}
-    except Exception as e:
-        return {"ok": False, "message": f"{type(e).__name__}: {e}"}
+    except Exception:
+        log.exception("connection test failed")
+        host = urlsplit(u.messages_url("/v1/messages")).hostname
+        return {"ok": False, "message": f"Couldn't reach {host}. Check the base URL and your network (details in the lab's log)."}
 
 
 # --------------------------------------------------------------------------------------------- catalog
@@ -161,7 +200,7 @@ def list_runs():
 def get_run(run_id: str):
     if run_id in manager.runs:
         return manager.runs[run_id].info()
-    p = config.RUNS_DIR / run_id / "summary.json"
+    p = within(config.RUNS_DIR, safe_id(run_id), "summary.json")
     if p.exists():
         return json.loads(p.read_text())
     raise HTTPException(404)
@@ -186,7 +225,7 @@ async def run_events(run_id: str, request: Request, after: int = -1):
 
     async def gen():
         if run is None:
-            for ev in _read_events(config.RUNS_DIR / run_id / "events.jsonl"):
+            for ev in _read_events(within(config.RUNS_DIR, safe_id(run_id), "events.jsonl")):
                 if ev["seq"] > after:
                     yield ev
             yield {"type": "stream.end", "run": run_id}
@@ -257,10 +296,9 @@ async def decide(run_id: str, aid: str, req: Request):
 
 @app.get("/api/runs/{run_id}/agents/{agent_id}/llm/{n}")
 def llm_bodies(run_id: str, agent_id: str, n: int):
-    d = config.RUNS_DIR / run_id / "agents" / agent_id / "llm"
     out = {}
     for kind in ("request", "response"):
-        p = d / f"{n:03d}-{kind}.json"
+        p = within(config.RUNS_DIR, safe_id(run_id), "agents", safe_id(agent_id), "llm", f"{int(n):03d}-{kind}.json")
         if p.exists():
             out[kind] = json.loads(p.read_text())
     if not out:
@@ -270,24 +308,24 @@ def llm_bodies(run_id: str, agent_id: str, n: int):
 
 @app.get("/api/runs/{run_id}/agents/{agent_id}/outbox")
 def outbox(run_id: str, agent_id: str):
-    d = config.RUNS_DIR / run_id / "agents" / agent_id / "workspace" / "outbox"
+    d = within(config.RUNS_DIR, safe_id(run_id), "agents", safe_id(agent_id), "workspace", "outbox")
     files = {}
     if d.exists():
         for p in sorted(d.rglob("*")):
-            if p.is_file() and p.name != ".keep":
-                files[str(p.relative_to(d))] = p.read_text(errors="replace")[:200000]
+            if p.is_file() and not p.is_symlink() and p.name != ".keep":
+                files[str(p.relative_to(d))] = within(d, str(p.relative_to(d))).read_text(errors="replace")[:200000]
     return {"files": files}
 
 
 @app.get("/api/runs/{run_id}/outbox")
 def run_outbox(run_id: str):
     """The run's shared workspace outbox (missions: every role writes to one workspace)."""
-    d = config.RUNS_DIR / run_id / "workspace" / "outbox"
+    d = within(config.RUNS_DIR, safe_id(run_id), "workspace", "outbox")
     files = {}
     if d.exists():
         for p in sorted(d.rglob("*")):
-            if p.is_file() and p.name != ".keep":
-                files[str(p.relative_to(d))] = p.read_text(errors="replace")[:200000]
+            if p.is_file() and not p.is_symlink() and p.name != ".keep":
+                files[str(p.relative_to(d))] = within(d, str(p.relative_to(d))).read_text(errors="replace")[:200000]
     return {"files": files}
 
 
@@ -347,10 +385,11 @@ async def builder_build(req: Request):
 def builder_get(slug: str):
     from . import builder as B
 
-    if not B.project_dir(slug).exists():
+    d = B.project_dir(slug)
+    if not d.exists():
         raise HTTPException(404)
     t = B.tree(slug)
-    t["design"] = json.loads((B.project_dir(slug) / "design.json").read_text())
+    t["design"] = json.loads(within(d, "design.json").read_text())
     return t
 
 
@@ -358,21 +397,11 @@ def builder_get(slug: str):
 def builder_zip(slug: str):
     from . import builder as B
 
-    if not B.project_dir(slug).exists():
+    d = B.project_dir(slug)
+    if not d.exists():
         raise HTTPException(404)
     return Response(B.zip_project(slug), media_type="application/zip",
-                    headers={"content-disposition": f'attachment; filename="{B.project_dir(slug).name}.zip"'})
-
-
-@app.post("/api/builder/{slug}/github")
-async def builder_github(slug: str, req: Request):
-    from . import builder as B
-
-    b = await req.json()
-    try:
-        return B.publish_github(slug, b["repo"], bool(b.get("private", True)))
-    except ValueError as e:
-        raise HTTPException(400, str(e))
+                    headers={"content-disposition": f'attachment; filename="{d.name}.zip"'})
 
 
 # --------------------------------------------------------------------------------------------- missions
@@ -412,7 +441,7 @@ def results_index():
 
 @app.get("/api/results/{bench_id}")
 def result(bench_id: str):
-    p = RESULTS_DIR / bench_id / "summary.json"
+    p = within(RESULTS_DIR, safe_id(bench_id), "summary.json")
     if not p.exists():
         raise HTTPException(404)
     return json.loads(p.read_text())
@@ -420,7 +449,7 @@ def result(bench_id: str):
 
 @app.get("/api/results/{bench_id}/events")
 async def result_events(bench_id: str, speed: float = 0):
-    p = RESULTS_DIR / bench_id / "events.jsonl.gz"
+    p = within(RESULTS_DIR, safe_id(bench_id), "events.jsonl.gz")
     evs = _read_events(p)
 
     async def gen():
@@ -438,15 +467,15 @@ async def result_events(bench_id: str, speed: float = 0):
 @app.get("/api/results/{bench_id}/outbox/{agent_id}")
 def result_outbox(bench_id: str, agent_id: str):
     """A published agent's outbox files (results/<id>/outbox/<agent>.json), so replays show what it wrote."""
-    p = RESULTS_DIR / bench_id / "outbox" / f"{agent_id}.json"
-    if ".." in bench_id or ".." in agent_id or not p.exists():
+    p = within(RESULTS_DIR, safe_id(bench_id), "outbox", f"{safe_id(agent_id)}.json")
+    if not p.exists():
         return {"files": {}}
     return {"files": json.loads(p.read_text())}
 
 
 @app.get("/api/results/{bench_id}/llm/{agent_id}/{n}")
 def result_llm(bench_id: str, agent_id: str, n: int):
-    p = RESULTS_DIR / bench_id / "llm" / agent_id / f"{n:03d}.json.gz"
+    p = within(RESULTS_DIR, safe_id(bench_id), "llm", safe_id(agent_id), f"{int(n):03d}.json.gz")
     if not p.exists():
         raise HTTPException(404)
     with gzip.open(p, "rt") as f:
@@ -491,9 +520,15 @@ async def mcp(run_id: str, agent_id: str, server: str, req: Request):
 # --------------------------------------------------------------------------------------------- UI
 @app.get("/{path:path}", include_in_schema=False)
 def ui(path: str):
-    f = WEB_DIST / path
-    if path and f.is_file():
-        return FileResponse(f)
+    if path.split("/", 1)[0] in ("api", "llm", "mcp"):
+        raise HTTPException(404)
+    if path:
+        try:
+            f = within(WEB_DIST, path)
+        except UnsafePath:
+            raise HTTPException(404)
+        if f.is_file():
+            return FileResponse(f)
     idx = WEB_DIST / "index.html"
     if idx.exists():
         return FileResponse(idx)
