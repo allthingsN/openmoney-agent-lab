@@ -14,6 +14,7 @@ Then a team of agents on six frameworks working one job together, and a builder 
   <a href="#2-mission-control-a-team-across-frameworks">Mission Control</a> ·
   <a href="#3-agent-builder-plain-english--an-agent-on-every-framework">Agent Builder</a> ·
   <a href="docs/METHODOLOGY.md">Methodology</a> ·
+  <a href="docs/VERIFY.md">Verify it</a> ·
   <a href="https://openmoney.ai/lab">openmoney.ai/lab</a>
 </p>
 
@@ -245,7 +246,8 @@ agents read `ANTHROPIC_API_KEY` (and `ANTHROPIC_BASE_URL` for LiteLLM) from thei
 - **Task:** add `tasks/<id>/` (task.yaml, workspace/, data/) and a grader in `lab/tasks/`; register it in
   `lab/runs.py:grader_for`. Graders must be deterministic and recompute the right answer from the data.
 
-`uv run pytest` runs the lab's tests (no key needed).
+`uv run pytest` runs the lab's tests and `uv run python scripts/verify-results.py` re-checks every published number
+against the raw logs (neither needs a key). See [`docs/VERIFY.md`](docs/VERIFY.md).
 
 ## License
 
