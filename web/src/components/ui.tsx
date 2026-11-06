@@ -146,7 +146,7 @@ export function useEscape(on: () => void, active = true) {
   }, [on, active]);
 }
 
-function useFocusTrap(ref: React.RefObject<HTMLElement>, active: boolean) {
+function useFocusTrap(ref: React.RefObject<HTMLElement | null>, active: boolean) {
   useEffect(() => {
     if (!active || !ref.current) return;
     const prev = document.activeElement as HTMLElement | null;

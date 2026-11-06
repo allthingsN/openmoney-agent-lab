@@ -1,3 +1,4 @@
+import type { JSX } from "react";
 import type { SVGProps } from "react";
 
 type P = SVGProps<SVGSVGElement> & { size?: number };

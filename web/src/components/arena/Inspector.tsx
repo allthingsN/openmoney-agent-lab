@@ -1,3 +1,4 @@
+import type { JSX } from "react";
 import { useEffect, useMemo, useState } from "react";
 import { api, llmUrl, type RunSource } from "../../api";
 import { useApp } from "../../lib/app";

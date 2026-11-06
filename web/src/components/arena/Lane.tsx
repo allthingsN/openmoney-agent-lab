@@ -167,7 +167,7 @@ function ServerRail({ a, freshTs }: { a: AgentState; freshTs: number }) {
       <span className="rail-origin" aria-hidden />
       <span className="rail-line" aria-hidden />
       {servers.map((s) => (
-        <span key={s} ref={(el) => (chipRefs.current[s] = el)} className={`rail-chip ${Date.now() - (hits[s] ?? 0) < 650 ? "is-hit" : ""} ${counts[s] ? "" : "is-idle"}`}
+        <span key={s} ref={(el) => { chipRefs.current[s] = el; }} className={`rail-chip ${Date.now() - (hits[s] ?? 0) < 650 ? "is-hit" : ""} ${counts[s] ? "" : "is-idle"}`}
           style={{ ["--srv" as any]: serverColor(s) }} title={`${SERVER_LABEL[s] ?? s}: ${counts[s] ?? 0} calls`}>
           <ServerIcon server={s} size={12} />
           <span className="rail-name">{SERVER_LABEL[s] ?? s}</span>

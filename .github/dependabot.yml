@@ -3,6 +3,7 @@ updates:
   - package-ecosystem: uv
     directories: ["/", "/frameworks/*"]
     schedule: {interval: weekly}
+    versioning-strategy: lockfile-only   # keep each framework's tested version ranges; update within them
     groups:
       python: {patterns: ["*"]}
   - package-ecosystem: npm

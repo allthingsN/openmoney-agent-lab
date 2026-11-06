@@ -247,7 +247,7 @@ function DesignEditor({ design, catalog, onChange, readCode, setReadCode, onNext
   design: Design; catalog: Record<string, CatalogEntry>; onChange: (d: Design) => void; readCode: boolean; setReadCode: (v: boolean) => void; onNext: () => void; problems: string[];
 }) {
   const [checking, setChecking] = useState(false);
-  const timer = useRef<number>();
+  const timer = useRef<number | undefined>(undefined);
   const set = <K extends keyof Design>(k: K, v: Design[K]) => onChange({ ...design, [k]: v });
   const codeSig = design.custom_tools.map((t) => t.code + t.name).join("\u0000");
   // re-run the server's static checks when tool code changes
