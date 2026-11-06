@@ -39,7 +39,8 @@ def main():
             out.append(f"| {r['name']} | {r['score_mean']:.1f} | {r['pass_rate'] * 100:.0f}% | ${r['cost_mean']:.3f} | "
                        f"{r['wall_mean']:.0f}s | {r['llm_calls_mean']:.1f} | {r['input_tokens_mean']:,.0f} ({r['cached_share'] * 100:.0f}%) |")
     readme = (ROOT / "README.md").read_text()
-    readme = block(readme, "frameworks", "\n".join(rows))
+    table = ["", "| Framework | Language | How the agent is built |", "|---|---|---|"] + rows + [""]
+    readme = block(readme, "frameworks", "\n".join(table))
     readme = block(readme, "results", "\n".join(out) if out else "_No published runs yet._")
     (ROOT / "README.md").write_text(readme)
     notes = ["# Framework notes", "", "What each adapter does, and what we learned about each framework while making it do the same job. "

@@ -24,9 +24,10 @@ same limits**. The lab runs each one as its own process and watches it from outs
 model call (tokens, cache, cost, latency, the system prompt and tools the framework actually sent), the lab's MCP
 servers see every tool call, and a deterministic grader scores the result. No framework reports its own numbers.
 
+<!-- frameworks:start -->
+
 | Framework | Language | How the agent is built |
 |---|---|---|
-<!-- frameworks:start -->
 | [Anthropic SDK (no framework)](https://github.com/anthropics/anthropic-sdk-python) | Python | The baseline: the official Python SDK's tool runner loops over MCP tools converted with anthropic.lib.tools.mcp. No agent framework at all. [Code](frameworks/anthropic-sdk/agent.py) (33 lines) |
 | [Claude Agent SDK](https://github.com/anthropics/claude-agent-sdk-python) | Python | Claude Code's own agent loop driven by the Python SDK's query(): built-in tools cut down to Skill, MCP servers over Streamable HTTP, calculate as an in-process SDK MCP tool, and skills loaded natively from .claude/skills. [Code](frameworks/claude-agent-sdk/agent.py) (44 lines) |
 | [CrewAI](https://github.com/crewAIInc/crewAI) | Python | One Agent (the system prompt as its backstory), one Task, one Crew; MCP tools from crewai-tools' MCPServerAdapter and Claude through CrewAI's native Anthropic provider. [Code](frameworks/crewai/agent.py) (41 lines) |
@@ -37,6 +38,7 @@ servers see every tool call, and a deterministic grader scores the result. No fr
 | [Strands Agents](https://github.com/strands-agents/sdk-python) | Python | A Strands Agent on the Anthropic model provider; each MCP server is an MCPClient tool provider the agent starts and stops itself, plus one @tool. [Code](frameworks/strands/agent.py) (29 lines) |
 | [Mastra](https://mastra.ai) | TypeScript | A Mastra Agent on an @ai-sdk/anthropic model, with every MCP server's tools from @mastra/mcp's MCPClient.listTools() and calculate defined with createTool(). [Code](frameworks/mastra/agent.ts) (35 lines) |
 | [Vercel AI SDK](https://ai-sdk.dev) | TypeScript | A ToolLoopAgent on the @ai-sdk/anthropic provider, with MCP tools from @ai-sdk/mcp's Streamable HTTP client and calculate defined with tool() and a zod schema. [Code](frameworks/vercel-ai-sdk/agent.ts) (37 lines) |
+
 <!-- frameworks:end -->
 
 <p align="center"><img src="docs/img/live-2.png" alt="Two frameworks on Incident Commander, live: model calls along each lane, tool calls by server, pause/step controls, score stamp" width="900"></p>
@@ -138,6 +140,7 @@ All published runs, with their full event logs and every request/response body, 
   team about the leaked token.
 - **Adapters are 26–48 lines** in every framework; the differences that matter are in defaults (caching, history
   handling, tool naming), documented per framework in [`docs/FRAMEWORKS.md`](docs/FRAMEWORKS.md).
+
 <!-- results:start -->
 
 **Moving Day** (mission) on `claude-opus-5-5`, 2026-11-06: score **100.0/100**, total $4.33. Team: planner → `claude-agent-sdk`, researcher → `langgraph`, analyst → `pydantic-ai`, privacy → `openai-agents`, writer → `crewai`, scheduler → `vercel-ai-sdk`, reviewer → `google-adk`. [Run log](results/2026-11-06-moving-day-opus-5-5/)
