@@ -121,6 +121,14 @@ python3 run.py langgraph                     # or any framework you built it for
 python3 run.py crewai "a request of your own"
 ```
 
+**Cost controls.** Builder test runs, and built projects, add prompt caching to every model call: most frameworks
+send the whole conversation uncached on every turn, so a 35-call research run costs several times more than it
+needs to. The Arena does not do this; its benchmarks measure each framework as it ships. Each test-run agent also
+has a spend cap ($5 by default; the lab stops the agent when it reaches the cap). `fetch_url` returns at most 12,000
+characters and strips image links and long lists from JSON. The judge checks the core result first: an agent that
+honestly reports it couldn't do the job fails the run, whatever the other criteria say. A built project's `run.py`
+adds caching through a small local relay (`cache_relay.py`); set `NO_CACHE_RELAY=1` to call the API directly.
+
 ## Results
 
 All published runs, with their full event logs and every request/response body, are in [`results/`](results/).

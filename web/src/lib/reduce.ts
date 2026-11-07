@@ -61,6 +61,8 @@ export interface AgentState {
   phase?: string;
   status: AgentStatus;
   pausedRequested: boolean;
+  /** set when the lab stopped the agent at its spend cap */
+  budget?: { cap: number; spent: number };
   createdTs?: number;
   startTs?: number;
   endTs?: number;
@@ -395,6 +397,13 @@ export function reduceRun(s: RunState, ev: LabEvent): RunState {
       if (!ev.agent) break;
       const a = touch(ev.agent);
       a.final = d.text;
+      break;
+    }
+    case "agent.budget": {
+      if (!ev.agent) break;
+      const a = touch(ev.agent);
+      a.budget = { cap: d.cap_usd, spent: d.spent_usd };
+      a.markers = [...a.markers, { ts, kind: "error", label: "spend cap", data: d }];
       break;
     }
     case "agent.control": {

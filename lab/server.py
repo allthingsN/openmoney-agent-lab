@@ -277,9 +277,17 @@ async def agent_control(run_id: str, agent_id: str, req: Request):
     run = manager.runs.get(run_id)
     if not run:
         raise HTTPException(404)
-    targets = list(run.agents.values()) if agent_id == "*" else [run.agents[agent_id]]
+    action = b.get("action", "")
+    if action not in ("pause", "resume", "step", "stop"):
+        raise HTTPException(422, "action must be pause, resume, step or stop")
+    if agent_id == "*":  # "all" means the agents still working; finished ones are left alone
+        targets = [s for s in run.agents.values() if s.status in ("queued", "running", "paused")]
+    elif agent_id in run.agents:
+        targets = [run.agents[agent_id]]
+    else:
+        raise HTTPException(404)
     for s in targets:
-        s.control(b.get("action", ""))
+        s.control(action)
     return {"ok": True}
 
 

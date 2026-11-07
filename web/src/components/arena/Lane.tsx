@@ -62,7 +62,7 @@ export const Lane = memo(function Lane({ a, now, freshTs, index, controls, onIns
         <div className="lane-status">
           <span className={`status s-${pausing ? "pausing" : heldPaused ? "paused" : a.status}`} title={heldPaused ? "The next model call will be held until you resume or step" : undefined}>
             <StatusDot status={pausing || heldPaused ? "paused" : a.status} />
-            {pausing ? "Pausing…" : heldPaused ? "Paused" : STATUS_LABEL[a.status]}
+            {pausing ? "Pausing…" : heldPaused || a.status === "paused" ? "Paused · waiting for you" : a.budget ? "Stopped at spend cap" : STATUS_LABEL[a.status]}
           </span>
           {a.grade && <span className={`score-chip ${a.grade.passed ? "ok" : a.grade.score >= 50 ? "mid" : "bad"}`} title="Grader score">{Math.round(a.grade.score)}</span>}
         </div>

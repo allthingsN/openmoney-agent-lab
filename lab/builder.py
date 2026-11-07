@@ -23,6 +23,7 @@ from .runs import AgentSlot, Run, RunManager, SKILLS_DIR, frameworks
 from .safepath import UnsafePath, safe_id, within
 
 ROOT = config.ROOT
+DEFAULT_TEST_CAP_USD = 5.0  # per agent, per test run; the agent is stopped when it's reached
 BUILDS_DIR = ROOT / "my-agents"
 
 CATALOG = {
@@ -55,6 +56,7 @@ complete design for one agent that can do it with tools, as JSON only (no prose)
   ],
   "skills": [{"name": "kebab-case", "description": "When to use this skill (one sentence).", "body": "Markdown instructions: the expert procedure, rules, formats."}],
   "workspace_files": [{"path": "inbox/example.csv", "content": "small realistic sample data the agent can work on"}],
+  "outcome": "One sentence: the core result the sample prompt must deliver for the job to count as done.",
   "success_criteria": ["Concrete, checkable statements about a good result for the sample prompt (3-6)."]
 }
 
@@ -63,8 +65,17 @@ CATALOG
 
 Rules: prefer catalog tools; add custom tools only for deterministic logic or data the job needs (0-4 of them), each
 self-contained. Skills hold domain procedure and formats (1-3). Include sample workspace files so the agent can be
-tried immediately (no real personal data). Never require API keys or services the person hasn't mentioned. Output the
-JSON object and nothing else."""
+tried immediately (no real personal data). Never require API keys or services the person hasn't mentioned.
+
+Success criteria describe the result, not the excuse. The first criterion states the core deliverable (e.g. "Reports
+a closing price for NVDA and SOXL, each with its date and source URL"). Never write a criterion that a failed run also
+satisfies ("…or says it couldn't be verified", "if there are prices, they have two decimals"): how to fail honestly
+belongs in system_prompt, not in success_criteria.
+
+Live data from the web: public endpoints move and disappear, so never make the agent depend on one URL you remember.
+Name two or three alternative public sources that need no key in system_prompt, tell the agent to try the next one
+when a fetch fails, and to request small responses (fetch_url returns at most 12,000 characters). Output the JSON
+object and nothing else."""
 
 
 def _slugify(s: str) -> str:
@@ -122,6 +133,7 @@ def normalize(d: dict, description: str = "") -> dict:
     d["workspace_files"] = [f for f in d.get("workspace_files", [])[:12]
                             if f.get("path") and ".." not in f["path"] and not f["path"].startswith("/")]
     d.setdefault("success_criteria", [])
+    d["outcome"] = (d.get("outcome") or "").strip() or (d["success_criteria"][0] if d["success_criteria"] else "")
     d.setdefault("sample_prompt", "")
     d.setdefault("system_prompt", "")
     return d
@@ -259,6 +271,7 @@ def write_project(d: dict, framework_ids: list[str]) -> Path:
     (p / "agent.json").write_text(json.dumps(spec, indent=2))
     (p / "design.json").write_text(json.dumps(d, indent=2))
     (p / "run.py").write_text((lab_dir / "export_run.py").read_text())
+    shutil.copy(lab_dir / "cachemark.py", p / "cache_relay.py")
     (p / ".env.example").write_text("# Anthropic directly\nANTHROPIC_API_KEY=sk-ant-...\n\n# …or a LiteLLM proxy in front of Anthropic\n"
                                     "# ANTHROPIC_BASE_URL=https://your-litellm.example.com\n# ANTHROPIC_API_KEY=sk-your-litellm-key\n")
     (p / ".gitignore").write_text(".env\n.run/\n.venv/\nnode_modules/\n__pycache__/\nworkspace/outbox/*\n!workspace/outbox/.keep\n")
@@ -362,8 +375,15 @@ def create_build_run(manager: RunManager, body: dict) -> Run:
     spec = json.loads((p / "agent.json").read_text())
     fws = frameworks()
     ids = body.get("frameworks") or spec["frameworks"]
+    try:
+        cap = float(body.get("max_cost_usd", DEFAULT_TEST_CAP_USD))
+    except (TypeError, ValueError):
+        raise ValueError("max_cost_usd must be a number")
+    if not 0 < cap <= 100:
+        raise ValueError("max_cost_usd must be between 0 and 100")
     run = Run(manager, "build", d["name"], body.get("model") or config.load().model, bool(body.get("interactive")),
-              {"slug": slug, "frameworks": ids, "success_criteria": d.get("success_criteria", [])})
+              {"slug": slug, "frameworks": ids, "success_criteria": d.get("success_criteria", []),
+               "outcome": d.get("outcome") or "", "cache_prompts": True, "max_cost_usd": cap})
     prompt = body.get("prompt") or spec["prompt"]
     servers = spec["servers"]
     custom = {"custom": str(p / "servers" / "custom.py")} if "custom" in servers else {}
@@ -372,8 +392,8 @@ def create_build_run(manager: RunManager, body: dict) -> Run:
                           system_prompt=spec["system_prompt"], workspace_src=p / "workspace",
                           data_dir=(p / "data") if (p / "data").exists() else None, servers=servers,
                           skills=spec.get("skills", []), skills_dir=p / "skills" if (p / "skills").exists() else SKILLS_DIR,
-                          custom_servers=custom, max_turns=spec.get("max_turns", 40), timeout_s=600,
-                          grader=_judge_for(d, prompt)))
+                          custom_servers=custom, max_turns=spec.get("max_turns", 40), timeout_s=900,
+                          grader=_judge_for(d, prompt), cache_prompts=True, max_cost_usd=cap))
     manager.runs[run.id] = run
     return run
 
@@ -382,6 +402,10 @@ def _judge_for(d: dict, prompt: str):
     criteria = d.get("success_criteria") or []
     if not criteria:
         return None
+    outcome = ("Delivered the core result the request asks for"
+               + (f" ({d['outcome'].rstrip('.')})" if d.get("outcome") and d["outcome"] not in criteria else "")
+               + ", not only an explanation of why it couldn't.")
+    criteria = [outcome, *criteria]
 
     def judge(a) -> dict:
         from .tasks.common import Check, summarize
@@ -390,8 +414,11 @@ def _judge_for(d: dict, prompt: str):
         files = {str(f.relative_to(outbox)): f.read_text(errors="replace")[:8000] for f in outbox.rglob("*")
                  if f.is_file() and f.name != ".keep"}
         u = config.load()
-        ask = ("Grade an AI agent's work. For each criterion answer pass or fail with a short reason. Reply with JSON only: "
-               '{"results": [{"criterion": "...", "pass": true, "reason": "..."}]}\n\n'
+        ask = ("Grade an AI agent's work. For each criterion answer pass or fail with a short reason. Be strict: the "
+               "first criterion is whether the person actually got what they asked for. Honestly reporting that it "
+               "couldn't be done is good behaviour, but it fails that criterion. A criterion that is only met because "
+               "the result is missing (a format rule with nothing to format, a check on items that don't exist) fails. "
+               'Reply with JSON only: {"results": [{"criterion": "...", "pass": true, "reason": "..."}]}\n\n'
                f"Request: {prompt}\n\nCriteria:\n" + "\n".join(f"- {c}" for c in criteria) +
                f"\n\nAgent's final answer:\n{a.final_text[:8000]}\n\nFiles it wrote:\n" +
                "\n".join(f"--- {k}\n{v}" for k, v in files.items())[:30000] +
@@ -401,10 +428,15 @@ def _judge_for(d: dict, prompt: str):
                        json={"model": u.model, "max_tokens": 4000, "messages": [{"role": "user", "content": ask}]})
         text = "".join(b.get("text", "") for b in r.json().get("content", []) if b.get("type") == "text")
         res = _extract_json(text).get("results", [])
-        checks = [Check(f"c{i + 1}", x.get("criterion", criteria[i] if i < len(criteria) else "?"), 1,
-                        1 if x.get("pass") else 0, x.get("reason", "")) for i, x in enumerate(res)]
-        out = summarize(checks, pass_score=70)
-        out["judge"] = "model-graded against the design's success criteria"
+        checks = [Check("outcome" if i == 0 else f"c{i}", criteria[i] if i < len(criteria) else x.get("criterion", "?"),
+                        3 if i == 0 else 1, (3 if i == 0 else 1) if x.get("pass") else 0, x.get("reason", ""))
+                  for i, x in enumerate(res[:len(criteria)])]
+        if not checks or checks[0].id != "outcome":
+            checks.insert(0, Check("outcome", criteria[0], 3, 0, "The judge gave no verdict on the core result."))
+        out = summarize(checks, pass_score=70, must=["outcome"])
+        if out["failed_must"]:
+            out["score"] = min(out["score"], 40.0)  # the job wasn't done; the other criteria can't make it a pass
+        out["judge"] = "model-graded: the core result first (must pass), then the design's success criteria"
         return out
 
     return judge

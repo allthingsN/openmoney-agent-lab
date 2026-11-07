@@ -134,6 +134,8 @@ class AgentSlot:
     workspace_dir: Path | None = None  # shared workspace (missions); default: the agent's own copy
     skills_dir: Path | None = None     # default: the repo's skills/
     custom_servers: dict = field(default_factory=dict)  # name -> path of a generated mcpkit server file
+    cache_prompts: bool = False         # the proxy adds prompt-cache breakpoints (builder runs; benchmarks stay as-is)
+    max_cost_usd: float | None = None   # stop the agent once its measured spend reaches this
     token: str = field(default_factory=lambda: "lab-" + secrets.token_urlsafe(18))
     status: str = "queued"
     metrics: dict = field(default_factory=_metrics)
@@ -146,6 +148,7 @@ class AgentSlot:
     _servers: dict = field(default_factory=dict)
     _llm_seq: int = 0
     _paused: bool = False
+    _cache_noted: bool = False
     _step: int = 0
     _resume: asyncio.Event = field(default_factory=asyncio.Event)
     proc: Any = None
@@ -165,7 +168,7 @@ class AgentSlot:
 
     @property
     def shims(self) -> list[str]:
-        return list(self.framework.get("shims", []))
+        return list(self.framework.get("shims", [])) + (["prompt_cache"] if self.cache_prompts else [])
 
     def next_llm_seq(self) -> int:
         self._llm_seq += 1
@@ -202,12 +205,19 @@ class AgentSlot:
             self._paused = True
             self._step += 1
             self._resume.set()
-        elif action == "stop" and self.proc and self.proc.returncode is None:
-            self.error = "stopped by a person"
-            self.proc.kill()
-            self._paused = False
-            self._resume.set()
+        elif action == "stop":
+            self.halt("stopped by a person")
         self.log.emit(self.agent_id, "agent.control", {"action": action})
+
+    def halt(self, reason: str) -> None:
+        if self.proc and self.proc.returncode is None:
+            self.error = self.error or reason
+            self.proc.kill()
+        self._paused = False
+        self._resume.set()
+
+    def over_budget(self) -> bool:
+        return self.max_cost_usd is not None and self.metrics["cost_usd"] >= self.max_cost_usd
 
     # -- tools ---------------------------------------------------------------------------------------------------
     def server(self, name: str) -> ToolServer:
@@ -511,12 +521,19 @@ class RunManager:
                         log.emit(slot.agent_id, "agent.log", {"level": level, "line": s[:2000]})
 
             pumps = asyncio.gather(pump(slot.proc.stdout, "out"), pump(slot.proc.stderr, "err"))
-            try:
-                await asyncio.wait_for(slot.proc.wait(), timeout=slot.timeout_s)
-            except asyncio.TimeoutError:
-                slot.error = f"timed out after {slot.timeout_s}s"
-                slot.proc.kill()
-                await slot.proc.wait()
+            # the timeout counts working time only: while a person holds the agent paused, the clock stops
+            waiter = asyncio.ensure_future(slot.proc.wait())
+            worked, last = 0.0, time.monotonic()
+            while not waiter.done():
+                await asyncio.wait({waiter}, timeout=1)
+                now = time.monotonic()
+                if slot.status != "paused":
+                    worked += now - last
+                last = now
+                if worked > slot.timeout_s and not waiter.done():
+                    slot.error = f"timed out after {slot.timeout_s}s of work"
+                    slot.proc.kill()
+                    await waiter
             await pumps
             slot.exit_code = slot.proc.returncode
             slot.status = "done" if slot.exit_code == 0 and not slot.error else "error"

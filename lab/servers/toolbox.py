@@ -33,13 +33,41 @@ class _Text(HTMLParser):
             self.out.append(data.strip())
 
 
+FETCH_MAX_CHARS = 12000  # hard cap: every character returned is re-sent to the model on every later turn
+_BULKY_KEY = re.compile(r"(artwork|screenshot|ipadScreenshot|appletvScreenshot|thumbnail|icon|image|logo|avatar)\w*", re.I)
+
+
+def _compact_json(raw: str) -> str:
+    """Drop media links and shorten long strings, so an API response spends its characters on data."""
+    try:
+        data = json.loads(raw)
+    except ValueError:
+        return raw
+
+    def walk(v):
+        if isinstance(v, dict):
+            return {k: walk(x) for k, x in v.items() if not _BULKY_KEY.fullmatch(k)}
+        if isinstance(v, list):
+            if len(v) > 12 and all(not isinstance(x, (dict, list)) for x in v):  # long lists of codes, device ids…
+                return [walk(x) for x in v[:8]] + [f"… {len(v) - 8} more"]
+            return [walk(x) for x in v]
+        if isinstance(v, str) and len(v) > 300:
+            return v[:300] + "…"
+        return v
+
+    return json.dumps(walk(data), ensure_ascii=False, separators=(",", ":"))
+
+
 def build(env: Env) -> ToolServer:
     srv = ToolServer("toolbox", "General tools: read web pages, the current time, and a small notes memory.")
     notes = env.state.setdefault("notes", {})
 
     @srv.tool(read_only=True)
-    def fetch_url(url: Annotated[str, "An http(s) URL"], max_chars: int = 12000) -> dict:
-        """Fetch a web page or API and return its readable text (HTML is converted to text)."""
+    def fetch_url(url: Annotated[str, "An http(s) URL"],
+                  max_chars: Annotated[int, f"Characters to return, at most {FETCH_MAX_CHARS}"] = 8000) -> dict:
+        """Fetch a web page or API and return its readable text: HTML is converted to text, and JSON is compacted
+        (image/artwork/screenshot links dropped, long strings shortened). Returns at most 12,000 characters, so ask
+        APIs for small responses (a limit or fields parameter) rather than whole pages."""
         if not re.match(r"^https?://", url):
             raise ToolError("Only http(s) URLs")
         req = urllib.request.Request(url, headers={"user-agent": "agent-lab-toolbox/1.0"})
@@ -53,7 +81,13 @@ def build(env: Env) -> ToolServer:
             p = _Text()
             p.feed(raw)
             raw = "\n".join(p.out)
-        return {"url": url, "content_type": ctype, "text": raw[:max_chars], "truncated": len(raw) > max_chars}
+        elif "json" in ctype or raw.lstrip()[:1] in ("{", "["):
+            raw = _compact_json(raw)
+        limit = max(500, min(int(max_chars or FETCH_MAX_CHARS), FETCH_MAX_CHARS))
+        out = {"url": url, "content_type": ctype, "text": raw[:limit], "truncated": len(raw) > limit}
+        if out["truncated"]:
+            out["note"] = f"Showing {limit:,} of {len(raw):,} characters."
+        return out
 
     @srv.tool(read_only=True)
     def current_time() -> dict:

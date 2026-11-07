@@ -475,6 +475,7 @@ function TestStep({ slug, design, built, runId, onRun, onNext }: { slug: string;
   const [prompt, setPrompt] = useState(design.sample_prompt);
   const [sel, setSel] = useState<string[]>(built);
   const [model, setModel] = useState(app.upstream?.model ?? "");
+  const [cap, setCap] = useState("5");
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<string | null>(null);
   const src = useMemo(() => (runId ? { type: "run" as const, id: runId } : null), [runId]);
@@ -482,7 +483,7 @@ function TestStep({ slug, design, built, runId, onRun, onNext }: { slug: string;
     setBusy(true);
     setErr(null);
     try {
-      const r = await api.createRun({ kind: "build", slug, frameworks: sel, prompt, model });
+      const r = await api.createRun({ kind: "build", slug, frameworks: sel, prompt, model, max_cost_usd: Number(cap) });
       onRun(r.id);
     } catch (e) {
       setErr(String((e as Error).message));
@@ -507,10 +508,15 @@ function TestStep({ slug, design, built, runId, onRun, onNext }: { slug: string;
           <select className="input input-auto" value={model} onChange={(e) => setModel(e.target.value)} aria-label="Model">
             {app.models.map((m) => <option key={m}>{m}</option>)}
           </select>
+          <label className="cap-field" title="The lab stops an agent once its measured spend reaches this">
+            <span className="faint small">Cap / agent $</span>
+            <input className="input input-auto mono" type="number" min="0.5" max="100" step="0.5" value={cap} onChange={(e) => setCap(e.target.value)} aria-label="Spend cap per agent, in dollars" />
+          </label>
           <KeyGate compact>
             <Button variant="signal" onClick={start} busy={busy} disabled={!sel.length || !prompt.trim()} icon={<I.play size={13} />}>{runId ? "Run again" : "Start test run"}</Button>
           </KeyGate>
         </div>
+        <p className="faint small">Test runs add prompt caching to every model call (most frameworks don't by default; Arena benchmarks keep each framework as it ships), and stop an agent at its spend cap.</p>
         {err && <div className="callout callout-red"><I.warn size={14} /> {err}</div>}
       </div>
       {src && (

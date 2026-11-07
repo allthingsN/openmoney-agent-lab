@@ -6,7 +6,9 @@
 Reads the model key from the environment or a .env file next to this script:
   ANTHROPIC_API_KEY=sk-ant-...                       (Anthropic directly), or
   ANTHROPIC_BASE_URL=https://your-litellm ANTHROPIC_API_KEY=sk-...   (a LiteLLM proxy in front of Anthropic)
-Standard library only.
+Prompt caching: most frameworks don't turn it on, so run.py starts a small local relay (cache_relay.py) that adds
+cache breakpoints to each model call; long tool loops cost several times less. Set NO_CACHE_RELAY=1 to call the API
+directly. Standard library only.
 """
 
 import json
@@ -102,6 +104,11 @@ def main() -> None:
                  "CREWAI_DISABLE_TELEMETRY": "true", "OTEL_SDK_DISABLED": "true", "DO_NOT_TRACK": "1"}.items():
         env.setdefault(k, v)
     env["LAB_SPEC"] = str(spec_path)
+    if env.get("NO_CACHE_RELAY") != "1" and (ROOT / "cache_relay.py").exists():
+        sys.path.insert(0, str(ROOT))
+        from cache_relay import relay
+
+        env["ANTHROPIC_BASE_URL"] = relay(env.get("ANTHROPIC_BASE_URL") or "https://api.anthropic.com")
     cmd = [c.replace("{dir}", str(fw_dir)).replace("{spec}", str(spec_path)) for c in fw["run"]]
     print(f"→ {fw['name']} · {spec['model']}\n", flush=True)
     sys.exit(subprocess.run(cmd, cwd=work, env=env).returncode)

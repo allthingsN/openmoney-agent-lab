@@ -18,6 +18,7 @@ from fastapi import Request
 from fastapi.responses import JSONResponse, Response, StreamingResponse
 
 from . import config, pricing
+from .cachemark import add_cache_markers
 from .events import preview
 
 if TYPE_CHECKING:
@@ -96,6 +97,10 @@ def apply_shims(body: dict, shims: list[str]) -> list[str]:
         if isinstance(tc, dict) and tc.get("type") in ("any", "tool"):
             body["tool_choice"] = {"type": "auto"}
             applied.append(f"tool_choice {tc.get('type')} -> auto")
+    if "prompt_cache" in shims:
+        where = add_cache_markers(body)
+        if where:
+            applied.append("cache breakpoints: " + " + ".join(where))
     return applied
 
 
@@ -196,9 +201,20 @@ async def handle(req: Request, slot: "AgentSlot", path: str) -> Response:
     applied = apply_shims(body, slot.shims) if body else []
     if applied:
         raw = json.dumps(body).encode()
-        slot.log.emit(slot.agent_id, "shim.applied", {"changes": applied})
+        # caching is added on every call; say so once, not 40 times
+        shown = [c for c in applied if not (c.startswith("cache breakpoints") and slot._cache_noted)]
+        if any(c.startswith("cache breakpoints") for c in applied):
+            slot._cache_noted = True
+        if shown:
+            slot.log.emit(slot.agent_id, "shim.applied", {"changes": shown})
 
     await slot.gate()  # pause / step control from the UI
+    if slot.over_budget():
+        msg = (f"Spend cap reached: ${slot.metrics['cost_usd']:.2f} of ${slot.max_cost_usd:.2f} for this agent. "
+               "The lab stopped it.")
+        slot.log.emit(slot.agent_id, "agent.budget", {"cap_usd": slot.max_cost_usd, "spent_usd": slot.metrics["cost_usd"]})
+        slot.halt(msg)
+        return JSONResponse({"type": "error", "error": {"type": "permission_error", "message": msg}}, status_code=403)
     n = slot.next_llm_seq()
     summary = _summarize_request(body)
     summary["seq"] = n

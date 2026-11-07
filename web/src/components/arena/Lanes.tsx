@@ -91,6 +91,16 @@ export function Lanes({ state, src, now, freshTs, live, agentIds, title }: Props
             <Segmented label="Timeline zoom" value={zoom} onChange={setZoom} options={[{ value: 1, label: "Fit" }, { value: 2, label: "2×" }, { value: 4, label: "4×" }, { value: 8, label: "8×" }]} />
           </div>
         </div>
+        {controls && agents.some((a) => a.status === "paused") && (
+          <div className="callout callout-ochre paused-banner" role="status">
+            <I.pause size={13} />
+            <span>
+              {agents.filter((a) => a.status === "paused").map((a) => a.label).join(", ")}{" "}
+              {agents.filter((a) => a.status === "paused").length === 1 ? "is" : "are"} paused and holding the next model call. The run waits until you resume, step or stop.
+            </span>
+            <Button size="sm" icon={<I.play size={12} />} onClick={() => control("*", "resume")}>Resume</Button>
+          </div>
+        )}
         <div className="legend" aria-label="Legend">
           <span className="legend-item"><span className="lg-llm" /> model call (width = latency)</span>
           {servers.map((s) => (

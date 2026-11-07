@@ -742,3 +742,9 @@
 .lane.is-compact .track-end > * { top: 13px; }
 :root[data-theme="paper"] .llm-bar-n { color: rgba(255, 255, 255, 0.82); }
 .pub-cmds { margin: 10px 0 0; padding: 10px 12px; border: 1px solid var(--rule); border-radius: var(--radius); background: var(--code-bg); color: var(--ink); white-space: pre-wrap; overflow-wrap: anywhere; }
+
+/* paused banner + builder spend cap */
+.paused-banner { align-items: center; }
+.paused-banner > span { flex: 1; }
+.cap-field { display: inline-flex; align-items: center; gap: 6px; }
+.cap-field .input { width: 76px; }
