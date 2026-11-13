@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "dependencies": {
-    "@ai-sdk/anthropic": "4.0.96",
+    "@ai-sdk/anthropic": "4.0.99",
     "@mastra/core": "1.82.0",
     "@mastra/mcp": "2.8.0",
     "tsx": "4.23.15",
